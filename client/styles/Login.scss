@@ -1,0 +1,69 @@
+@import "../scss/utils/react.scss";
+@import "../scss/components/w-forms";
+
+
+body {
+    background: var(--c-bg-primary);
+}
+
+:host {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.auth-wrapper {
+    @include flexBox(flex, null, center, center, null);
+    background: var(--c-bg-primary);
+    flex-grow: 1;
+    padding: 20px;
+}
+.auth {
+    max-width: 500px;
+    width: 100%;
+    padding: 40px;
+    border-radius: var(--b-radius-card);
+    box-shadow: 0px 0px 6px var(--c-shadow);
+    background: var(--c-white);
+    &__title {
+        font-size: var(--fs) + 8px;
+        font-weight: var(--ff-bold);
+        color: var(--c-text-primary);
+        text-align: center;
+        margin-bottom: 15px;
+        @include bp-max(sm) {
+            font-size: var(--fs) + 2px;
+        }
+    }
+    &__btn {
+        text-align: center;
+        margin-top: 30px;
+        .w-btn {
+            margin: 0;
+            width: 100%;
+            font-size: var(--fs);
+            font-weight: 500;
+            font-family: var(--ff-base);
+            background-color: var(--c-primary);
+            border-radius: var(--b-radius);
+            transition: var(--transition);
+            color: var(--c-white);
+            position: relative;
+            padding: 11px 25px;
+            line-height: 19px;
+            text-align: center;
+            white-space: nowrap;
+            user-select: none;
+            border: none;
+            cursor: pointer;
+        }
+    }
+    @include bp-max(sm) {
+        .form__title {
+            font-size: var(--fs) - 2px;
+        }
+    }
+}
