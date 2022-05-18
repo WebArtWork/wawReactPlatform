@@ -1,8 +1,13 @@
 import type { NextPage } from 'next'
+import Navbar from '../../components/Navbar/Navbar'
 
 const Home: NextPage = () => {
   return (
-	  <h1>Admin Users</h1>
+    <div className='w-card _pd'>
+      <Navbar />
+      <h1>Admin Users</h1>
+    </div>
+
   )
 }
 
