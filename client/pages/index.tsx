@@ -1,14 +1,10 @@
 import type { NextPage } from 'next'
 import React, { Component } from 'react'
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 
-// const Home: NextPage = () => {
-// 	return (
 
-// 	)
-// }
 
 export default class Home extends Component {
 	constructor() {
@@ -36,7 +32,7 @@ export default class Home extends Component {
 							</span>
 						</div>
 						<div className="auth__btn">
-							<button className="w-btn _primary" type="submit">Let's go</button>
+							<span className="w-btn _primary" type="submit" onClick={event => window.location.href="/profile"}>Let's go</span>
 						</div>
 					</form>
 				</div>
