@@ -1,14 +1,16 @@
-import type { NextPage } from 'next'
+import type {NextPage} from 'next'
 import Navbar from '../../components/Navbar/Navbar'
 
-const Home: NextPage = () => {
-  return (
-    <div className='w-card _pd'>
-      <Navbar />
-      <h1>Admin Users</h1>
-    </div>
+const Users: NextPage = () => {
+    return (
+        <div>
+            <Navbar/>
+            <div className='w-card _pd'>
+                <h1>Admin Users</h1>
+            </div>
+        </div>
 
-  )
+    )
 }
 
-export default Home
+export default Users;

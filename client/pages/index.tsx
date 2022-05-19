@@ -4,7 +4,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Navbar from '../components/Navbar/Navbar'
 
-const Login = () => {
+const Login:NextPage = () => {
 	const [passwordShown, setPasswordShown] = useState(false);
 	const togglePasswordVisiblity = () => {
 		setPasswordShown(passwordShown ? false : true);
