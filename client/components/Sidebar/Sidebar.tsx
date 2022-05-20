@@ -1,5 +1,5 @@
 import React from 'react'
-import {stack as Menu} from 'react-burger-menu'
+import {slide as Menu} from 'react-burger-menu'
 import Link from 'next/link'
 
 export default props => {
