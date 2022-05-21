@@ -1,6 +1,6 @@
 {
 	"name": "wawNgx",
-	"description": "Default waw project with Angular client and Template landing",
+	"description": "Default waw project with React client and Template landing",
 	"keywords": "Default Project",
 	"license": "MIT",
 	"icon": "/client/src/favicon.ico",
