@@ -1,8 +1,6 @@
 import type {NextPage} from 'next'
 import React, {Component} from 'react'
 import Navbar from '../components/Navbar/Navbar'
-import {Logout} from '@mui/icons-material'
-import {Edit} from '@mui/icons-material'
 
 
 const Profile: NextPage = () => {
@@ -15,7 +13,7 @@ const Profile: NextPage = () => {
                     <div>
                         <div className="avatar _profile">
                             <img className="avatar__upload" src="" width={50} height={50}/>
-                            <label className="avatar__upload"><Edit className='avatar__icon'/></label>
+                            <label className="avatar__upload"></label>
                         </div>
                     </div>
                 </div>
@@ -34,7 +32,7 @@ const Profile: NextPage = () => {
                         <textarea className="w-forms__textarea" placeholder="Bio"></textarea>
                     </div>
                     <div className=">profile__logout">
-                        <button className="logout-button _danger"><Logout/>Logout</button>
+                        <button className="logout-button _danger">Logout</button>
                     </div>
                 </div>
             </div>
