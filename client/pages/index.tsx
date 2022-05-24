@@ -1,6 +1,8 @@
 import type {NextPage} from 'next'
 import Link from 'next/link'
 import React, {Component, useState} from 'react'
+import UserService from "../services/user.service";
+import axios from "axios";
 
 
 const Login: NextPage = () => {
@@ -8,6 +10,20 @@ const Login: NextPage = () => {
     const togglePasswordVisiblity = () => {
         setPasswordShown(passwordShown ? false : true);
     };
+
+    const submit = (event) => {
+        event.preventDefault()
+        axios.post('http://localhost:8080/api/user/status', {
+            email: 'qwe',
+            pass: 'qwe'
+        }, {
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            }
+        }).then(resp => {
+            console.log(resp);
+        })
+    }
 
     return (
         <div className="auth-wrapper">
@@ -39,12 +55,10 @@ const Login: NextPage = () => {
 						</span>
                     </div>
                     <div className="auth__btn">
-                        <Link href="/profile">
-                            <button className="w-btn _primary"
-                                    type="submit">
-                                Let's go
-                            </button>
-                        </Link>
+                        <button className="w-btn _primary"
+                                onClick={submit}>
+                            Let's go
+                        </button>
                     </div>
                 </form>
             </div>

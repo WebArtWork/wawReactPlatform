@@ -45,7 +45,7 @@ module.exports = async function(waw) {
 		waw.serve(process.cwd() + '/client/dist/app');
 		const client = process.cwd() + '/client/dist/app/index.html';
 		if (fs.existsSync(client)) {
-			waw.url(client, '/admin/users /profile /auth');
+			waw.url(client,  '/admin/users /profile /auth');
 		} else {
 			console.log("You don't have client build, careful with committing without that");
 		}

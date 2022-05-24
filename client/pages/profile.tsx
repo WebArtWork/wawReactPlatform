@@ -13,7 +13,9 @@ const Profile: NextPage = () => {
                     <div>
                         <div className="avatar _profile">
                             <img className="avatar__upload" src="" width={50} height={50}/>
-                            <label className="avatar__upload"></label>
+                            <label className="avatar__upload">
+                                <span className="material-symbols-outlined">edit</span>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -32,7 +34,9 @@ const Profile: NextPage = () => {
                         <textarea className="w-forms__textarea" placeholder="Bio"></textarea>
                     </div>
                     <div className=">profile__logout">
-                        <button className="logout-button _danger">Logout</button>
+                        <button className="logout-button _danger">
+                            <span className="material-symbols-outlined">logout</span>Logout
+                        </button>
                     </div>
                 </div>
             </div>
