@@ -84,6 +84,10 @@ body {
     background: var(--c-primary);
     @include flexBox(flex, null, center, center, null);
     transition: var(--transition);
+
+      span {
+        color: #ffffff;
+      }
   }
 
   &__icon {
