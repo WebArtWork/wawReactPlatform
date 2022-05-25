@@ -13,7 +13,7 @@ const Login: NextPage = () => {
 
     const submit = (event) => {
         event.preventDefault()
-        axios.post('http://localhost:8080/api/user/status', {
+        axios.post('/api/user/status', {
             email: 'qwe',
             pass: 'qwe'
         }, {
