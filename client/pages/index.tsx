@@ -1,28 +1,50 @@
 import type {NextPage} from 'next'
-import Link from 'next/link'
 import React, {Component, useState} from 'react'
-import UserService from "../services/user.service";
 import axios from "axios";
-
+import {useStorage} from "../hooks/useStorage";
 
 const Login: NextPage = () => {
+    const [ user, setUser ] = useStorage('user')
+    const [emailInput, setEmailInput] = useState('');
+    const [passInput, setPassInput] = useState('');
     const [passwordShown, setPasswordShown] = useState(false);
     const togglePasswordVisiblity = () => {
-        setPasswordShown(passwordShown ? false : true);
+        setPasswordShown(!passwordShown);
     };
 
-    const submit = (event) => {
-        event.preventDefault()
-        axios.post('http://localhost:8080/api/user/status', {
-            email: 'qwe',
-            pass: 'qwe'
+    const login = async () => {
+        const user = await axios.post('/api/user/login', {
+            email: emailInput,
+            pass: passInput
+        }).then(response => response.data)
+        setUser(user)
+    }
+
+    const sign = async () => {
+        const user = await axios.post('/api/user/sign', {
+            email: emailInput,
+            pass: passInput
+        }).then(response => response.data)
+        setUser(user)
+    }
+
+    const submit = async (e) => {
+        e.preventDefault()
+        const getUserStatus = await axios.post('/api/user/status', {
+            email: emailInput,
+            pass: passInput
         }, {
             headers: {
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json',
             }
-        }).then(resp => {
-            console.log(resp);
-        })
+        }).then(response => response.data)
+        if (getUserStatus.email) {
+            login()
+        } else {
+            sign()
+        }
+        console.log(getUserStatus)
     }
 
     return (
@@ -35,6 +57,8 @@ const Login: NextPage = () => {
                         <input
                             className="w-forms__input"
                             type="text" placeholder="Email"
+                            value={emailInput}
+                            onChange={(e) => setEmailInput(e.target.value)}
                             name="email"/>
                     </div>
                     <div className="w-forms">
@@ -44,6 +68,8 @@ const Login: NextPage = () => {
                                 "text" :
                                 "password"}
                                className="w-forms__input"
+                               value={passInput}
+                               onChange={(e) => setPassInput(e.target.value)}
                                placeholder="Password" name="password"/>
 
                         <span onClick={togglePasswordVisiblity}>
