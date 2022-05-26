@@ -4,10 +4,17 @@ import React, {Component, useState} from 'react'
 import axios from "axios";
 import { useStorage } from '../../hooks/useStorage';
 
-
 const Users: NextPage = () => {
+    const [checked, setChecked]: any = useState(false);
+    
+    const handleChange = () => {
+        setChecked(!checked);
+        console.log(checked)
+        localStorage.setItem('key', checked)
+      }
+
     const [emailInput, setEmailInput] = useState('');
-    const [ user, setUser ] = useStorage('user')
+    const [ user, setUser ] = useStorage('user');
 
     const login = () => {
         console.log('user exist')
@@ -44,13 +51,6 @@ const Users: NextPage = () => {
         ).then(response => response.data)
         console.log(getUserDelete)
     }
-
-    //  const isAdmin = () => {
-    //     const adminUser = document.getElementsByClassName('.admin')
-    //     if (adminUser){
-            
-    //     }
-    // }
 
     return (
         <div>
@@ -92,7 +92,9 @@ const Users: NextPage = () => {
                                     <td>qwe</td>
                                     <td>
                                         <button className='admin'>
-                                            <input type='checkbox'></input>
+                                            <input type='checkbox'
+                                            onChange={handleChange}
+                                            ></input>
                                         </button>
                                     </td>
                                     <td>

@@ -2,23 +2,57 @@ import axios from 'axios'
 import type {NextPage} from 'next'
 import React, {Component, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
+import {useRouter} from "next/router";
+import { useStorage } from '../hooks/useStorage';
 
 
 const Profile: NextPage = () => {
-    const [formValue, setValue] = useState({
-        nameInput: '',
-        bioInput: '',
-        numberInput: ''
-        
-    })
+    const [namer, setName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [bio, setBio] = useState('')
 
-    const userBio = async (e: any) => {
+
+    const [user, setUser] = useStorage('user');
+    const router = useRouter();
+    const logout = () => {
+        setUser(null);
+        router.push('/');
+    }
+    const userChange = (e: any) => {
+        let data_id = e.target.name
+        if(data_id == "name"){
+            setName(e.target.value)
+            console.log(namer)
+        }
+        else if(data_id == "bio"){
+            setBio(e.target.value)
+            console.log(bio)
+        }
+        else if(data_id == 'number'){
+            setPhone(e.target.value)
+            console.log(phone)
+        }
+    }
+
+    const userBio = (e: any) => {
         e.preventDefault()
-        const getUserStatus = await axios.post('/api/user/profile', {
-            name: formValue.nameInput,
-            bio: formValue.bioInput,
-            number: formValue.numberInput
-        }, {
+        let data_id = e.target.name
+        if(data_id == "name"){
+            setName(e.target.value)
+            console.log(namer)
+        }
+        else if(data_id == "bio"){
+            setBio(e.target.value)
+        }
+        else if(data_id == 'number'){
+            setPhone(e.target.value)
+        }
+        let data = {
+            name: namer,
+            bio: bio,
+            number: phone
+        }
+        const getUserStatus = axios.post('/api/user/profile', data, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 'Content-Type': 'application/json',
@@ -50,7 +84,9 @@ const Profile: NextPage = () => {
                             type="text"
                             name="name" 
                             placeholder="Your name"
-                            value={formValue.nameInput}
+                            // defaultValue={formValue.nameInput}
+                            onKeyUp={userChange}
+                            onBlur={userBio}
                          />
                     </div>
                     <div className="w-forms">
@@ -59,19 +95,24 @@ const Profile: NextPage = () => {
                                 maxLength={10} 
                                 type="tel" name="number"
                                placeholder="Phone number"
-                               value={formValue.numberInput}/>
+                            //    defaultValue={formValue.numberInput}
+                            onKeyUp={userChange}
+                               onBlur={userBio}/>
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Bio</span>
                         <textarea 
                             className="w-forms__textarea"
                             placeholder="Bio"
-                            value={formValue.bioInput}>
+                            name='bio'
+                            // defaultValue={formValue.bioInput}
+                            onKeyUp={userChange}
+                            onBlur={userBio}>
                         </textarea>
                     </div>
                     <div className=">profile__logout">
                         <button className="logout-button _danger">
-                            <span className="material-symbols-outlined">logout</span>Logout
+                            <span className="material-symbols-outlined" onClick={logout}>logout</span>Logout
                         </button>
                     </div>
                 </div>
