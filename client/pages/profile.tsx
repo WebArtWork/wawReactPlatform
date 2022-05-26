@@ -1,9 +1,19 @@
 import type {NextPage} from 'next'
 import React, {Component} from 'react'
 import Navbar from '../components/Navbar/Navbar'
+import {useStorage} from "../hooks/useStorage";
+import {useRouter} from "next/router";
+
 
 
 const Profile: NextPage = () => {
+    const [user, setUser] = useStorage('user');
+    const router = useRouter();
+    const logout = () => {
+        setUser(null);
+        router.push('/');
+    }
+
     return (
         <div>
             <Navbar/>
@@ -34,7 +44,7 @@ const Profile: NextPage = () => {
                         <textarea className="w-forms__textarea" placeholder="Bio"></textarea>
                     </div>
                     <div className=">profile__logout">
-                        <button className="logout-button _danger">
+                        <button className="logout-button _danger" onClick={logout}>
                             <span className="material-symbols-outlined">logout</span>Logout
                         </button>
                     </div>

@@ -1,10 +1,26 @@
 import type {NextPage} from 'next'
-import React, {Component, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from "axios";
-import {useStorage} from "../hooks/useStorage";
+import {useStorage} from "../hooks/useStorage"
+import {useRouter} from "next/router";
+import {useCookies} from "react-cookie";
+
+interface User {
+    _id: string;
+    email: string;
+    thumb: string;
+    is: {
+        admin: boolean;
+    };
+    token: string;
+}
+
 
 const Login: NextPage = () => {
-    const [ user, setUser ] = useStorage('user')
+    const router = useRouter()
+    // const [ user, setUser ] = useStorage('user')
+    const [cookie, setCookie] = useCookies(['userToken'])
+    if (cookie.userToken) router.push('/profile')
     const [emailInput, setEmailInput] = useState('');
     const [passInput, setPassInput] = useState('');
     const [passwordShown, setPasswordShown] = useState(false);
@@ -12,27 +28,31 @@ const Login: NextPage = () => {
         setPasswordShown(!passwordShown);
     };
 
+
     const login = async () => {
-        const user = await axios.post('/api/user/login', {
+        const user: Promise<User> = await axios.post('/api/user/login', {
             email: emailInput,
-            pass: passInput
+            password: passInput
         }).then(response => response.data)
-        setUser(user)
+
+        setCookie('userToken', user.token, {path: '/'})
+        router.push('/profile')
     }
 
     const sign = async () => {
         const user = await axios.post('/api/user/sign', {
             email: emailInput,
-            pass: passInput
+            password: passInput
         }).then(response => response.data)
-        setUser(user)
+        setCookie('userToken', user.token, {path: '/'})
+        router.push('/profile')
     }
 
     const submit = async (e) => {
         e.preventDefault()
         const getUserStatus = await axios.post('/api/user/status', {
             email: emailInput,
-            pass: passInput
+            password: passInput
         }, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -44,7 +64,6 @@ const Login: NextPage = () => {
         } else {
             sign()
         }
-        console.log(getUserStatus)
     }
 
     return (
@@ -83,7 +102,7 @@ const Login: NextPage = () => {
                     <div className="auth__btn">
                         <button className="w-btn _primary"
                                 onClick={submit}>
-                            Let's go
+                            Lets go
                         </button>
                     </div>
                 </form>
