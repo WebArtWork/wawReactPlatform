@@ -2,8 +2,9 @@ import axios from 'axios'
 import type {NextPage} from 'next'
 import React, {Component, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
+import {useStorage} from "../hooks/useStorage";
 import {useRouter} from "next/router";
-import { useStorage } from '../hooks/useStorage';
+
 
 
 const Profile: NextPage = () => {
@@ -11,13 +12,13 @@ const Profile: NextPage = () => {
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
 
-
     const [user, setUser] = useStorage('user');
     const router = useRouter();
     const logout = () => {
         setUser(null);
         router.push('/');
     }
+
     const userChange = (e: any) => {
         let data_id = e.target.name
         if(data_id == "name"){
@@ -52,14 +53,14 @@ const Profile: NextPage = () => {
             bio: bio,
             number: phone
         }
-        const getUserStatus = axios.post('/api/user/profile', data, {
+        const getUserStatus = axios.post('/api/user/status', data, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 'Content-Type': 'application/json',
             }
         }).then(response => response.data)
         console.log(getUserStatus)
-
+        
     }
     return (
         <div>
@@ -111,8 +112,10 @@ const Profile: NextPage = () => {
                         </textarea>
                     </div>
                     <div className=">profile__logout">
-                        <button className="logout-button _danger">
-                            <span className="material-symbols-outlined" onClick={logout}>logout</span>Logout
+
+                        <button className="logout-button _danger" onClick={logout}>
+                            <span className="material-symbols-outlined">logout</span>Logout
+
                         </button>
                     </div>
                 </div>

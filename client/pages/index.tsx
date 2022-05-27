@@ -21,8 +21,8 @@ const Login: NextPage = () => {
     // const [ user, setUser ] = useStorage('user')
     const [cookie, setCookie] = useCookies(['userToken'])
     if (cookie.userToken) router.push('/profile')
-    const [emailInput, setEmailInput] = useState('');
-    const [passInput, setPassInput] = useState('');
+    const [emailInput, setEmailInput] = useState('ceo@webart.work');
+    const [passInput, setPassInput] = useState('asdasdasdasd');
     const [passwordShown, setPasswordShown] = useState(false);
     const togglePasswordVisiblity = () => {
         setPasswordShown(!passwordShown);

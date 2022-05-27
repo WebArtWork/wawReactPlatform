@@ -1,9 +1,8 @@
 import type {NextPage} from 'next'
 import Navbar from '../../components/Navbar/Navbar'
-import React, {Component, useState} from 'react'
+import React, {Component, useEffect, useState} from 'react'
 import axios from "axios";
 import { useStorage } from '../../hooks/useStorage';
-
 const Users: NextPage = () => {
     const [checked, setChecked]: any = useState(false);
     
@@ -18,8 +17,15 @@ const Users: NextPage = () => {
 
     const login = () => {
         console.log('user exist')
+        
     }
-
+    const ass = async () => {
+        const axx = await axios.get('/api/user/get/users')
+        console.log(axx)
+    }
+    useEffect(()=>{
+        ass()
+    }, [])
     const sign = async () => {
         const user = await axios.post('/api/user/sign', {
             email: emailInput,
@@ -36,22 +42,25 @@ const Users: NextPage = () => {
                 "Access-Control-Allow-Origin": "*",
                 'Content-Type': 'application/json',
             }
-        }).then(response => response.data)
+        }).then((response) => {
+           console.log(response)
+           return response.data
+        })
         if (getUserStatus.email) {
             login()
+            
         } else {
             sign()
         }
-        console.log(getUserStatus)
+        
     }
-
+    
     const deleteUser = async (e: any) => {
         e.preventDefault()
         const getUserDelete = await axios.delete('/api/user/status', 
         ).then(response => response.data)
         console.log(getUserDelete)
     }
-
     return (
         <div>
             <Navbar/>
