@@ -11,21 +11,41 @@ const Users: NextPage = () => {
         console.log(checked)
         localStorage.setItem('key', checked)
       }
-
+    interface IUser{
+        _id: string,
+        thumb: string,
+        is: {admin: boolean},
+        email: string,
+        reg_email: string,
+        password: string,
+        data: object
+    }
     const [emailInput, setEmailInput] = useState('');
     const [ user, setUser ] = useStorage('user');
+    const [users, setUsers] = useState<any>();
+    
 
     const login = () => {
         console.log('user exist')
-        
     }
-    const ass = async () => {
-        const axx = await axios.get('/api/user/get/users')
-        console.log(axx)
+    const getUsers = async () => {
+        const users: any = await axios.get('/api/user/get/users')
+        setUsers(users.data)
     }
+
     useEffect(()=>{
-        ass()
+        getUsers()
     }, [])
+    useEffect(()=>{
+        if(user){
+        if(users.length){
+            setUsers([...users, user])
+        } else{
+            setUsers([user])
+        }
+    }
+    }, [user])
+
     const sign = async () => {
         const user = await axios.post('/api/user/sign', {
             email: emailInput,
@@ -43,7 +63,7 @@ const Users: NextPage = () => {
                 'Content-Type': 'application/json',
             }
         }).then((response) => {
-           console.log(response)
+
            return response.data
         })
         if (getUserStatus.email) {
@@ -52,14 +72,19 @@ const Users: NextPage = () => {
         } else {
             sign()
         }
+
         
     }
     
-    const deleteUser = async (e: any) => {
-        e.preventDefault()
-        const getUserDelete = await axios.delete('/api/user/status', 
+    const deleteUser = async (id: string) => {
+        
+        const getUserDelete = await axios.delete('/api/user/delete/' + id,
         ).then(response => response.data)
-        console.log(getUserDelete)
+        if(getUserDelete.success){
+            setUsers(users.filter((user: IUser) => id !== user._id))
+        }
+        
+        
     }
     return (
         <div>
@@ -96,9 +121,10 @@ const Users: NextPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>qwe</td>
-                                    <td>qwe</td>
+                                {users?.length ? users.map((user: IUser)=>(
+                                <tr key={user._id}>
+                                    <td>{user.email}</td>
+                                    <td>{user.email}</td>
                                     <td>
                                         <button className='admin'>
                                             <input type='checkbox'
@@ -107,11 +133,12 @@ const Users: NextPage = () => {
                                         </button>
                                     </td>
                                     <td>
-                                        <button onClick={deleteUser}>
+                                        <button className='deleter' onClick={() => deleteUser(user._id)}>
                                         <i className="fi fi-rr-trash">delete</i>
                                         </button>
                                     </td>
-                                </tr>
+                                </tr>)) : <tr><td colSpan={4}>No users</td></tr>}
+                                
                             </tbody>
                         </table>
                     </div>
