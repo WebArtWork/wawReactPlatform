@@ -19,8 +19,9 @@ interface User {
 const Login: NextPage = () => {
     const router = useRouter()
     // const [ user, setUser ] = useStorage('user')
+
+
     const [cookie, setCookie] = useCookies(['userToken'])
-    if (cookie.userToken) router.push('/profile')
     const [emailInput, setEmailInput] = useState('');
     const [passInput, setPassInput] = useState('');
     const [passwordShown, setPasswordShown] = useState(false);

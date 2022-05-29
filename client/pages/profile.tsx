@@ -1,16 +1,14 @@
 import type {NextPage} from 'next'
 import React, {Component} from 'react'
 import Navbar from '../components/Navbar/Navbar'
-import {useStorage} from "../hooks/useStorage";
 import {useRouter} from "next/router";
+import {useCookies} from "react-cookie";
 
 
 
 const Profile: NextPage = () => {
-    const [user, setUser] = useStorage('user');
     const router = useRouter();
     const logout = () => {
-        setUser(null);
         router.push('/');
     }
 
