@@ -3,7 +3,7 @@ import type {NextPage} from 'next'
 import React, {Component, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import {useRouter} from "next/router";
-import {useStorage} from "../hooks/useStorage";
+import {userStorage} from "../hooks/userStorage";
 import {useCookies} from "react-cookie";
 
 
@@ -13,7 +13,7 @@ const Profile: NextPage = () => {
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
-    const [user, setUser] = useStorage('user');
+    const [user, setUser] = userStorage('user');
     const router = useRouter();
     const logout = () => {
         removeCookie('userToken')

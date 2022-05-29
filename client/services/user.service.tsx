@@ -1,6 +1,4 @@
 import {Service} from 'wrcom'
-import axios from 'axios'
-
 class UserService extends Service {
     public rand = Math.floor(Math.random() * 5000);
     public roles = ['admin']
