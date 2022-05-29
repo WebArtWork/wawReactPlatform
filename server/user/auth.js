@@ -1,9 +1,23 @@
 const User = require(__dirname+'/schema.js');
+const ObjectID = require('mongodb').ObjectID
 const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
 const nJwt = require('njwt');
 const fs = require('fs');
+
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/wawReact";
+
+let dbo 
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  dbo = db.db("wawReact");
+//   db.connect(url, { useUnifiedTopology: true })
+  
+});
+
 module.exports = async function(waw) {
+	
 	if (!waw.config.signingKey) {
 		waw.config.signingKey = uuidv4();
 		let serverJson = waw.readJson(process.cwd() + '/server.json');
@@ -106,6 +120,22 @@ module.exports = async function(waw) {
 				res.json(json);
 			});
 		});
+		router.delete('/delete/:id', async function(req, res){
+			const id = req.params.id
+			try {await dbo.collection("users").deleteOne({_id:ObjectID(id)});
+			res.json({success: true})
+		}
+			catch(e){
+				throw e;
+			}	
+			
+		})
+		router.get('/get/users', async function(req, res){
+			dbo.collection("users").find({}).toArray(function(err, result) {
+				if (err) throw err;
+				res.json(result)
+			  });
+		})
 		router.post("/request", function(req, res) {
 			User.findOne({
 				email: req.body.email.toLowerCase()
