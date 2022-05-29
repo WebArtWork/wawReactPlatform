@@ -1,7 +1,6 @@
 import type {NextPage} from 'next'
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
-import {useStorage} from "../hooks/useStorage"
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
 
@@ -28,7 +27,6 @@ const Login: NextPage = () => {
     const togglePasswordVisiblity = () => {
         setPasswordShown(!passwordShown);
     };
-
 
     const login = async () => {
         const user: Promise<User> = await axios.post('/api/user/login', {
