@@ -5,10 +5,10 @@ import axios from "axios";
 import { useStorage } from '../../hooks/useStorage';
 const Users: NextPage = () => {
     const [checked, setChecked]: any = useState(false);
+    const [style, setStyle]: any = useState(false);
     
     const handleChange = () => {
         setChecked(!checked);
-        console.log(checked)
         localStorage.setItem('key', checked)
       }
     interface IUser{
@@ -36,6 +36,7 @@ const Users: NextPage = () => {
     useEffect(()=>{
         getUsers()
     }, [])
+
     useEffect(()=>{
         if(user){
         if(users.length){
@@ -55,6 +56,15 @@ const Users: NextPage = () => {
 
     const createUser = async (e: any) => {
         e.preventDefault()
+        let reg = /\S+@\S+\.\S+/;
+        let address = document.getElementsByClassName('user_email');
+
+        if(reg.test
+            (address[0].value) == false) {
+                setStyle(true);
+        }
+        else{
+        setStyle(false);
         const getUserStatus = await axios.post('/api/user/status', {
             email: emailInput
         }, {
@@ -72,20 +82,21 @@ const Users: NextPage = () => {
         } else {
             sign()
         }
-
-        
+    }
     }
     
     const deleteUser = async (id: string) => {
-        
         const getUserDelete = await axios.delete('/api/user/delete/' + id,
         ).then(response => response.data)
         if(getUserDelete.success){
             setUsers(users.filter((user: IUser) => id !== user._id))
         }
-        
-        
     }
+
+    function validate() {
+        
+     }
+
     return (
         <div>
             <Navbar/>
@@ -101,10 +112,11 @@ const Users: NextPage = () => {
              <div className='new_user'>
                     <input
                          type='text' 
-                         className='user_email'
+                         className={style ? "non_valid_input user_email" : "user_email"}
                          placeholder='Email'
                          value={emailInput} 
-                         onChange={(e) => setEmailInput(e.target.value)}>
+                         onChange={(e) => setEmailInput(e.target.value)}
+                         required>
                      </input>
 
                  <button onClick={createUser}>Create</button>

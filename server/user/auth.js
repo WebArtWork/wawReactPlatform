@@ -130,6 +130,12 @@ module.exports = async function(waw) {
 			}	
 			
 		})
+
+		router.post('/bio', async function(req, res){
+			console.log(req.body)
+			dbo.collection("users").updateOne({email: 'nastja@gmail.com'}, {$set: {name: req.body.name}});
+		})
+
 		router.get('/get/users', async function(req, res){
 			dbo.collection("users").find({}).toArray(function(err, result) {
 				if (err) throw err;
