@@ -1,9 +1,10 @@
 import type {NextPage} from 'next'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
 import {userGuard} from "../hooks/userGuard";
+import {Modal} from "../modal/Modal";
 
 interface User {
     _id: string;
@@ -19,6 +20,7 @@ interface User {
 const Login: NextPage = () => {
     const router = useRouter()
     // const [ user, setUser ] = userStorage('user')
+    const [show, setShow] = useState(false)
     const [session, setSession] = userGuard('session')
     const [cookie, setCookie] = useCookies(['userToken'])
     const [emailInput, setEmailInput] = useState('ceo@webart.work');
@@ -100,12 +102,17 @@ const Login: NextPage = () => {
                                     <span className="material-symbols-outlined">visibility</span>
                             }
 						</span>
+                        <a className="forgot-password"
+                           onClick={() => setShow(true)}>
+                            Forgot password
+                        </a>
                     </div>
                     <div className="auth__btn">
                         <button className="w-btn _primary"
                                 onClick={submit}>
                             Lets go
                         </button>
+                        <Modal onClose={() => setShow(false)} show={show}/>
                     </div>
                 </form>
             </div>

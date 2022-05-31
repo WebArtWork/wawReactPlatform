@@ -4,21 +4,23 @@ import React, {Component, useEffect, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
-import {userStorage} from "../hooks/userStorage.tsx";
+import {userStorage} from "../hooks/userStorage";
 import {userGuard} from "../hooks/userGuard";
+import {Modal} from "../modal/Modal";
 
 const Profile: NextPage = () => {
-    const [ user, setUser ] = userStorage('user')
+    const [user, setUser] = userStorage('user')
     const [session, setSession] = userGuard('session')
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
+    const [show, setShow] = useState(false)
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter();
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('session'))
-        if(!cookie.userToken) {
+        if (!cookie.userToken) {
             localStorage.removeItem('session')
             router.push('/')
         }
@@ -36,7 +38,7 @@ const Profile: NextPage = () => {
         console.log(users.data[0])
         setName(users.data[0].name)
     }
-    useEffect(()=>{
+    useEffect(() => {
         getUserName()
     }, [])
 
@@ -96,25 +98,25 @@ const Profile: NextPage = () => {
                 </div>
                 <div className="profile__body">
                     <div className="w-forms">
-                        <span className="w-forms__title" >Name</span>
+                        <span className="w-forms__title">Name</span>
                         <input
                             className="w-forms__input"
                             type="text"
                             name="name"
-                            name="name" 
+                            name="name"
                             defaultValue={namer}
                             placeholder="Your name"
                             onKeyUp={userChange}
                             onBlur={userBio}
-                         />
+                        />
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Phone number</span>
                         <input className="w-forms__input"
-                                maxLength={10}
-                                type="tel" name="number"
+                               maxLength={10}
+                               type="tel" name="number"
                                placeholder="Phone number"
-                            onKeyUp={userChange}
+                               onKeyUp={userChange}
                                onBlur={userBio}/>
                     </div>
                     <div className="w-forms">
@@ -127,11 +129,11 @@ const Profile: NextPage = () => {
                             onBlur={userBio}>
                         </textarea>
                     </div>
+                    <button type="button" className="w-btn _primary" onClick={() => setShow(true)}>Change password</button>
+                    <Modal onClose={() => setShow(false)} show={show}/>
                     <div className=">profile__logout">
-
                         <button className="logout-button _danger" onClick={logout}>
                             <span className="material-symbols-outlined">logout</span>Logout
-
                         </button>
                     </div>
                 </div>

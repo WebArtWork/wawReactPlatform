@@ -3,6 +3,7 @@ import "../styles/globals.scss"
 import "../styles/Login.scss"
 import "../styles/Profile.scss"
 import "../styles/Users.scss"
+import "../modal/Modal.scss"
 import "../components/Navbar/Navbar.scss"
 import "../components/Sidebar/Sidebar.scss"
 import {CookiesProvider} from "react-cookie";
