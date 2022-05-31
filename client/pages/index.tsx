@@ -1,7 +1,7 @@
 import type {NextPage} from 'next'
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
-import {useStorage} from "../hooks/useStorage"
+import {userStorage} from "../hooks/userStorage"
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
 
@@ -18,7 +18,7 @@ interface User {
 
 const Login: NextPage = () => {
     const router = useRouter()
-    // const [ user, setUser ] = useStorage('user')
+    // const [ user, setUser ] = userStorage('user')
     const [cookie, setCookie] = useCookies(['userToken'])
     if (cookie.userToken) router.push('/profile')
     const [emailInput, setEmailInput] = useState('ceo@webart.work');

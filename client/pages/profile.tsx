@@ -2,7 +2,7 @@ import axios from 'axios'
 import type {NextPage} from 'next'
 import React, {Component, useEffect, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
-import {useStorage} from "../hooks/useStorage";
+import {userStorage} from "../hooks/userStorage";
 import {useRouter} from "next/router";
 
 
@@ -12,7 +12,7 @@ const Profile: NextPage = () => {
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
 
-    const [user, setUser] = useStorage('user');
+    const [user, setUser] = userStorage('user');
     const router = useRouter();
     const logout = () => {
         setUser(null);
@@ -27,31 +27,8 @@ const Profile: NextPage = () => {
         getUserName()
     }, [])
 
-    const userChange = (e: any) => {
-        let data_id = e.target.name
-        // if(data_id == "name"){
-        //     setName(e.target.value)
-        // }
-        // else if(data_id == "bio"){
-        //     setBio(e.target.value)
-        // }
-        // else if(data_id == 'number'){
-        //     setPhone(e.target.value)
-        // }
-    }
 
     const userBio = (e: any) => {
-        e.preventDefault()
-        let data_id = e.target.name
-        // if(data_id == "name"){
-        //     setName(e.target.value)
-        // }
-        // else if(data_id == "bio"){
-        //     setBio(e.target.value)
-        // }
-        // else if(data_id == 'number'){
-        //     setPhone(e.target.value)
-        // }
         let data = {
             name: namer,
             bio: bio,
@@ -90,7 +67,6 @@ const Profile: NextPage = () => {
                             name="name" 
                             defaultValue={namer}
                             placeholder="Your name"
-                            onKeyUp={userChange}
                             onBlur={userBio}
                          />
                     </div>
@@ -100,7 +76,6 @@ const Profile: NextPage = () => {
                                 maxLength={10} 
                                 type="tel" name="number"
                                placeholder="Phone number"
-                            onKeyUp={userChange}
                                onBlur={userBio}/>
                     </div>
                     <div className="w-forms">
@@ -109,7 +84,6 @@ const Profile: NextPage = () => {
                             className="w-forms__textarea"
                             placeholder="Bio"
                             name='bio'
-                            onKeyUp={userChange}
                             onBlur={userBio}>
                         </textarea>
                     </div>

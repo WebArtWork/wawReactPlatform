@@ -2,7 +2,7 @@ import type {NextPage} from 'next'
 import Navbar from '../../components/Navbar/Navbar'
 import React, {Component, useEffect, useState} from 'react'
 import axios from "axios";
-import { useStorage } from '../../hooks/useStorage';
+import { userStorage } from '../../hooks/userStorage';
 const Users: NextPage = () => {
     const [checked, setChecked]: any = useState(false);
     const [style, setStyle]: any = useState(false);
@@ -21,7 +21,7 @@ const Users: NextPage = () => {
         data: object
     }
     const [emailInput, setEmailInput] = useState('');
-    const [ user, setUser ] = useStorage('user');
+    const [ user, setUser ] = userStorage('user');
     const [users, setUsers] = useState<any>();
     
 
