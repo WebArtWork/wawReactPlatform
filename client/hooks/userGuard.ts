@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-export const userStorage = (key: string) => {
+export const useStorage = (key: string) => {
     const [value , setValue] = useState(null);
 
     useEffect(() => {

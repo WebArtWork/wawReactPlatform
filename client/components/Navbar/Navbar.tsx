@@ -1,7 +1,6 @@
 import React from "react"
 import Link from 'next/link'
 import Sidebar from '../Sidebar/Sidebar'
-import {userStorage} from "../../hooks/userStorage";
 
 const IsAdmin = () => {
     // if(!handleChange){
@@ -15,7 +14,7 @@ const IsAdmin = () => {
     //     )
     // }else{
     //     return(
-    return(
+        return(
             <nav className="nav">
             <Sidebar right/>
             <ul className="navbar">

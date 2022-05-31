@@ -1,25 +1,24 @@
 import axios from 'axios'
 import type {NextPage} from 'next'
-import React, {Component, useState} from 'react'
+import React, {Component, useEffect, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import {useRouter} from "next/router";
-import {userStorage} from "../hooks/userStorage";
 import {useCookies} from "react-cookie";
-
-
+import {userStorage} from "../hooks/userStorage.tsx";
 
 const Profile: NextPage = () => {
+    const [ user, setUser ] = userStorage('user')
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
-    const [user, setUser] = userStorage('user');
     const router = useRouter();
+
     const logout = () => {
         removeCookie('userToken')
+        setUser(null)
         router.push('/');
     }
-
     const userChange = (e: any) => {
         let data_id = e.target.name
         if(data_id == "name"){
@@ -61,7 +60,7 @@ const Profile: NextPage = () => {
             }
         }).then(response => response.data)
         console.log(getUserStatus)
-        
+
     }
     return (
         <div>
@@ -81,10 +80,10 @@ const Profile: NextPage = () => {
                 <div className="profile__body">
                     <div className="w-forms">
                         <span className="w-forms__title" >Name</span>
-                        <input 
-                            className="w-forms__input" 
+                        <input
+                            className="w-forms__input"
                             type="text"
-                            name="name" 
+                            name="name"
                             placeholder="Your name"
                             // defaultValue={formValue.nameInput}
                             onKeyUp={userChange}
@@ -94,7 +93,7 @@ const Profile: NextPage = () => {
                     <div className="w-forms">
                         <span className="w-forms__title">Phone number</span>
                         <input className="w-forms__input"
-                                maxLength={10} 
+                                maxLength={10}
                                 type="tel" name="number"
                                placeholder="Phone number"
                             //    defaultValue={formValue.numberInput}
@@ -103,7 +102,7 @@ const Profile: NextPage = () => {
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Bio</span>
-                        <textarea 
+                        <textarea
                             className="w-forms__textarea"
                             placeholder="Bio"
                             name='bio'

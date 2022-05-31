@@ -2,7 +2,7 @@ import type {NextPage} from 'next'
 import Navbar from '../../components/Navbar/Navbar'
 import React, {Component, useEffect, useState} from 'react'
 import axios from "axios";
-import { userStorage } from '../../hooks/userStorage';
+import {userStorage} from "../../hooks/userStorage";
 const Users: NextPage = () => {
     const [checked, setChecked]: any = useState(false);
 
