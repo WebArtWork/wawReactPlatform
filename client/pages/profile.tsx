@@ -5,18 +5,30 @@ import Navbar from '../components/Navbar/Navbar'
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
 import {userStorage} from "../hooks/userStorage.tsx";
+import {userGuard} from "../hooks/userGuard";
 
 const Profile: NextPage = () => {
     const [ user, setUser ] = userStorage('user')
+    const [session, setSession] = userGuard('session')
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter();
 
+    useEffect(()=> {
+        const  user = JSON.parse(localStorage.getItem('session'))
+        if (user) setSession(user)
+        if(!user) {
+            router.push('/')
+            removeCookie('userToken')
+        }
+    }, [user])
+
+
     const logout = () => {
         removeCookie('userToken')
-        setUser(null)
+        setSession(null)
         router.push('/');
     }
     const userChange = (e: any) => {

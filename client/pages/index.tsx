@@ -1,9 +1,9 @@
 import type {NextPage} from 'next'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import axios from "axios";
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
-import {userStorage} from "../hooks/userStorage";
+import {userGuard} from "../hooks/userGuard";
 
 interface User {
     _id: string;
@@ -19,13 +19,14 @@ interface User {
 const Login: NextPage = () => {
     const router = useRouter()
     // const [ user, setUser ] = userStorage('user')
+    const [session, setSession] = userGuard('session')
     const [cookie, setCookie] = useCookies(['userToken'])
     const [emailInput, setEmailInput] = useState('ceo@webart.work');
     const [passInput, setPassInput] = useState('asdasdasdasd');
     const [passwordShown, setPasswordShown] = useState(false);
     const togglePasswordVisiblity = () => {
         setPasswordShown(!passwordShown);
-    };
+    }
     if (cookie.userToken)
         router.push('/profile')
 
@@ -34,6 +35,7 @@ const Login: NextPage = () => {
             email: emailInput,
             password: passInput
         }).then(response => response.data)
+        setSession(user)
         setCookie('userToken', user.token, {path: '/'})
         router.push('/profile')
     }
@@ -43,6 +45,7 @@ const Login: NextPage = () => {
             email: emailInput,
             password: passInput
         }).then(response => response.data)
+        setSession(user)
         setCookie('userToken', user.token, {path: '/'})
         router.push('/profile')
     }

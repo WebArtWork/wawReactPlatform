@@ -1,21 +1,12 @@
-import {useEffect, useState} from "react";
-
-export const useStorage = (key: string) => {
-    const [value , setValue] = useState(null);
-
-    useEffect(() => {
-        setValue(getLocalStorageValue);
-    }, [value])
-
-    const getLocalStorageValue = () => {
-        const value: string | null  = localStorage.getItem(key)
-        if (value)
+export const userGuard = (key: string) => {
+    const value = () => {
+        const value: string | null = localStorage.getItem(key)
+        if (value !== null)
             return JSON.parse(value)
-
-        return value
+        return {}
     }
 
-    const setLocalStorageValue = (obj: object|null) => {
+    const setValue = (obj: object) => {
         return localStorage.setItem(key, JSON.stringify(obj))
     }
     return [
