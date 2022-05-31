@@ -2,18 +2,32 @@ import type {NextPage} from 'next'
 import Navbar from '../../components/Navbar/Navbar'
 import React, {Component, useEffect, useState} from 'react'
 import axios from "axios";
-import {userStorage} from "../../hooks/userStorage";
-import {useRouter} from "next/router";
-import {useCookies} from "react-cookie";
+import {userStorage} from '../../hooks/userStorage';
 import {userGuard} from "../../hooks/userGuard";
+import {useCookies} from "react-cookie";
+import {useRouter} from "next/router";
 
 const Users: NextPage = () => {
-    const router = useRouter()
     const [checked, setChecked]: any = useState(false);
+    const [style, setStyle]: any = useState(false);
+    const [session, setSession] = userGuard('session')
+    const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
+    const router = useRouter()
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('session'))
+        console.log(cookie.userToken)
+        if(!cookie.userToken) {
+            localStorage.removeItem('session')
+            router.push('/')
+        }
+        else if (!user.is.admin) {
+            router.push('/')
+        }
+    }, [])
 
     const handleChange = () => {
         setChecked(!checked);
-        console.log(checked)
         localStorage.setItem('key', checked)
     }
 
@@ -30,10 +44,7 @@ const Users: NextPage = () => {
     const [emailInput, setEmailInput] = useState('');
     const [user, setUser] = userStorage('user');
     const [users, setUsers] = useState<any>();
-    const [session, setSession] = userGuard('session')
-    const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
 
-    console.log(cookie.userToken)
     const login = () => {
         console.log('user exist')
     }
@@ -41,21 +52,11 @@ const Users: NextPage = () => {
         const users: any = await axios.get('/api/user/get/users')
         setUsers(users.data)
     }
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('session'))
-        if (user) setSession(user)
-        if (!user) {
-            router.push('/')
-            removeCookie('userToken')
-        }
-        if (!user.is.admin) {
-            router.push('/profile')
-        }
-    }, [])
 
     useEffect(() => {
         getUsers()
     }, [])
+
     useEffect(() => {
         if (user) {
             if (users.length) {
@@ -75,37 +76,46 @@ const Users: NextPage = () => {
 
     const createUser = async (e: any) => {
         e.preventDefault()
-        const getUserStatus = await axios.post('/api/user/status', {
-            email: emailInput
-        }, {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => {
+        let reg = /\S+@\S+\.\S+/;
+        let address = document.getElementsByClassName('user_email');
 
-            return response.data
-        })
-        if (getUserStatus.email) {
-            login()
-
+        if (reg.test
+        (address[0].value) == false) {
+            setStyle(true);
         } else {
-            sign()
+            setStyle(false);
+            const getUserStatus = await axios.post('/api/user/status', {
+                email: emailInput
+            }, {
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+
+                return response.data
+            })
+            if (getUserStatus.email) {
+                login()
+
+            } else {
+                sign()
+            }
         }
-
-
     }
 
     const deleteUser = async (id: string) => {
-
         const getUserDelete = await axios.delete('/api/user/delete/' + id,
         ).then(response => response.data)
         if (getUserDelete.success) {
             setUsers(users.filter((user: IUser) => id !== user._id))
         }
+    }
 
+    function validate() {
 
     }
+
     return (
         <div>
             <Navbar/>
@@ -121,10 +131,11 @@ const Users: NextPage = () => {
                     <div className='new_user'>
                         <input
                             type='text'
-                            className='user_email'
+                            className={style ? "non_valid_input user_email" : "user_email"}
                             placeholder='Email'
                             value={emailInput}
-                            onChange={(e) => setEmailInput(e.target.value)}>
+                            onChange={(e) => setEmailInput(e.target.value)}
+                            required>
                         </input>
 
                         <button onClick={createUser}>Create</button>
