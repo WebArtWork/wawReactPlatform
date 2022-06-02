@@ -13,7 +13,7 @@ export default props => {
         const user = JSON.parse(localStorage.getItem('session'))
         if (user) setSession(user)
         if (!user) {
-            router.push('/')
+            router.push({pathname: '/'}, undefined, {shallow: true})
             removeCookie('userToken')
         } else if (!user.is.admin) {
             document.querySelector('.isAdmin').style.display = 'none';

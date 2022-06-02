@@ -22,7 +22,7 @@ const Profile: NextPage = () => {
         const user = JSON.parse(localStorage.getItem('session'))
         if (!cookie.userToken) {
             localStorage.removeItem('session')
-            router.push('/')
+            router.push({pathname: '/'}, undefined, {shallow: true})
         }
     }, [])
 
@@ -30,7 +30,7 @@ const Profile: NextPage = () => {
     const logout = () => {
         removeCookie('userToken')
         localStorage.removeItem('session')
-        router.push('/');
+        router.push({pathname: '/'}, undefined, {shallow: true})
     }
 
     const getUserName = async () => {

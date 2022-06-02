@@ -30,7 +30,8 @@ const Login: NextPage = () => {
         setPasswordShown(!passwordShown);
     }
     if (cookie.userToken)
-        router.push('/profile')
+        router.push({pathname: '/profile'}, undefined, {shallow: true})
+
 
     const login = async () => {
         const user: Promise<User> = await axios.post('/api/user/login', {
@@ -39,7 +40,8 @@ const Login: NextPage = () => {
         }).then(response => response.data)
         setSession(user)
         setCookie('userToken', user.token, {path: '/'})
-        router.push('/profile')
+        router.push({pathname: '/profile'}, undefined, {shallow: true})
+
     }
 
     const sign = async () => {
@@ -49,7 +51,7 @@ const Login: NextPage = () => {
         }).then(response => response.data)
         setSession(user)
         setCookie('userToken', user.token, {path: '/'})
-        router.push('/profile')
+        router.push({pathname: '/profile'}, undefined, {shallow: true})
     }
 
     const submit = async (e) => {

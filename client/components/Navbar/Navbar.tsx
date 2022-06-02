@@ -17,7 +17,8 @@ const Navbar = () => {
         console.log(cookie.userToken)
         if(!cookie.userToken || !user) {
             localStorage.removeItem('session')
-            router.push('/')
+            router.push({pathname: '/'}, undefined, {shallow: true})
+
         }
         else if (!user.is.admin) {
             document.querySelector('.admin').style.display = 'none';

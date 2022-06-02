@@ -19,10 +19,10 @@ const Users: NextPage = () => {
         console.log(cookie.userToken)
         if(!cookie.userToken) {
             localStorage.removeItem('session')
-            router.push('/')
+            router.push({pathname: '/'}, undefined, {shallow: true})
         }
         else if (!user.is.admin) {
-            router.push('/')
+            router.push({pathname: '/'}, undefined, {shallow: true})
         }
     }, [])
 
