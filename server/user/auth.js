@@ -197,11 +197,13 @@ module.exports = async function (waw) {
     });
     router.post("/changePassword/:id", function (req, res) {
         const id = req.params.id
+        console.log(id)
         user = new User();
-        const  password =user.password = user.generateHash(req.body.password)
-        dbo.collection('users').updateOne({_id: ObjectID(id)}, {$set: {password: password}})
-
-
+        console.log(req.body.newPass)
+        const password = user.password = user.generateHash(req.body.newPass)
+        console.log(password)
+        console.log(user.password)
+        dbo.collection('users').updateOne({_id: ObjectID(id)}, {$set: {password}})
     });
     waw.use((req, res, next) => {
         if (req.headers.token) {

@@ -12,10 +12,12 @@ export const Modal = (props: any) => {
         let locale = localStorage.getItem('session')
         let store = JSON.parse(locale)
        const user = await axios.post('/api/user/changePassword/' + store._id, {
-            oldPass: 'asdasdasdasd',
             newPass: passInput
         }).then((response) => { console.log(response)})
         console.log(user)
+        console.log(session)
+        setSession(session)
+
     }
 
     return (
