@@ -1,9 +1,9 @@
 import type {NextPage} from 'next'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import axios from "axios";
-import {userStorage} from "../hooks/userStorage"
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
+import {userGuard} from "../hooks/userGuard";
 
 interface User {
     _id: string;
@@ -19,22 +19,23 @@ interface User {
 const Login: NextPage = () => {
     const router = useRouter()
     // const [ user, setUser ] = userStorage('user')
+    const [session, setSession] = userGuard('session')
     const [cookie, setCookie] = useCookies(['userToken'])
-    if (cookie.userToken) router.push('/profile')
     const [emailInput, setEmailInput] = useState('ceo@webart.work');
     const [passInput, setPassInput] = useState('asdasdasdasd');
     const [passwordShown, setPasswordShown] = useState(false);
     const togglePasswordVisiblity = () => {
         setPasswordShown(!passwordShown);
-    };
-
+    }
+    if (cookie.userToken)
+        router.push('/profile')
 
     const login = async () => {
         const user: Promise<User> = await axios.post('/api/user/login', {
             email: emailInput,
             password: passInput
         }).then(response => response.data)
-
+        setSession(user)
         setCookie('userToken', user.token, {path: '/'})
         router.push('/profile')
     }
@@ -44,11 +45,12 @@ const Login: NextPage = () => {
             email: emailInput,
             password: passInput
         }).then(response => response.data)
+        setSession(user)
         setCookie('userToken', user.token, {path: '/'})
         router.push('/profile')
     }
 
-    const submit = async (e) => {
+    const submit = async (e:any) => {
         e.preventDefault()
         const getUserStatus = await axios.post('/api/user/status', {
             email: emailInput,

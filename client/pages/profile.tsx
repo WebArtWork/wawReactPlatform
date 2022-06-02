@@ -2,47 +2,89 @@ import axios from 'axios'
 import type {NextPage} from 'next'
 import React, {Component, useEffect, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
-import {userStorage} from "../hooks/userStorage";
 import {useRouter} from "next/router";
-
-
+import {useCookies} from "react-cookie";
+import {userStorage} from "../hooks/userStorage";
+import {userGuard} from "../hooks/userGuard";
 
 const Profile: NextPage = () => {
+    const [session, setSession] = userGuard('session')
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
-
     const [user, setUser] = userStorage('user');
+    const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter();
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('session'))
+        if(!cookie.userToken) {
+            localStorage.removeItem('session')
+            router.push('/')
+        }
+    }, [])
+
     const logout = () => {
-        setUser(null);
+        removeCookie('userToken')
+        localStorage.removeItem('session')
         router.push('/');
     }
+
     const getUserName = async () => {
         const users: any = await axios.get('/api/user/get/users')
-        console.log(users.data[0])
-        setName(users.data[0].name)
+        let locale: any = localStorage.getItem('session')
+        let store = JSON.parse(locale)
+        let i
+        let arr = users.data
+        for(i=0; i <= arr.length; i++){
+            if(arr[i]?._id == store._id){
+                setName(users.data[i].name)
+                setPhone(users.data[i].phone)
+                setBio(users.data[i].bio)
+                
+            }
+        }
+        
     }
+
     useEffect(()=>{
         getUserName()
     }, [])
 
-
-    const userBio = (e: any) => {
-        let data = {
-            name: namer,
-            bio: bio,
-            number: phone
+    
+    const userBio = async (e: any) => {
+        const attr = e.currentTarget.getAttribute('name')
+        let data
+        if(attr == 'name'){
+            data = {
+                name: e.target.value
+            }
         }
-        const getUserStatus = axios.post('/api/user/bio', data, {
+        else if(attr == 'number'){
+            data = {
+                phone: e.target.value
+            }
+        }
+        else if (attr == 'bio'){
+            data = {
+                bio: e.target.value
+            }
+        }
+        
+        
+        let locale: any = localStorage.getItem('session')
+        let store = JSON.parse(locale)
+        console.log(store._id)
+        let id = store._id
+        const getUserStatus = await axios.post('/api/user/bio/' + id, data, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 'Content-Type': 'application/json',
             }
         }).then(response => response.data)
-        console.log(getUserStatus)
-        
+        console.log(getUserStatus.data.success)
     }
+    
     return (
         <div>
             <Navbar/>
@@ -61,10 +103,10 @@ const Profile: NextPage = () => {
                 <div className="profile__body">
                     <div className="w-forms">
                         <span className="w-forms__title" >Name</span>
-                        <input 
-                            className="w-forms__input" 
+                        <input
+                            className="w-forms__input"
                             type="text"
-                            name="name" 
+                            name="name"
                             defaultValue={namer}
                             placeholder="Your name"
                             onBlur={userBio}
@@ -73,17 +115,19 @@ const Profile: NextPage = () => {
                     <div className="w-forms">
                         <span className="w-forms__title">Phone number</span>
                         <input className="w-forms__input"
-                                maxLength={10} 
+                                maxLength={10}
+                                defaultValue={phone}
                                 type="tel" name="number"
                                placeholder="Phone number"
                                onBlur={userBio}/>
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Bio</span>
-                        <textarea 
+                        <textarea
                             className="w-forms__textarea"
                             placeholder="Bio"
                             name='bio'
+                            defaultValue={bio}
                             onBlur={userBio}>
                         </textarea>
                     </div>

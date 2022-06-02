@@ -131,16 +131,43 @@ module.exports = async function(waw) {
 			
 		})
 
-		router.post('/bio', async function(req, res){
-			console.log(req.body)
-			dbo.collection("users").updateOne({email: 'nastja@gmail.com'}, {$set: {name: req.body.name}});
+		router.post('/bio/:id', async function(req, res){
+			let id = req.params.id
+			console.log(req.data)
+			if(req.body.name){
+			await dbo.collection("users").updateOne({_id: ObjectID(id)}, {$set: {name: req.body.name}}, function(err, result){
+				console.log(req.body)
+			});
+		}
+		else if(req.body.phone){
+			await dbo.collection("users").updateOne({_id: ObjectID(id)}, {$set: {phone: req.body.phone}}, function(err, result){
+				console.log(req.body)
+			});
+		}
+		else if (req.body.bio){
+			await dbo.collection("users").updateOne({_id: ObjectID(id)}, {$set: {bio: req.body.bio}}, function(err, result){
+				console.log(req.body)
+			});
+		}
 		})
 
 		router.get('/get/users', async function(req, res){
 			dbo.collection("users").find({}).toArray(function(err, result) {
 				if (err) throw err;
+				// console.log(result)
 				res.json(result)
 			  });
+			  
+		})
+		router.post('/set/admin/:id', function(req, res){
+			const id = req.params.id
+			User.findOne({_id: ObjectID(id)}, async function(err, res_user){
+				
+			await dbo.collection("users").updateOne({_id: ObjectID(id)}, {$set:{is:{admin: !res_user.is.admin}}})
+				res_user.is.admin = !res_user.is.admin
+				res.json(res_user)
+			})
+			
 		})
 		router.post("/request", function(req, res) {
 			User.findOne({
