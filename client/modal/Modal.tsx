@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {userGuard} from "../hooks/userGuard";
+import {useGuard} from "../hooks/useGuard";
 import axios from "axios";
+
 export const Modal = (props: any) => {
     const [passInput, setPassInput] = useState('')
-    const [session, setSession] = userGuard('session')
+    const [session, setSession] = useGuard('session')
     if (!props.show) {
         return null
     }
@@ -11,13 +12,11 @@ export const Modal = (props: any) => {
     const changePassword = async () => {
         let locale = localStorage.getItem('session')
         let store = JSON.parse(locale)
-       const user = await axios.post('/api/user/changePassword/' + store._id, {
+        const user = await axios.post('/api/user/changePassword/' + store._id, {
             newPass: passInput
-        }).then((response) => { console.log(response)})
-        console.log(user)
-        console.log(session)
-        setSession(session)
-
+        }).then((response) => {
+            console.log(response)
+        })
     }
 
     return (

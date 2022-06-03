@@ -2,26 +2,25 @@ import type {NextPage} from 'next'
 import Navbar from '../../components/Navbar/Navbar'
 import React, {Component, useEffect, useState} from 'react'
 import axios from "axios";
-import {userStorage} from '../../hooks/userStorage';
-import {userGuard} from "../../hooks/userGuard";
+import {useStorage} from '../../hooks/useStorage';
+import {useGuard} from "../../hooks/useGuard";
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
 
 const Users: NextPage = () => {
     const [checked, setChecked]: any = useState(false);
     const [style, setStyle]: any = useState(false);
-    const [session, setSession] = userGuard('session')
+    const [session, setSession] = useGuard('session')
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter()
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('session'))
         console.log(cookie.userToken)
-        if(!cookie.userToken) {
+        if (!cookie.userToken) {
             localStorage.removeItem('session')
             router.push({pathname: '/'}, undefined, {shallow: true})
-        }
-        else if (!user.is.admin) {
+        } else if (!user.is.admin) {
             router.push({pathname: '/'}, undefined, {shallow: true})
         }
     }, [])
@@ -42,7 +41,7 @@ const Users: NextPage = () => {
     }
 
     const [emailInput, setEmailInput] = useState('');
-    const [user, setUser] = userStorage('user');
+    const [user, setUser] = useStorage('user');
     const [users, setUsers] = useState<any>();
 
     const login = () => {

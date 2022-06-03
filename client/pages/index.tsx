@@ -3,8 +3,9 @@ import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
-import {userGuard} from "../hooks/userGuard";
+import {useGuard} from "../hooks/useGuard";
 import {Modal} from "../modal/Modal";
+import PWDRequire from "../components/PWDRequire/PWDRequire"
 
 interface User {
     _id: string;
@@ -16,12 +17,11 @@ interface User {
     token: string;
 }
 
-
 const Login: NextPage = () => {
     const router = useRouter()
-    // const [ user, setUser ] = userStorage('user')
+    // const [ user, setUser ] = useStorage('user')
     const [show, setShow] = useState(false)
-    const [session, setSession] = userGuard('session')
+    const [session, setSession] = useGuard('session')
     const [cookie, setCookie] = useCookies(['userToken'])
     const [emailInput, setEmailInput] = useState('ceo@webart.work');
     const [passInput, setPassInput] = useState('asdasdasdasd');
@@ -29,9 +29,43 @@ const Login: NextPage = () => {
     const togglePasswordVisiblity = () => {
         setPasswordShown(!passwordShown);
     }
+
+    const [pwdRequire, setPwdRequire] = useState(false)
+    const [checks, setChecks] = useState({
+        capsLetterCheck: false,
+        numberCheck: false,
+        pwdLengthCheck: false,
+        specialCharCheck: false,
+    })
+
+    const handleOnFocus = () => {
+        setPwdRequire(true)
+    }
+
+    const handleOnBlur = () => {
+        setPwdRequire(false)
+    }
+
+    const handleChange = (e: any) => {
+        setPassInput(e.target.value)
+    }
+
+    const handleOnKeyUp = (e: any) => {
+        const {value} = e.target;
+        const capsLetterCheck = /[A-Z]/.test(value);
+        const numberCheck = /[0-9]/.test(value);
+        const pwdLengthCheck = value.length >= 8;
+        const specialCharCheck = /[!@#$%^&*]/.test(value);
+        setChecks({
+            capsLetterCheck,
+            numberCheck,
+            pwdLengthCheck,
+            specialCharCheck,
+        });
+    }
+
     if (cookie.userToken)
         router.push({pathname: '/profile'}, undefined, {shallow: true})
-
 
     const login = async () => {
         const user: Promise<User> = await axios.post('/api/user/login', {
@@ -87,15 +121,29 @@ const Login: NextPage = () => {
                             name="email"/>
                     </div>
                     <div className="w-forms">
-                        <span className="w-forms__title">Password:</span>
+                        <span className="w-forms__title user_password">Password:</span>
                         <input type={
                             passwordShown ?
                                 "text" :
                                 "password"}
                                className="w-forms__input"
+                               id="password"
                                value={passInput}
-                               onChange={(e) => setPassInput(e.target.value)}
+                               onFocus={handleOnFocus}
+                               onBlur={handleOnBlur}
+                               onKeyUp={handleOnKeyUp}
+                               onChange={handleChange}
+                               // onChange={(e) => setPassInput(e.target.value)}
                                placeholder="Password" name="password"/>
+
+                        {pwdRequire ? (
+                            <PWDRequire
+                                capsLetterFlag={checks.capsLetterCheck ? "valid" : "invalid"}
+                                numberFlag={checks.numberCheck ? "valid" : "invalid"}
+                                pwdLengthFlag={checks.pwdLengthCheck ? "valid" : "invalid"}
+                                specialCharFlag={checks.specialCharCheck ? "valid" : "invalid"}
+                            />
+                        ) : null}
 
                         <span onClick={togglePasswordVisiblity}>
 							{

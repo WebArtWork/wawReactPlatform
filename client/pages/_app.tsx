@@ -6,6 +6,7 @@ import "../styles/Users.scss"
 import "../modal/Modal.scss"
 import "../components/Navbar/Navbar.scss"
 import "../components/Sidebar/Sidebar.scss"
+import "../components/PWDRequire/PWDRequire.scss"
 import {CookiesProvider} from "react-cookie";
 
 

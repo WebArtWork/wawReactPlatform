@@ -66,7 +66,15 @@ body {
     }
   }
 
-  .forgot-password  {
+  .valid {
+    color: green;
+  }
+
+  .invalid {
+    color: red;
+  }
+
+.forgot-password  {
     margin-left: 270px;
   }
 
@@ -76,3 +84,5 @@ body {
     }
   }
 }
+
+

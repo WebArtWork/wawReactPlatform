@@ -4,13 +4,13 @@ import React, {Component, useEffect, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
-import {userStorage} from "../hooks/userStorage";
-import {userGuard} from "../hooks/userGuard";
+import {useStorage} from "../hooks/useStorage";
+import {useGuard} from "../hooks/useGuard";
 import {Modal} from "../modal/Modal";
 
 const Profile: NextPage = () => {
-    const [user, setUser] = userStorage('user')
-    const [session, setSession] = userGuard('session')
+    const [user, setUser] = useStorage('user')
+    const [session, setSession] = useGuard('session')
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
