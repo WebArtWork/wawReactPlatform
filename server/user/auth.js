@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
 const nJwt = require('njwt');
 const fs = require('fs');
+const multer = require('multer')
 
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/wawReact";
@@ -131,6 +132,20 @@ module.exports = async function(waw) {
 			
 		})
 
+
+		var upload = multer({dest: "./uploads"});
+		var mongo = require('mongodb');
+		var Grid = require("gridfs-stream");
+		Grid.mongo = mongo;
+
+		router.post('/image', upload.array('file', 200), function(req, res, next){
+			console.log(req.files)
+			var response = '<a href="/">Home</a><br>'
+			response += "Files uploaded successfully.<br>"
+			response += `<img src="${req.files.path}" /><br>`
+			return res.send(response)
+		});
+
 		router.post('/bio/:id', async function(req, res){
 			let id = req.params.id
 			console.log(req.data)
@@ -146,7 +161,7 @@ module.exports = async function(waw) {
 		}
 		else if (req.body.bio){
 			await dbo.collection("users").updateOne({_id: ObjectID(id)}, {$set: {bio: req.body.bio}}, function(err, result){
-				console.log(req.body)
+				// console.log(req.body)
 			});
 		}
 		})

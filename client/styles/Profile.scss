@@ -88,6 +88,11 @@ body {
       span {
         color: #ffffff;
       }
+        #blah{
+          max-width: 60px;
+          max-height: 60px;
+          border-radius: 50px;
+        }
   }
 
   &__icon {

@@ -15,6 +15,7 @@ const Profile: NextPage = () => {
     const [user, setUser] = userStorage('user');
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter();
+    const [img, setImg] = useState('');
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('session'))
@@ -41,20 +42,29 @@ const Profile: NextPage = () => {
                 setName(users.data[i].name)
                 setPhone(users.data[i].phone)
                 setBio(users.data[i].bio)
-                
             }
         }
-        
+    }
+    const Preview = (e: any) => {
+        let s = document.getElementById('blah')
+        s?.setAttribute('src', window.URL.createObjectURL(e.currentTarget.files[0]))
+        let src = s?.getAttribute('src')
+        let formData = new FormData()
+        formData.append('file', e.currentTarget.files[0])
+        console.log(e.target)
+        let data = e.currentTarget.value
+        const image = axios.post('/api/user/image', formData, ).then(response => response.data)
+        console.log(image)
     }
 
     useEffect(()=>{
         getUserName()
     }, [])
 
-    
     const userBio = async (e: any) => {
         const attr = e.currentTarget.getAttribute('name')
         let data
+
         if(attr == 'name'){
             data = {
                 name: e.target.value
@@ -69,8 +79,7 @@ const Profile: NextPage = () => {
             data = {
                 bio: e.target.value
             }
-        }
-        
+        } 
         
         let locale: any = localStorage.getItem('session')
         let store = JSON.parse(locale)
@@ -92,12 +101,11 @@ const Profile: NextPage = () => {
                 <div className="profile__header w-card__header">
                     <div>Profile Settings</div>
                     <div>
-                        <div className="avatar _profile">
-                            <img className="avatar__upload" src="" width={50} height={50}/>
-                            <label className="avatar__upload">
+                        <form className="avatar _profile">
+                        <img className="avatar__upload" id="blah" src="" style={{width: '58px', height: '58px'}}/>
+                            <input type="file" className="avatar__upload"  onChange={Preview} name="img"/>
                                 <span className="material-symbols-outlined">edit</span>
-                            </label>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div className="profile__body">
@@ -117,9 +125,10 @@ const Profile: NextPage = () => {
                         <input className="w-forms__input"
                                 maxLength={10}
                                 defaultValue={phone}
-                                type="tel" name="number"
-                               placeholder="Phone number"
-                               onBlur={userBio}/>
+                                type="tel"
+                                name="number"
+                                placeholder="Phone number"
+                                onBlur={userBio}/>
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Bio</span>
@@ -128,6 +137,7 @@ const Profile: NextPage = () => {
                             placeholder="Bio"
                             name='bio'
                             defaultValue={bio}
+                            maxLength={100}
                             onBlur={userBio}>
                         </textarea>
                     </div>
