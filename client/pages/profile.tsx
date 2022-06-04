@@ -103,7 +103,6 @@ const Profile: NextPage = () => {
                             className="w-forms__input"
                             type="text"
                             name="name"
-                            name="name"
                             defaultValue={namer}
                             placeholder="Your name"
                             onKeyUp={userChange}

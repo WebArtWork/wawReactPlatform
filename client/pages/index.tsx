@@ -1,3 +1,4 @@
+import Head from "next/head"
 import type {NextPage} from 'next'
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
@@ -107,67 +108,76 @@ const Login: NextPage = () => {
     }
 
     return (
-        <div className="auth-wrapper">
-            <div className="auth">
-                <div className="auth__title">Sign In / Sign Up</div>
-                <form className="auth__forms">
-                    <div className="w-forms">
-                        <span className="w-forms__title">Email:</span>
-                        <input
-                            className="w-forms__input"
-                            type="text" placeholder="Email"
-                            value={emailInput}
-                            onChange={(e) => setEmailInput(e.target.value)}
-                            name="email"/>
-                    </div>
-                    <div className="w-forms">
-                        <span className="w-forms__title user_password">Password:</span>
-                        <input type={
-                            passwordShown ?
-                                "text" :
-                                "password"}
-                               className="w-forms__input"
-                               id="password"
-                               value={passInput}
-                               onFocus={handleOnFocus}
-                               onBlur={handleOnBlur}
-                               onKeyUp={handleOnKeyUp}
-                               onChange={handleChange}
-                               // onChange={(e) => setPassInput(e.target.value)}
-                               placeholder="Password" name="password"/>
+        <Head>
+            <link
+                  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+            <link rel="stylesheet"
+                  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+            <link rel="stylesheet"
+                  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+            <link rel="stylesheet"
+                  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
+        </Head>
+    <div className="auth-wrapper">
+        <div className="auth">
+            <div className="auth__title">Sign In / Sign Up</div>
+            <form className="auth__forms">
+                <div className="w-forms">
+                    <span className="w-forms__title">Email:</span>
+                    <input
+                        className="w-forms__input"
+                        type="text" placeholder="Email"
+                        value={emailInput}
+                        onChange={(e) => setEmailInput(e.target.value)}
+                        name="email"/>
+                </div>
+                <div className="w-forms">
+                    <span className="w-forms__title user_password">Password:</span>
+                    <input type={
+                        passwordShown ?
+                            "text" :
+                            "password"}
+                           className="w-forms__input"
+                           id="password"
+                           value={passInput}
+                           onFocus={handleOnFocus}
+                           onBlur={handleOnBlur}
+                           onKeyUp={handleOnKeyUp}
+                           onChange={handleChange}
+                           placeholder="Password" name="password"/>
 
-                        {pwdRequire ? (
-                            <PWDRequire
-                                capsLetterFlag={checks.capsLetterCheck ? "valid" : "invalid"}
-                                numberFlag={checks.numberCheck ? "valid" : "invalid"}
-                                pwdLengthFlag={checks.pwdLengthCheck ? "valid" : "invalid"}
-                                specialCharFlag={checks.specialCharCheck ? "valid" : "invalid"}
-                            />
-                        ) : null}
+                    {pwdRequire ? (
+                        <PWDRequire
+                            capsLetterFlag={checks.capsLetterCheck ? "valid" : "invalid"}
+                            numberFlag={checks.numberCheck ? "valid" : "invalid"}
+                            pwdLengthFlag={checks.pwdLengthCheck ? "valid" : "invalid"}
+                            specialCharFlag={checks.specialCharCheck ? "valid" : "invalid"}
+                        />
+                    ) : null}
 
-                        <span onClick={togglePasswordVisiblity}>
+                    <span onClick={togglePasswordVisiblity}>
 							{
                                 passwordShown ?
                                     <span className="material-symbols-outlined">visibility_off</span> :
                                     <span className="material-symbols-outlined">visibility</span>
                             }
 						</span>
-                        <a className="forgot-password"
-                           onClick={() => setShow(true)}>
-                            Forgot password
-                        </a>
-                    </div>
-                    <div className="auth__btn">
-                        <button className="w-btn _primary"
-                                onClick={submit}>
-                            Lets go
-                        </button>
-                        <Modal onClose={() => setShow(false)} show={show}/>
-                    </div>
-                </form>
-            </div>
+                    <a className="forgot-password"
+                       onClick={() => setShow(true)}>
+                        Forgot password
+                    </a>
+                </div>
+                <div className="auth__btn">
+                    <button className="w-btn _primary"
+                            onClick={submit}>
+                        Lets go
+                    </button>
+                    <Modal onClose={() => setShow(false)} show={show}/>
+                </div>
+            </form>
         </div>
-    )
+    </div>
+)
 }
 
 export default Login;
