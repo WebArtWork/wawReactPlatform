@@ -1,9 +1,86 @@
+import axios from 'axios'
 import type {NextPage} from 'next'
-import React, {Component} from 'react'
+import React, {Component, useEffect, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
-
+import {useRouter} from "next/router";
+import {useCookies} from "react-cookie";
+import {useStorage} from "../hooks/useStorage";
+import {useGuard} from "../hooks/useGuard";
+import {Modal} from "../modal/Modal";
 
 const Profile: NextPage = () => {
+    const [user, setUser] = useStorage('user')
+    const [session, setSession] = useGuard('session')
+    const [namer, setName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [bio, setBio] = useState('')
+    const [show, setShow] = useState(false)
+    const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
+    const router = useRouter();
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('session'))
+        if (!cookie.userToken) {
+            localStorage.removeItem('session')
+            router.push({pathname: '/'}, undefined, {shallow: true})
+        }
+    }, [])
+
+
+    const logout = () => {
+        removeCookie('userToken')
+        localStorage.removeItem('session')
+        router.push({pathname: '/'}, undefined, {shallow: true})
+    }
+
+    const getUserName = async () => {
+        const users: any = await axios.get('/api/user/get/users')
+        console.log(users.data[0])
+        setName(users.data[0].name)
+    }
+    useEffect(() => {
+        getUserName()
+    }, [])
+
+    const userChange = (e: any) => {
+        let data_id = e.target.name
+        // if(data_id == "name"){
+        //     setName(e.target.value)
+        // }
+        // else if(data_id == "bio"){
+        //     setBio(e.target.value)
+        // }
+        // else if(data_id == 'number'){
+        //     setPhone(e.target.value)
+        // }
+    }
+
+    const userBio = (e: any) => {
+        e.preventDefault()
+        let data_id = e.target.name
+        // if(data_id == "name"){
+        //     setName(e.target.value)
+        // }
+        // else if(data_id == "bio"){
+        //     setBio(e.target.value)
+        // }
+        // else if(data_id == 'number'){
+        //     setPhone(e.target.value)
+        // }
+        let data = {
+            name: namer,
+            bio: bio,
+            number: phone
+        }
+        const getUserStatus = axios.post('/api/user/bio', data, {
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json',
+            }
+        }).then(response => response.data)
+        console.log(getUserStatus)
+
+    }
     return (
         <div>
             <Navbar/>
@@ -22,19 +99,39 @@ const Profile: NextPage = () => {
                 <div className="profile__body">
                     <div className="w-forms">
                         <span className="w-forms__title">Name</span>
-                        <input className="w-forms__input" type="text" name="name" placeholder="Your name"/>
+                        <input
+                            className="w-forms__input"
+                            type="text"
+                            name="name"
+                            defaultValue={namer}
+                            placeholder="Your name"
+                            onKeyUp={userChange}
+                            onBlur={userBio}
+                        />
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Phone number</span>
-                        <input className="w-forms__input" maxLength={10} type="tel" name="number"
-                               placeholder="Phone number"/>
+                        <input className="w-forms__input"
+                               maxLength={10}
+                               type="tel" name="number"
+                               placeholder="Phone number"
+                               onKeyUp={userChange}
+                               onBlur={userBio}/>
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Bio</span>
-                        <textarea className="w-forms__textarea" placeholder="Bio"></textarea>
+                        <textarea
+                            className="w-forms__textarea"
+                            placeholder="Bio"
+                            name='bio'
+                            onKeyUp={userChange}
+                            onBlur={userBio}>
+                        </textarea>
                     </div>
+                    <button type="button" className="w-btn _primary" onClick={() => setShow(true)}>Change password</button>
+                    <Modal onClose={() => setShow(false)} show={show}/>
                     <div className=">profile__logout">
-                        <button className="logout-button _danger">
+                        <button className="logout-button _danger" onClick={logout}>
                             <span className="material-symbols-outlined">logout</span>Logout
                         </button>
                     </div>

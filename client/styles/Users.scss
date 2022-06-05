@@ -1,2 +1,98 @@
 @import "../scss/components/w-card";
 @import "../scss/utils/react";
+
+.users_card{
+    text-align: left;
+    max-width: 90%;
+    padding: 30px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 10px;
+    align-items: center;
+    h2{
+        color: #666666;
+        letter-spacing: 0;
+        line-height: 23px;
+        font-weight: 500;
+        font-size: 20px;
+    }
+    p{
+        display: inline-block;
+        color: #666666;
+        font-size: 12px;
+        line-height: 18px;
+        margin-bottom: 6px;
+        font-weight: 500;
+    }
+       .new_user{
+           display:flex;
+           justify-content: space-between;
+           .user_email{
+               width: 200px;
+               height: 40px;
+               border: 1px solid #f0f1f7;
+               font-size: 14px;
+               border-radius: 10px;
+               outline: none !important;
+
+               &:focus{border: 1px solid #256eff;}
+           }
+           button{
+               padding: 10px 30px;
+               background-color: #256eff;
+               color:white;
+               border: none;
+               border-radius: 10px;
+               cursor: pointer;
+
+               &:active{background-color: #80a8f7;}
+           }
+       }
+       .table{
+           margin-top: 50px;
+           th{
+            padding: 15px 10px;
+            text-align: center;
+            border-right: 2px solid #f0f1f7;
+            border-bottom: 0.5px solid #f0f1f7;
+            font-size: 16px;
+            line-height: 16px;
+            color: #666666;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-transform: capitalize;
+            font-weight: 500;
+            font-weight: bold;
+           }
+        td {  
+            cursor: pointer;
+            padding: 15px 10px;
+            text-align: center;
+            vertical-align: middle;
+            border-right: 2px solid #f0f1f7;
+            border-bottom: 2px dashed #f0f1f7;
+            font-size: 14px;
+            line-height: 16px;
+            color: #666666;
+            word-break: break-word;
+            button{
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+          }
+          
+          table {
+            border-collapse: collapse;
+            width: 100%;
+          }
+          
+          th, td {
+            padding: 15px;
+          }
+          .admin{
+              background: none;
+              border: none;
+          }
+       }
+    }
