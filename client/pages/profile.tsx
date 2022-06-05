@@ -8,6 +8,8 @@ import {userStorage} from "../hooks/userStorage";
 import {userGuard} from "../hooks/userGuard";
 
 const Profile: NextPage = () => {
+    const host = 'http://localhost';
+    const port = '3000';
     const [session, setSession] = userGuard('session')
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
@@ -45,20 +47,34 @@ const Profile: NextPage = () => {
             }
         }
     }
-    const Preview = (e: any) => {
-        let s = document.getElementById('blah')
-        s?.setAttribute('src', window.URL.createObjectURL(e.currentTarget.files[0]))
-        let src = s?.getAttribute('src')
-        let formData = new FormData()
-        formData.append('file', e.currentTarget.files[0])
-        console.log(e.target)
-        let data = e.currentTarget.value
-        const image = axios.post('/api/user/image', formData, ).then(response => response.data)
-        console.log(image)
+    async function uploadFile(event: any) {
+        let photos = event.currentTarget
+        let formData = new FormData();
+    
+        formData.append('photo', photos?.files[0]);
+        const result = await sendFile(formData);
+        console.log(photos.files[0])
+        event.preventDefault();
     }
-
+    
+    async function sendFile(data: any) {
+        let dt = data
+        let locale: any = localStorage.getItem('session')
+        let store = JSON.parse(locale)
+        const result = await axios.post(`api/user/uploads/` + store._id, dt);
+        console.log(result)
+    }
+    async function Get(){
+        let locale: any = localStorage.getItem('session')
+        let store = JSON.parse(locale)
+        let img = await axios.post('api/user/get/image/' + store._id).then(response => response)
+        let src = img.data.image
+        setImg(src)
+    }
+    
     useEffect(()=>{
         getUserName()
+        Get()
     }, [])
 
     const userBio = async (e: any) => {
@@ -102,8 +118,8 @@ const Profile: NextPage = () => {
                     <div>Profile Settings</div>
                     <div>
                         <form className="avatar _profile">
-                        <img className="avatar__upload" id="blah" src="" style={{width: '58px', height: '58px'}}/>
-                            <input type="file" className="avatar__upload"  onChange={Preview} name="img"/>
+                        <img className="avatar__upload" id="blah" src={img} style={{width: '58px', height: '58px'}}/>
+                            <input type="file" accept="png" id="image" className="avatar__upload"  onChange={uploadFile} name="img"/>
                                 <span className="material-symbols-outlined">edit</span>
                         </form>
                     </div>

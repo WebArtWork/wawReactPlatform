@@ -26,8 +26,6 @@ const Users: NextPage = () => {
         }
     }, [])
 
-    
-
     interface IUser {
         _id: string,
         thumb: string,
@@ -48,20 +46,21 @@ const Users: NextPage = () => {
             let arr = users.filter((us_er: IUser) => id !== us_er._id)
             setUsers([administrator, ...arr])
     }
+
     const login = () => {
         console.log('user exist')
     }
     const getUsers = async () => {
-        const users: any = await axios.get('/api/user/get/users')
+        const users : any = await axios.get('/api/user/get/users')
         setUsers(users.data)
-        
-
+        console.log(users.data)
     }
+
     const isAdmin = async () => {
         const admin: any = await axios.post('/api/user/get/admin')
         setAdmin(admin.data)
-        
     }
+
     useEffect(() => {
         getUsers()
         isAdmin()
@@ -69,7 +68,7 @@ const Users: NextPage = () => {
 
     useEffect(() => {
         if (user) {
-            if (users.length) {
+            if (users?.length) {
                 setUsers([...users, user])
             } else {
                 setUsers([user])
@@ -81,7 +80,7 @@ const Users: NextPage = () => {
         const user = await axios.post('/api/user/sign', {
             email: emailInput,
         }).then(response => response.data)
-        setUser(user)
+        setUsers(user)
     }
 
     const createUser = async (e: any) => {
@@ -102,7 +101,6 @@ const Users: NextPage = () => {
                     'Content-Type': 'application/json',
                 }
             }).then((response) => {
-
                 return response.data
             })
             if (getUserStatus.email) {
