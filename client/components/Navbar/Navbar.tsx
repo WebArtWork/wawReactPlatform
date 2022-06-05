@@ -28,12 +28,8 @@ const Navbar = () => {
         <nav className="nav">
             <Sidebar right/>
             <ul className="navbar">
-                <Link className="navbar-link" href="/profile">
-                    <div className="navbar-item">Profile</div>
-                </Link>
-                <Link className="navbar-link" href="/admin/users">
-                    <div className="navbar-item admin">Users</div>
-                </Link>
+                <Link className="navbar-link" href="/profile">Profile</Link>
+                <Link className="navbar-link admin" href="/admin/users">Users</Link>
             </ul>
         </nav>
     )

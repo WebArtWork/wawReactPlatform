@@ -1,23 +1,9 @@
-const User = require(__dirname + '/schema.js');
-const ObjectID = require('mongodb').ObjectID
-const {v4: uuidv4} = require('uuid');
+const User = require(__dirname+'/schema.js');
+const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
 const nJwt = require('njwt');
 const fs = require('fs');
-
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/wawReact";
-
-let dbo
-MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    dbo = db.db("wawReact");
-//   db.connect(url, { useUnifiedTopology: true })
-
-});
-
-module.exports = async function (waw) {
-
+module.exports = async function(waw) {
     if (!waw.config.signingKey) {
         waw.config.signingKey = uuidv4();
         let serverJson = waw.readJson(process.cwd() + '/server.json');
@@ -25,7 +11,7 @@ module.exports = async function (waw) {
         waw.writeJson(process.cwd() + '/server.json', serverJson);
     }
     // initialize
-    if (waw.config.mail) {
+    if(waw.config.mail){
         const nodemailer = require("nodemailer");
         let transporter = nodemailer.createTransport({
             host: waw.config.mail.host,
@@ -33,8 +19,7 @@ module.exports = async function (waw) {
             secure: waw.config.mail.secure,
             auth: waw.config.mail.auth
         });
-        waw.send = (opts, cb = resp => {
-        }) => {
+        waw.send = (opts, cb=resp=>{})=>{
             transporter.sendMail({
                 from: waw.config.mail.from,
                 subject: opts.subject || waw.config.mail.subject,
@@ -43,11 +28,10 @@ module.exports = async function (waw) {
                 html: opts.html
             }, cb);
         }
-    } else {
-        waw.send = () => {
-        }
+    }else{
+        waw.send = ()=>{}
     }
-    if (mongoose.connection.readyState == 0) {
+    if(mongoose.connection.readyState==0){
         mongoose.connect(waw.mongoUrl, {
             useUnifiedTopology: true,
             useNewUrlParser: true
@@ -71,7 +55,7 @@ module.exports = async function (waw) {
     waw.serve(process.cwd() + '/template', {
         prefix: '/template'
     });
-    waw.build(process.cwd() + '/template', 'index');
+    waw.build(process.cwd()+'/template', 'index');
     waw.url(process.cwd() + '/template/dist/index.html', '/', {
         title: waw.config.name,
         description: waw.config.description,
@@ -81,21 +65,21 @@ module.exports = async function (waw) {
     /*
     *	Set is on users from config
     */
-    const set_is = (email, is) => {
+    const set_is = (email, is)=>{
         User.findOne({
             email: email
-        }, function (err, user) {
-            if (!user) return;
-            if (!user.is) user.is = {};
+        }, function(err, user){
+            if(!user) return;
+            if(!user.is) user.is={};
             user.is[is] = true;
             user.markModified('is');
-            user.save((err) => {
-                if (err) console.log(err);
+            user.save((err)=>{
+                if(err) console.log(err);
             });
         });
     }
-    if (waw.config.user && waw.config.user.is) {
-        for (let is in waw.config.user.is) {
+    if(waw.config.user && waw.config.user.is){
+        for(let is in waw.config.user.is){
             let emails = waw.config.user.is[is].split(' ');
             for (var i = 0; i < emails.length; i++) {
                 set_is(emails[i], is);
@@ -106,69 +90,47 @@ module.exports = async function (waw) {
     *	Initialize User and Mongoose
     */
     const router = waw.router('/api/user');
-    router.post("/status", function (req, res) {
+    router.post("/status", function(req, res) {
         User.findOne({
             $or: [{
                 reg_email: req.body.email.toLowerCase()
-            }, {
+            },{
                 email: req.body.email.toLowerCase()
             }]
-        }, function (err, user) {
+        }, function(err, user) {
             var json = {};
             json.email = !!user;
-            if (user && req.body.password) {
+            if(user&&req.body.password){
                 json.pass = user.validPassword(req.body.password);
             }
             res.json(json);
         });
     });
-    router.delete('/delete/:id', async function (req, res) {
-        const id = req.params.id
-        try {
-            await dbo.collection("users").deleteOne({_id: ObjectID(id)});
-            res.json({success: true})
-        } catch (e) {
-            throw e;
-        }
-
-    })
-
-    router.post('/bio', async function (req, res) {
-        console.log(req.body)
-        dbo.collection("users").updateOne({email: 'nastja@gmail.com'}, {$set: {name: req.body.name}});
-    })
-
-    router.get('/get/users', async function (req, res) {
-        dbo.collection("users").find({}).toArray(function (err, result) {
-            if (err) throw err;
-            res.json(result)
-        });
-    })
-    router.post("/request", function (req, res) {
+    router.post("/request", function(req, res) {
         User.findOne({
             email: req.body.email.toLowerCase()
-        }, function (err, user) {
+        }, function(err, user) {
             user.resetPin = Math.floor(Math.random() * (999999 - 100000)) + 100000;
             console.log(user.resetPin);
             user.resetCreate = new Date().getTime();
             user.resetCounter = 3;
             user.markModified('data');
-            user.save(function (err) {
+            user.save(function(err){
                 if (err) throw err;
                 waw.send({
                     to: user.email,
-                    subject: 'Code: ' + user.resetPin,
-                    html: 'Code: ' + user.resetPin
-                }, function () {
+                    subject: 'Code: '+user.resetPin,
+                    html: 'Code: '+user.resetPin
+                }, function(){
                     res.json(true);
                 });
             });
         });
     });
-    router.post("/change", function (req, res) {
+    router.post("/change", function(req, res) {
         User.findOne({
             email: req.body.email.toLowerCase()
-        }, function (err, user) {
+        }, function(err, user) {
             var message;
             var now = new Date().getTime();
             if (user.resetCounter > 0 && (now - user.resetCreate) <= 600000) {
@@ -189,17 +151,19 @@ module.exports = async function (waw) {
                 delete user.resetCreate;
             }
             user.markModified('data');
-            user.save(function (err) {
+            user.save(function(err) {
                 if (err) throw err;
                 res.json(message);
             });
         });
     });
-    router.post("/changePassword/:id", function (req, res) {
-        const id = req.params.id
-        user = new User();
-        const password = user.password = user.generateHash(req.body.newPass)
-        dbo.collection('users').updateOne({_id: ObjectID(id)}, {$set: {password}})
+    router.post("/changePassword", waw._ensure, function(req, res) {
+        if (req.user.validPassword(req.body.oldPass)){
+            req.user.password = req.user.generateHash(req.body.newPass);
+            req.user.save(function(){
+                res.json(true);
+            });
+        }else res.json(false);
     });
     waw.use((req, res, next) => {
         if (req.headers.token) {
