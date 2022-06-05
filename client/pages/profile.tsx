@@ -4,17 +4,17 @@ import React, {Component, useEffect, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
-import {userStorage} from "../hooks/userStorage";
-import {userGuard} from "../hooks/userGuard";
+import { useGuard } from '../hooks/useGuard';
+import {useStorage} from '../hooks/useStorage';
 
 const Profile: NextPage = () => {
     const host = 'http://localhost';
     const port = '3000';
-    const [session, setSession] = userGuard('session')
+    const [session, setSession] = useGuard('session')
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
-    const [user, setUser] = userStorage('user');
+    const [user, setUser] = useStorage('user');
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter();
     const [img, setImg] = useState('');

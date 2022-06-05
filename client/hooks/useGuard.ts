@@ -1,4 +1,4 @@
-export const userGuard = (key: string) => {
+export const useGuard = (key: string) => {
     const value = () => {
         const value: string | null = localStorage.getItem(key)
         if (value !== null)

@@ -1,14 +1,14 @@
 import React, {useEffect} from "react"
 import Link from 'next/link'
 import Sidebar from '../Sidebar/Sidebar'
-import {userGuard} from "../../hooks/userGuard";
-import {userStorage} from "../../hooks/userStorage";
+import {useGuard} from "../../hooks/useGuard";
+import {useStorage} from "../../hooks/useStorage";
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
 
 const Navbar = () => {
-    const [session, setSession] = userGuard('session')
-    const [user, setUser] = userStorage('user');
+    const [session, setSession] = useGuard('session')
+    const [user, setUser] = useStorage('user');
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter();
 
@@ -17,7 +17,8 @@ const Navbar = () => {
         console.log(cookie.userToken)
         if(!cookie.userToken || !user) {
             localStorage.removeItem('session')
-            router.push('/')
+            router.push({pathname: '/'}, undefined, {shallow: true})
+
         }
         else if (!user.is.admin) {
             document.querySelector('.admin').style.display = 'none';

@@ -66,9 +66,15 @@ body {
     }
   }
 
+.forgot-password  {
+    margin-left: 270px;
+  }
+
   @include bp-max(sm) {
     .form__title {
       font-size: var(--fs) - 2px;
     }
   }
 }
+
+
