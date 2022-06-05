@@ -33,8 +33,9 @@
                border: 1px solid #f0f1f7;
                font-size: 14px;
                border-radius: 10px;
+               outline: none !important;
 
-               &:focus{outline: 1px solid #256eff}
+               &:focus{border: 1px solid #256eff;}
            }
            button{
                padding: 10px 30px;
