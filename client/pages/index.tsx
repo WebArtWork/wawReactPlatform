@@ -108,16 +108,6 @@ const Login: NextPage = () => {
     }
 
     return (
-        <Head>
-            <link
-                  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
-            <link rel="stylesheet"
-                  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
-            <link rel="stylesheet"
-                  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
-            <link rel="stylesheet"
-                  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
-        </Head>
     <div className="auth-wrapper">
         <div className="auth">
             <div className="auth__title">Sign In / Sign Up</div>
