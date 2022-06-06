@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
+import {useStorage} from "../hooks/useStorage";
 import {useGuard} from "../hooks/useGuard";
 import {Modal} from "../modal/Modal";
 import PWDRequire from "../components/PWDRequire/PWDRequire"
@@ -20,9 +21,9 @@ interface User {
 
 const Login: NextPage = () => {
     const router = useRouter()
-    // const [ user, setUser ] = useStorage('user')
+    const [user, setUser] = useStorage<User>('user', null)
     const [show, setShow] = useState(false)
-    const [session, setSession] = useGuard('session')
+    // const [session, setSession] = useGuard('session')
     const [cookie, setCookie] = useCookies(['userToken'])
     const [emailInput, setEmailInput] = useState('ceo@webart.work');
     const [passInput, setPassInput] = useState('asdasdasdasd');
@@ -65,18 +66,17 @@ const Login: NextPage = () => {
         });
     }
 
-    if (cookie.userToken)
-        router.push({pathname: '/profile'}, undefined, {shallow: true})
+    // if (cookie.userToken)
+    //     router.push({pathname: '/profile'}, undefined, {shallow: true})
 
     const login = async () => {
-        const user: Promise<User> = await axios.post('/api/user/login', {
+        const user: User = await axios.post('/api/user/login', {
             email: emailInput,
             password: passInput
         }).then(response => response.data)
-        setSession(user)
+        setUser(user)
         setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
-
     }
 
     const sign = async () => {
@@ -84,7 +84,7 @@ const Login: NextPage = () => {
             email: emailInput,
             password: passInput
         }).then(response => response.data)
-        setSession(user)
+        // setSession(user)
         setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
     }

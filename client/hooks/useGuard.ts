@@ -1,16 +1,20 @@
-export const useGuard = (key: string) => {
-    const value = () => {
-        const value: string | null = localStorage.getItem(key)
-        if (value !== null)
-            return JSON.parse(value)
-        return {}
-    }
+import {useStorage} from "./useStorage";
 
-    const setValue = (obj: object) => {
-        return localStorage.setItem(key, JSON.stringify(obj))
+interface IUser {
+    _id: string,
+    thumb: string,
+    is: { admin: boolean },
+    email: string,
+    reg_email: string,
+    password: string,
+    data: object
+}
+
+export const useGuard = () => {
+    const [user, setUser] = useStorage<IUser | null>('user', null)
+    console.log(user)
+    if (user == null) {
+        return null
     }
-    return [
-        value,
-        setValue
-    ]
+    return user.is.admin;
 }

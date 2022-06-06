@@ -93,9 +93,9 @@ module.exports = async function(waw) {
     router.post("/status", function(req, res) {
         User.findOne({
             $or: [{
-                reg_email: req.body.email.toLowerCase()
+                reg_email: req.body.email
             },{
-                email: req.body.email.toLowerCase()
+                email: req.body.email
             }]
         }, function(err, user) {
             var json = {};
