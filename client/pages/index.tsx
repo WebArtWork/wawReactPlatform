@@ -7,6 +7,7 @@ import {useCookies} from "react-cookie";
 import {useGuard} from "../hooks/useGuard";
 import {Modal} from "../modal/Modal";
 import PWDRequire from "../components/PWDRequire/PWDRequire"
+import { useStorage } from "../hooks/useStorage";
 
 interface User {
     _id: string;
@@ -20,7 +21,7 @@ interface User {
 
 const Login: NextPage = () => {
     const router = useRouter()
-    // const [ user, setUser ] = useStorage('user')
+    const [ user, setUser ] = useStorage('user')
     const [show, setShow] = useState(false)
     const [session, setSession] = useGuard('session')
     const [cookie, setCookie] = useCookies(['userToken'])

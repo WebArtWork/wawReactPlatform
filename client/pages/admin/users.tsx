@@ -8,15 +8,19 @@ import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
 
 const Users: NextPage = () => {
-    const [checked, setChecked]: any = useState(false);
-    const [style, setStyle]: any = useState(false);
+    // const [checked, setChecked]: any = useState(false);
+    const [inputError, setInputError]: any = useState(false);
     const [session, setSession] = useGuard('session')
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter()
+    const [emailInput, setEmailInput] = useState('');
+    const [user, setUser] = useStorage('user');
+    const [users, setUsers] = useState<any>([]);
+    const [admin, setAdmin] = useState<boolean>(false)
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('session'))
-        console.log(cookie.userToken)
+        // console.log(cookie.userToken)
         if (!cookie.userToken) {
             localStorage.removeItem('session')
             router.push({pathname: '/'}, undefined, {shallow: true})
@@ -35,39 +39,29 @@ const Users: NextPage = () => {
         data: object
     }
 
-    const [emailInput, setEmailInput] = useState('');
-    const [user, setUser] = useStorage('user');
-    const [users, setUsers] = useState<any>();
-    const [admin, setAdmin] = useState<boolean>(false)
-
     const handleChange = async (id: any) => {
-        const administrator: object = await axios.post('/api/user/set/admin/' + id).then(response => response.data )
-            let arr = users.filter((us_er: IUser) => id !== us_er._id)
+        const administrator: IUser = await axios.post('/api/users/set/admin/' + id).then(response => response.data )
+            const arr = users.filter((user: IUser) => id !== user._id)
             setUsers([administrator, ...arr])
     }
 
     const login = () => {
         console.log('user exist')
     }
-    const getUsers = async () => {
-        const users : any = await axios.get('/api/user/get/users')
-        setUsers(users.data)
-        console.log(users.data)
-    }
 
-    const isAdmin = async () => {
-        const admin: any = await axios.post('/api/user/get/admin')
-        setAdmin(admin.data)
+    const getUsers = async () => {
+        const users : IUser[] = await axios.get('/api/users/get/users').then(response => response.data)
+        setUsers(users)
+        console.log(users)
     }
 
     useEffect(() => {
         getUsers()
-        isAdmin()
     }, [admin])
 
     useEffect(() => {
         if (user) {
-            if (users?.length) {
+            if (users.length) {
                 setUsers([...users, user])
             } else {
                 setUsers([user])
@@ -85,13 +79,14 @@ const Users: NextPage = () => {
     const createUser = async (e: any) => {
         e.preventDefault()
         let reg = /\S+@\S+\.\S+/;
+
         let address: any = document.getElementsByClassName('user_email');
 
         if (reg.test
         (address[0].value) == false) {
-            setStyle(true);
+            setInputError(true);
         } else {
-            setStyle(false);
+            setInputError(false);
             const getUserStatus = await axios.post('/api/user/status', {
                 email: emailInput
             }, {
@@ -112,12 +107,13 @@ const Users: NextPage = () => {
     }
 
     const deleteUser = async (id: string) => {
-        const getUserDelete = await axios.delete('/api/user/delete/' + id,
+        const getUserDelete = await axios.delete('/api/users/delete/' + id,
         ).then(response => response.data)
         if (getUserDelete.success) {
             setUsers(users.filter((user: IUser) => id !== user._id))
         }
     }
+    
     return (
         <div>
             <Navbar/>
@@ -133,7 +129,7 @@ const Users: NextPage = () => {
                     <div className='new_user'>
                         <input
                             type='text'
-                            className={style ? "non_valid_input user_email" : "user_email"}
+                            className={inputError ? "non_valid_input user_email" : "user_email"}
                             placeholder='Email'
                             value={emailInput}
                             onChange={(e) => setEmailInput(e.target.value)}
@@ -154,7 +150,7 @@ const Users: NextPage = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {users?.length ? users.map((user: IUser) => (
+                            {users.length ? users.map((user: IUser) => (
                                 
                                 <tr key={user._id}>
                                     <td>{user.email}</td>

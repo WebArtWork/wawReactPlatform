@@ -8,8 +8,9 @@ import { useGuard } from '../hooks/useGuard';
 import {useStorage} from '../hooks/useStorage';
 
 const Profile: NextPage = () => {
-    const host = 'http://localhost';
-    const port = '3000';
+
+    // const host = 'http://localhost';
+    // const port = '3000';
     const [session, setSession] = useGuard('session')
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
@@ -34,18 +35,12 @@ const Profile: NextPage = () => {
     }
 
     const getUserName = async () => {
-        const users: any = await axios.get('/api/user/get/users')
         let locale: any = localStorage.getItem('session')
         let store = JSON.parse(locale)
-        let i
-        let arr = users.data
-        for(i=0; i <= arr.length; i++){
-            if(arr[i]?._id == store._id){
-                setName(users.data[i].name)
-                setPhone(users.data[i].phone)
-                setBio(users.data[i].bio)
-            }
-        }
+        const user = await axios.get(`/api/users/get/users/` + store._id).then(response => response.data)
+        setName(user.name)
+        setPhone(user.phone)
+        setBio(user.bio)
     }
     async function uploadFile(event: any) {
         let photos = event.currentTarget
@@ -61,13 +56,13 @@ const Profile: NextPage = () => {
         let dt = data
         let locale: any = localStorage.getItem('session')
         let store = JSON.parse(locale)
-        const result = await axios.post(`api/user/uploads/` + store._id, dt);
+        const result = await axios.post(`api/users/uploads/` + store._id, dt);
         console.log(result)
     }
     async function Get(){
         let locale: any = localStorage.getItem('session')
         let store = JSON.parse(locale)
-        let img = await axios.post('api/user/get/image/' + store._id).then(response => response)
+        let img = await axios.post('api/users/get/image/' + store._id).then(response => response)
         let src = img.data.image
         setImg(src)
     }
@@ -101,7 +96,7 @@ const Profile: NextPage = () => {
         let store = JSON.parse(locale)
         console.log(store._id)
         let id = store._id
-        const getUserStatus = await axios.post('/api/user/bio/' + id, data, {
+        const getUserStatus = await axios.post('/api/users/bio/' + id, data, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 'Content-Type': 'application/json',

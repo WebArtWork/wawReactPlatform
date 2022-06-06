@@ -14,7 +14,7 @@ const Navbar = () => {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('session'))
-        console.log(cookie.userToken)
+        // console.log(cookie.userToken)
         if(!cookie.userToken || !user) {
             localStorage.removeItem('session')
             router.push({pathname: '/'}, undefined, {shallow: true})

@@ -1,6 +1,7 @@
 import {Service} from 'wrcom'
 
 class UserService extends Service {
+
     public rand = Math.floor(Math.random() * 5000);
     public roles = ['admin']
     public users: any = [];
@@ -10,6 +11,8 @@ class UserService extends Service {
     constructor() {
         super();
     }
+
+  
 }
 
 export default UserService
