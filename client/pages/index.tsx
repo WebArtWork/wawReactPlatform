@@ -84,12 +84,12 @@ const Login: NextPage = () => {
             email: emailInput,
             password: passInput
         }).then(response => response.data)
-        // setSession(user)
+        setUser(user)
         setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
     }
 
-    const submit = async (e) => {
+    const submit = async (e:any) => {
         e.preventDefault()
         const getUserStatus = await axios.post('/api/user/status', {
             email: emailInput,

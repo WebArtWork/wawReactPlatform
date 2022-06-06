@@ -3,58 +3,61 @@ import Navbar from '../../components/Navbar/Navbar'
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import {useStorage} from '../../hooks/useStorage';
-import {useGuard} from "../../hooks/useGuard";
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
 
+
+interface IUser {
+    _id: string,
+    thumb: string,
+    is: { admin: boolean },
+    email: string,
+    reg_email: string,
+    password: string,
+    data: object
+}
+
 const Users: NextPage = () => {
-    const [checked, setChecked]: any = useState(false);
-    const [style, setStyle]: any = useState(false);
-    const [session, setSession] = useGuard('session')
+    // const [checked, setChecked]: any = useState(false);
+    const [inputError, setInputError]: any = useState(false);
+    // const [user, setUser] = useStorage<IUser>('user')
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter()
+    const [emailInput, setEmailInput] = useState('');
+    const [user, setUser] = useStorage<IUser>('user', null);
+    const [users, setUsers] = useState<any>([]);
+    const [admin, setAdmin] = useState<boolean>(false)
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('session'))
-        console.log(cookie.userToken)
+        const user = JSON.parse(localStorage.getItem('user'))
+        // console.log(cookie.userToken)
         if (!cookie.userToken) {
-            localStorage.removeItem('session')
+            localStorage.removeItem('user')
             router.push({pathname: '/'}, undefined, {shallow: true})
         } else if (!user.is.admin) {
             router.push({pathname: '/'}, undefined, {shallow: true})
         }
     }, [])
 
-    const handleChange = () => {
-        setChecked(!checked);
-        localStorage.setItem('key', checked)
+    const handleChange = async (id: any) => {
+        const administrator: IUser = await axios.post('/api/users/set/admin/' + id).then(response => response.data )
+            const arr = users.filter((user: IUser) => id !== user._id)
+            setUsers([administrator, ...arr])
     }
-
-    interface IUser {
-        _id: string,
-        thumb: string,
-        is: { admin: boolean },
-        email: string,
-        reg_email: string,
-        password: string,
-        data: object
-    }
-
-    const [emailInput, setEmailInput] = useState('');
-    const [user, setUser] = useStorage('user');
-    const [users, setUsers] = useState<any>();
 
     const login = () => {
         console.log('user exist')
     }
+
     const getUsers = async () => {
-        const users: any = await axios.get('/api/user/get/users')
-        setUsers(users.data)
+        const users : IUser[] = await axios.get('/api/users/get/users').then(response => response.data)
+        setUsers(users)
+        console.log(users)
     }
 
     useEffect(() => {
         getUsers()
-    }, [])
+    }, [admin])
 
     useEffect(() => {
         if (user) {
@@ -70,19 +73,20 @@ const Users: NextPage = () => {
         const user = await axios.post('/api/user/sign', {
             email: emailInput,
         }).then(response => response.data)
-        setUser(user)
+        setUsers(user)
     }
 
     const createUser = async (e: any) => {
         e.preventDefault()
         let reg = /\S+@\S+\.\S+/;
-        let address = document.getElementsByClassName('user_email');
+
+        let address: any = document.getElementsByClassName('user_email');
 
         if (reg.test
         (address[0].value) == false) {
-            setStyle(true);
+            setInputError(true);
         } else {
-            setStyle(false);
+            setInputError(false);
             const getUserStatus = await axios.post('/api/user/status', {
                 email: emailInput
             }, {
@@ -91,7 +95,6 @@ const Users: NextPage = () => {
                     'Content-Type': 'application/json',
                 }
             }).then((response) => {
-
                 return response.data
             })
             if (getUserStatus.email) {
@@ -104,17 +107,13 @@ const Users: NextPage = () => {
     }
 
     const deleteUser = async (id: string) => {
-        const getUserDelete = await axios.delete('/api/user/delete/' + id,
+        const getUserDelete = await axios.delete('/api/users/delete/' + id,
         ).then(response => response.data)
         if (getUserDelete.success) {
             setUsers(users.filter((user: IUser) => id !== user._id))
         }
     }
-
-    function validate() {
-
-    }
-
+    
     return (
         <div>
             <Navbar/>
@@ -130,7 +129,7 @@ const Users: NextPage = () => {
                     <div className='new_user'>
                         <input
                             type='text'
-                            className={style ? "non_valid_input user_email" : "user_email"}
+                            className={inputError ? "non_valid_input user_email" : "user_email"}
                             placeholder='Email'
                             value={emailInput}
                             onChange={(e) => setEmailInput(e.target.value)}
@@ -151,20 +150,25 @@ const Users: NextPage = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {users?.length ? users.map((user: IUser) => (
+                            {users.length ? users.map((user: IUser) => (
+                                
                                 <tr key={user._id}>
                                     <td>{user.email}</td>
                                     <td>{user.email}</td>
                                     <td>
                                         <button className='admin'>
                                             <input type='checkbox'
-                                                   onChange={handleChange}
-                                            ></input>
+                                                   onChange={() => handleChange(user._id)}
+                                                //    {user.is.admin ? checked : ''}
+                                                // defaultChecked
+                                                checked={user.is.admin}
+                                                   
+                                            />
                                         </button>
                                     </td>
                                     <td>
                                         <button className='deleter' onClick={() => deleteUser(user._id)}>
-                                            <i className="fi fi-rr-trash">delete</i>
+                                            <img className='trash' src="https://img.icons8.com/ios/500/trash--v1.png" alt='delete'/>
                                         </button>
                                     </td>
                                 </tr>)) : <tr>

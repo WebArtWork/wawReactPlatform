@@ -13,8 +13,16 @@ const Navbar = () => {
     useEffect(() => {
         if(userGuard) {
             setAdminRoute(...adminRoutes)
-        }
-    },[])
+        // const user = JSON.parse(localStorage.getItem('session'))
+        // // console.log(cookie.userToken)
+        // if(!cookie.userToken || !user) {
+        //     localStorage.removeItem('session')
+        //     router.push({pathname: '/'}, undefined, {shallow: true})
+        //
+        // }
+        // else if (!user.is.admin) {
+        //     document.querySelector('.admin').style.display = 'none';}
+    }},[])
 
     // useEffect(() => {
 
