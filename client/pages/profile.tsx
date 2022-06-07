@@ -7,19 +7,9 @@ import {useCookies} from "react-cookie";
 import {useStorage} from "../hooks/useStorage";
 import {Modal} from "../modal/Modal";
 import {useGuard} from "../hooks/useGuard";
-
-interface User {
-    _id: string;
-    email: string;
-    thumb: string;
-    is: {
-        admin: boolean;
-    };
-    token: string;
-}
+import UserService from "../services/user.service";
 
 const Profile: NextPage = () => {
-
     // const host = 'http://localhost';
     // const port = '3000';
     // const [session, setSession] = useGuard('session')
@@ -32,6 +22,16 @@ const Profile: NextPage = () => {
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const [img, setImg] = useState('');
     const router = useRouter();
+
+    interface User {
+        _id: string;
+        email: string;
+        thumb: string;
+        is: {
+            admin: boolean;
+        };
+        token: string;
+    }    
 
 
     useEffect(() => {
@@ -49,45 +49,18 @@ const Profile: NextPage = () => {
         // }
     }}, [])
     //
-    // const getUserName = async () => {
-    //     const users: any = await axios.get('/api/user/get/users')
-    //     console.log(users.data[0])
-    //     setName(users.data[0].name)
-    // }
-    // useEffect(() => {
-    //     getUserName()
-    // }, [])
-    //
     // const userChange = (e: any) => {
     //     let data_id = e.target.name
-    //     // if(data_id == "name"){
-    //     //     setName(e.target.value)
-    //     // }
-    //     // else if(data_id == "bio"){
-    //     //     setBio(e.target.value)
-    //     // }
-    //     // else if(data_id == 'number'){
-    //     //     setPhone(e.target.value)
-    //     // }
-    // }
-    //
-    // const userBio = (e: any) => {
-    //     e.preventDefault()
-    //     let data_id = e.target.name
-    //     // if(data_id == "name"){
-    //     //     setName(e.target.value)
-    //     // }
-    //     // else if(data_id == "bio"){
-    //     //     setBio(e.target.value)
-    //     // }
-    //     // else if(data_id == 'number'){
-    //     //     setPhone(e.target.value)
-    //     // }
-    //     let data = {
-    //         name: namer,
-    //         bio: bio,
-    //         number: phone
+    //     if(data_id == "name"){
+    //         setName(e.target.value)
     //     }
+    //     else if(data_id == "bio"){
+    //         setBio(e.target.value)
+    //     }
+    //     else if(data_id == 'number'){
+    //         setPhone(e.target.value)
+    //     }
+    // }
 
     //     const getUserStatus = axios.post('/api/user/bio', data, {
     //         headers: {
@@ -105,14 +78,14 @@ const Profile: NextPage = () => {
         router.push('/');
     }
 
-    // const getUserName = async () => {
-    //     let locale: any = localStorage.getItem('session')
-    //     let store = JSON.parse(locale)
-    //     const user = await axios.get(`/api/users/update/` + store._id).then(response => response.data)
-    //     setName(user.name)
-    //     setPhone(user.phone)
-    //     setBio(user.bio)
-    // }
+    const getUserName = async () => {
+        let locale: any = localStorage.getItem('session')
+        let store = JSON.parse(locale)
+        const user = await axios.get(`/api/user/update/` + store._id).then(response => response.data)
+        setName(user.name)
+        setPhone(user.phone)
+        setBio(user.bio)
+    }
 
     // async function uploadFile(event: any) {
     //     let photos = event.currentTarget
@@ -140,10 +113,9 @@ const Profile: NextPage = () => {
     //     setImg(src)
     // }
     
-    // useEffect(()=>{
-    //     getUserName()
-    //     Get()
-    // }, [])
+    useEffect(()=>{
+        getUserName()
+    }, [])
 
     const userBio = async (e: any) => {
         const attr = e.currentTarget.getAttribute('name')
@@ -250,6 +222,8 @@ const Profile: NextPage = () => {
                         </textarea>
                     </div>
                     <div className=">profile__logout">
+                        <button type="button" className="w-btn _primary" onClick={() => setShow(true)}>Change password</button>
+                        <Modal onClose={() => setShow(false)} show={show}/>
                         <button className="logout-button _danger" onClick={logout}>
                             <span className="material-symbols-outlined">logout</span>Logout
                         </button>
@@ -258,6 +232,7 @@ const Profile: NextPage = () => {
             </div>
         </div>
     )
-    }
+  }
+
 
 export default Profile;

@@ -21,9 +21,9 @@ export default props => {
     // }, [])
     return (
         <Menu right>
-            <Link className="menu-item" href="/admin/users"><span className="isAdmin">Users</span></Link>
+            <Link className="menu-item" href="/admin/users">Users</Link>
 
-            <Link className="menu-item" href="/profile"><span>Profile</span></Link>
+            <Link className="menu-item" href="/profile">Profile</Link>
         </Menu>
     );
 };

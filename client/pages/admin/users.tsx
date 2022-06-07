@@ -49,35 +49,45 @@ const Users: NextPage = () => {
         data: object
     }
 
-    // const handleChange = async (id: any) => {
-    //     const administrator: IUser = await axios.post('/api/users/set/admin/' + id).then(response => response.data )
-    //         const arr = users.filter((user: IUser) => id !== user._id)
-    //         setUsers([administrator, ...arr])
-    // }
+    const handleChange = async (id: any) => {
+        const administrator: IUser = await axios.post('/api/user/update/' + id).then(response => response.data )
+            const arr = users.filter((user: IUser) => id !== user._id)
+            setUsers([administrator, ...arr])
+    }
 
     const login = () => {
         console.log('user exist')
     }
 
-    // const getUsers = async () => {
-    //     const users : IUser[] = await axios.get('/api/users/get/users').then(response => response.data)
-    //     setUsers(users)
-    //     console.log(users)
-    // }
+    useEffect(() => {
+        if (user) {
+            if (users.length) {
+                setUsers([...users, user])
+            } else {
+                setUsers([user])
+            }
+        }
+    }, [user])
 
-    // useEffect(() => {
-    //     getUsers()
-    // }, [admin])
+    const getUsers = async () => {
+        const users : IUser[] = await axios.get('/api/user/get').then(response => response.data)
+        setUsers(users)
+        console.log(users)
+    }
 
-    // useEffect(() => {
-    //     if (user) {
-    //         if (users.length) {
-    //             setUsers([...users, user])
-    //         } else {
-    //             setUsers([user])
-    //         }
-    //     }
-    // }, [user])
+    useEffect(() => {
+        getUsers()
+    }, [])
+
+    useEffect(() => {
+        if (user) {
+            if (users.length) {
+                setUsers([...users, user])
+            } else {
+                setUsers([user])
+            }
+        }
+    }, [user])
 
     const sign = async () => {
         const user = await axios.post('/api/user/sign', {
@@ -169,7 +179,7 @@ const Users: NextPage = () => {
                                     <td>
                                         <button className='admin'>
                                             <input type='checkbox'
-                                                //    onChange={() => handleChange(user._id)}
+                                                   onChange={() => handleChange(user._id)}
                                                 //    {user.is.admin ? checked : ''}
                                                 // defaultChecked
                                                 checked={user.is.admin}

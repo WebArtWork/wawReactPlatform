@@ -8,6 +8,7 @@ import {useStorage} from "../hooks/useStorage";
 import {useGuard} from "../hooks/useGuard";
 import {Modal} from "../modal/Modal";
 import PWDRequire from "../components/PWDRequire/PWDRequire"
+import UserService from "../services/user.service";
 
 interface User {
     _id: string;
@@ -20,6 +21,7 @@ interface User {
 }
 
 const Login: NextPage = () => {
+    const us = new UserService()
     const router = useRouter()
     const [user, setUser] = useStorage<User>('user', null)
     const [show, setShow] = useState(false)
@@ -75,7 +77,10 @@ const Login: NextPage = () => {
             email: emailInput,
             password: passInput
         }).then(response => response.data)
+        us.user = user
+        console.log(us.user)
         setUser(user)
+
         setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
     }
@@ -86,6 +91,8 @@ const Login: NextPage = () => {
             password: passInput
         }).then(response => response.data)
         setUser(user)
+        us.user = user
+        console.log(us.user)
         setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
     }
@@ -163,6 +170,7 @@ const Login: NextPage = () => {
                             onClick={submit}>
                         Lets go
                     </button>
+
                     <Modal onClose={() => setShow(false)} show={show}/>
                 </div>
             </form>
