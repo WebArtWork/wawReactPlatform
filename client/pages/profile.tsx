@@ -246,6 +246,8 @@ const Profile: NextPage = () => {
                         </textarea>
                     </div>
                     <div className=">profile__logout">
+                        <button type="button" className="w-btn _primary" onClick={() => setShow(true)}>Change password</button>
+                        <Modal onClose={() => setShow(false)} show={show}/>
                         <button className="logout-button _danger" onClick={logout}>
                             <span className="material-symbols-outlined">logout</span>Logout
                         </button>

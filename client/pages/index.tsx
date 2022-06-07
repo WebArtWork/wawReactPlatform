@@ -170,6 +170,7 @@ const Login: NextPage = () => {
                             onClick={submit}>
                         Lets go
                     </button>
+
                     <Modal onClose={() => setShow(false)} show={show}/>
                 </div>
             </form>
