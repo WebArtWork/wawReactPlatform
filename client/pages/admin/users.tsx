@@ -58,7 +58,6 @@ const Users: NextPage = () => {
     const login = () => {
         console.log('user exist')
     }
-
     useEffect(() => {
         if (user) {
             if (users.length) {
@@ -99,9 +98,7 @@ const Users: NextPage = () => {
     const createUser = async (e: any) => {
         e.preventDefault()
         let reg = /\S+@\S+\.\S+/;
-
         let address: any = document.getElementsByClassName('user_email');
-
         if (reg.test
         (address[0].value) == false) {
             setInputError(true);
@@ -124,15 +121,19 @@ const Users: NextPage = () => {
                 sign()
             }
         }
+        setTimeout(function(){
+            getUsers()
+        }, 100)
+        
     }
 
-    // const deleteUser = async (id: string) => {
-    //     const getUserDelete = await axios.delete('/api/users/delete/' + id,
-    //     ).then(response => response.data)
-    //     if (getUserDelete.success) {
-    //         setUsers(users.filter((user: IUser) => id !== user._id))
-    //     }
-    // }
+    const deleteUser = async (id: string) => {
+        const getUserDelete = await axios.delete('/api/user/get/' + id,
+        ).then(response => response.data)
+        if (getUserDelete.success) {
+            setUsers(users.filter((user: IUser) => id !== user._id))
+        }
+    }
     
     return (
         <div>
@@ -188,8 +189,7 @@ const Users: NextPage = () => {
                                         </button>
                                     </td>
                                     <td>
-                                        <button className='deleter'>
-                                         {/* onClick={() => deleteUser(user._id)}> */}
+                                        <button className='deleter' onClick={() => deleteUser(user._id)}>
                                             <img className='trash' src="https://img.icons8.com/ios/500/trash--v1.png" alt='delete'/>
                                         </button>
                                     </td>

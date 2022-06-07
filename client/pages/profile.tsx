@@ -10,9 +10,11 @@ import {useGuard} from "../hooks/useGuard";
 import UserService from "../services/user.service";
 
 const Profile: NextPage = () => {
+
     // const host = 'http://localhost';
     // const port = '3000';
     // const [session, setSession] = useGuard('session')
+    const us = new UserService()
     const [user, setUser] = useStorage<User | null>('user', null)
     const userGuard = useGuard()
     const [namer, setName] = useState('')
@@ -27,6 +29,9 @@ const Profile: NextPage = () => {
         _id: string;
         email: string;
         thumb: string;
+        name: string;
+        phone: string;
+        bio: string;
         is: {
             admin: boolean;
         };
@@ -48,7 +53,7 @@ const Profile: NextPage = () => {
         //     router.push({pathname: '/'}, undefined, {shallow: true})
         // }
     }}, [])
-    //
+    
     // const userChange = (e: any) => {
     //     let data_id = e.target.name
     //     if(data_id == "name"){
@@ -62,15 +67,21 @@ const Profile: NextPage = () => {
     //     }
     // }
 
-    //     const getUserStatus = axios.post('/api/user/bio', data, {
-    //         headers: {
-    //             "Access-Control-Allow-Origin": "*",
-    //             'Content-Type': 'application/json',
-    //         }
-    //     }).then(response => response.data)
-    //     console.log(getUserStatus)
-    //
-    // }
+        const getUserStatus = async () =>{
+            let user_status = await axios.get('/api/user/get').then(response => response.data)
+            let locale: string | any = localStorage.getItem('session')
+            let store = JSON.parse(locale)
+            let i;
+            for(i = 0; i <= user_status.length; i++){
+                if(store._id == user_status[i]._id){
+                    let user_info = user_status[i]
+                    setName(user_info.name)
+                    setPhone(user_info.phone)
+                    setBio(user_info.bio)
+                    return
+                }
+            }
+        }
 
     const logout = () => {
         removeCookie('userToken')
@@ -78,13 +89,17 @@ const Profile: NextPage = () => {
         router.push('/');
     }
 
-    const getUserName = async () => {
+    const setUserData = async () => {
         let locale: any = localStorage.getItem('session')
         let store = JSON.parse(locale)
-        const user = await axios.get(`/api/user/update/` + store._id).then(response => response.data)
-        setName(user.name)
-        setPhone(user.phone)
-        setBio(user.bio)
+        // const user: User = await axios.post('/api/user/update/' + store._id).then(response => response.data)
+        const user: any = new UserService()
+        
+
+        console.log(user)
+        // setName(user.name)
+        // setPhone(user.phone)
+        // setBio(user.bio)
     }
 
     // async function uploadFile(event: any) {
@@ -114,7 +129,8 @@ const Profile: NextPage = () => {
     // }
     
     useEffect(()=>{
-        getUserName()
+        getUserStatus()
+        setUserData()
     }, [])
 
     const userBio = async (e: any) => {
@@ -137,41 +153,7 @@ const Profile: NextPage = () => {
             }
         } 
     }
-
-    // update(){
-    //     this.us.user.name = input.name.value;
-    //     this.us.user.data.bio = input.bio.value;
-    //     this.us.user.data.phone = input.phone.value;
-    //     this.us.update();
-    //   }
-        
-        // let locale: any = localStorage.getItem('session')
-        // let store = JSON.parse(locale)
-        // // console.log(store._id)
-        // let id = store._id
-        // const getUserStatus = await axios.post('/api/users/bio/' + id, data, {
-        //     headers: {
-        //         "Access-Control-Allow-Origin": "*",
-        //         'Content-Type': 'application/json',
-        //     }
-        // }).then(response => response.data)
-
-        // console.log(getUserStatus.data.success)
-    // }
     
-        // let locale: any = localStorage.getItem('user')
-        // let store = JSON.parse(locale)
-        // console.log(store._id)
-        // let id = store._id
-        // const getUserStatus = await axios.post('/api/users/bio/' + id, data, {
-        //     headers: {
-        //         "Access-Control-Allow-Origin": "*",
-        //         'Content-Type': 'application/json',
-        //     }
-        // }).then(response => response.data)
-        // console.log(getUserStatus.data.success)
-    
-
     return (
         <div>
             <Navbar/>
@@ -195,6 +177,7 @@ const Profile: NextPage = () => {
                             className="w-forms__input"
                             type="text"
                             name="name"
+                            defaultValue={namer}
                             placeholder="Your name"
                             onBlur={userBio}
                          />
@@ -217,6 +200,7 @@ const Profile: NextPage = () => {
                             placeholder="Bio"
                             name='bio'
                             maxLength={100}
+                            defaultValue={bio}
                             onBlur={userBio}
                             >
                         </textarea>
