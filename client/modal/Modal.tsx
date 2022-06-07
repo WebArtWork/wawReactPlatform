@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const Modal = (props: any) => {
     const [passInput, setPassInput] = useState('')
-    const [session, setSession] = useGuard('session')
+    // const [session, setSession] = useGuard('session')
     if (!props.show) {
         return null
     }

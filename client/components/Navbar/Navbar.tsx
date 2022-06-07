@@ -1,35 +1,57 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import Link from 'next/link'
 import Sidebar from '../Sidebar/Sidebar'
 import {useGuard} from "../../hooks/useGuard";
-import {useStorage} from "../../hooks/useStorage";
-import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
+import {userRoutes, adminRoutes} from "../../app/routes";
 
 const Navbar = () => {
-    const [session, setSession] = useGuard('session')
-    const [user, setUser] = useStorage('user');
-    const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
+    const userGuard = useGuard()
     const router = useRouter();
 
+    const [adminRoute, setAdminRoute] = useState([])
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('session'))
-        // console.log(cookie.userToken)
-        if(!cookie.userToken || !user) {
-            localStorage.removeItem('session')
-            router.push({pathname: '/'}, undefined, {shallow: true})
+        if(userGuard) {
+            setAdminRoute(...adminRoutes)
+        // const user = JSON.parse(localStorage.getItem('session'))
+        // // console.log(cookie.userToken)
+        // if(!cookie.userToken || !user) {
+        //     localStorage.removeItem('session')
+        //     router.push({pathname: '/'}, undefined, {shallow: true})
+        //
+        // }
+        // else if (!user.is.admin) {
+        //     document.querySelector('.admin').style.display = 'none';}
+    }},[])
 
-        }
-        else if (!user.is.admin) {
-            document.querySelector('.admin').style.display = 'none';
-        }
-    }, [])
+    // useEffect(() => {
+
+        // const user = JSON.parse(localStorage.getItem('session'))
+        // console.log(cookie.userToken)
+        // if(!cookie.userToken || !user) {
+        //     localStorage.removeItem('session')
+        //     router.push({pathname: '/'}, undefined, {shallow: true})
+        //
+        // }
+        // else if (!user.is.admin) {
+        //     document.querySelector('.admin').style.display = 'none';
+        // }
+    // }, [])
     return (
         <nav className="nav">
             <Sidebar right/>
             <ul className="navbar">
-                <Link className="navbar-link" href="/profile">Profile</Link>
-                <Link className="navbar-link admin" href="/admin/users">Users</Link>
+                {userRoutes.map((route) => (
+                    <Link key={route.link} className="navbar-link" href={route.link}>
+                        <span className="navbar-item">{route.name}</span>
+                    </Link>
+                ))}
+                {typeof window !== 'undefined' && userGuard ? adminRoutes.map((route) => (
+                    <Link key={route.link} className="navbar-link" href={route.link}>
+                        <span className="navbar-item">{route.name}</span>
+                    </Link>
+                )) : ''}
+
             </ul>
         </nav>
     )

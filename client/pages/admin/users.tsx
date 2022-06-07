@@ -1,34 +1,45 @@
 import type {NextPage} from 'next'
 import Navbar from '../../components/Navbar/Navbar'
-import React, {Component, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import {useStorage} from '../../hooks/useStorage';
-import {useGuard} from "../../hooks/useGuard";
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
+
+
+interface IUser {
+    _id: string,
+    thumb: string,
+    is: { admin: boolean },
+    email: string,
+    reg_email: string,
+    password: string,
+    data: object
+}
 
 const Users: NextPage = () => {
     // const [checked, setChecked]: any = useState(false);
     const [inputError, setInputError]: any = useState(false);
-    // const [session, setSession] = useGuard('session')
+    // const [user, setUser] = useStorage<IUser>('user')
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter()
     const [emailInput, setEmailInput] = useState('');
-    // const [user, setUser] = useStorage('user');
+    const [user, setUser] = useStorage<IUser>('user', null);
     const [users, setUsers] = useState<any>([]);
     // const [admin, setAdmin] = useState<boolean>(false)
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('session'))
+        const user = JSON.parse(localStorage.getItem('user'))
         // console.log(cookie.userToken)
         if (!cookie.userToken) {
-            localStorage.removeItem('session')
+            localStorage.removeItem('user')
             router.push({pathname: '/'}, undefined, {shallow: true})
         } else if (!user.is.admin) {
             router.push({pathname: '/'}, undefined, {shallow: true})
         }
     }, [])
 
+<<<<<<< HEAD
     interface IUser {
         _id: string,
         thumb: string,

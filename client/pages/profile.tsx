@@ -1,36 +1,105 @@
 import axios from 'axios'
 import type {NextPage} from 'next'
-import React, {Component, useEffect, useState} from 'react'
+import React, { useEffect, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import {useRouter} from "next/router";
 import {useCookies} from "react-cookie";
-import { useGuard } from '../hooks/useGuard';
-import {useStorage} from '../hooks/useStorage';
+import {useStorage} from "../hooks/useStorage";
+import {Modal} from "../modal/Modal";
+import {useGuard} from "../hooks/useGuard";
+
+interface User {
+    _id: string;
+    email: string;
+    thumb: string;
+    is: {
+        admin: boolean;
+    };
+    token: string;
+}
 
 const Profile: NextPage = () => {
 
     // const host = 'http://localhost';
     // const port = '3000';
     // const [session, setSession] = useGuard('session')
+    const [user, setUser] = useStorage<User | null>('user', null)
+    const userGuard = useGuard()
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
-    const [user, setUser] = useStorage('user');
+    const [show, setShow] = useState(false)
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
-    const router = useRouter();
     const [img, setImg] = useState('');
+    const router = useRouter();
+
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('session'))
+        if(userGuard == null) {
+            router.push({pathname: '/'})
+        const user = JSON.parse(localStorage.getItem('user'))
         if(!cookie.userToken) {
-            localStorage.removeItem('session')
+            localStorage.removeItem('user')
             router.push('/')
         }
-    }, [])
-
+        // const user = JSON.parse(localStorage.getItem('session'))
+        // if (!cookie.userToken) {
+        //     localStorage.removeItem('session')
+        //     router.push({pathname: '/'}, undefined, {shallow: true})
+        // }
+    }}, [])
+    //
+    // const getUserName = async () => {
+    //     const users: any = await axios.get('/api/user/get/users')
+    //     console.log(users.data[0])
+    //     setName(users.data[0].name)
+    // }
+    // useEffect(() => {
+    //     getUserName()
+    // }, [])
+    //
+    // const userChange = (e: any) => {
+    //     let data_id = e.target.name
+    //     // if(data_id == "name"){
+    //     //     setName(e.target.value)
+    //     // }
+    //     // else if(data_id == "bio"){
+    //     //     setBio(e.target.value)
+    //     // }
+    //     // else if(data_id == 'number'){
+    //     //     setPhone(e.target.value)
+    //     // }
+    // }
+    //
+    // const userBio = (e: any) => {
+    //     e.preventDefault()
+    //     let data_id = e.target.name
+    //     // if(data_id == "name"){
+    //     //     setName(e.target.value)
+    //     // }
+    //     // else if(data_id == "bio"){
+    //     //     setBio(e.target.value)
+    //     // }
+    //     // else if(data_id == 'number'){
+    //     //     setPhone(e.target.value)
+    //     // }
+    //     let data = {
+    //         name: namer,
+    //         bio: bio,
+    //         number: phone
+    //     }
+    //     const getUserStatus = axios.post('/api/user/bio', data, {
+    //         headers: {
+    //             "Access-Control-Allow-Origin": "*",
+    //             'Content-Type': 'application/json',
+    //         }
+    //     }).then(response => response.data)
+    //     console.log(getUserStatus)
+    //
+    // }
     const logout = () => {
         removeCookie('userToken')
-        localStorage.removeItem('session')
+        localStorage.removeItem('user')
         router.push('/');
     }
 
@@ -109,6 +178,23 @@ const Profile: NextPage = () => {
         // console.log(getUserStatus.data.success)
     // }
     
+=======
+        }
+
+        let locale: any = localStorage.getItem('user')
+        let store = JSON.parse(locale)
+        console.log(store._id)
+        let id = store._id
+        const getUserStatus = await axios.post('/api/users/bio/' + id, data, {
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json',
+            }
+        }).then(response => response.data)
+        console.log(getUserStatus.data.success)
+    }
+
+>>>>>>> 26b4a2d561fe535ed0ac7882ba3e6857a2935a2d
     return (
         <div>
             <Navbar/>
@@ -132,7 +218,6 @@ const Profile: NextPage = () => {
                             className="w-forms__input"
                             type="text"
                             name="name"
-                            defaultValue={namer}
                             placeholder="Your name"
                             onBlur={userBio}
                          />
@@ -140,10 +225,10 @@ const Profile: NextPage = () => {
                     <div className="w-forms">
                         <span className="w-forms__title">Phone number</span>
                         <input className="w-forms__input"
-                                maxLength={10}
+                               maxLength={10}
+                               type="tel"
+                               name="number"
                                 defaultValue={phone}
-                                type="tel"
-                                name="number"
                                 placeholder="Phone number"
                                 onBlur={userBio}
                                 />
@@ -154,17 +239,14 @@ const Profile: NextPage = () => {
                             className="w-forms__textarea"
                             placeholder="Bio"
                             name='bio'
-                            defaultValue={bio}
                             maxLength={100}
                             onBlur={userBio}
                             >
                         </textarea>
                     </div>
                     <div className=">profile__logout">
-
                         <button className="logout-button _danger" onClick={logout}>
                             <span className="material-symbols-outlined">logout</span>Logout
-
                         </button>
                     </div>
                 </div>
