@@ -20,9 +20,7 @@ interface User {
 }
 
 const Profile: NextPage = () => {
-
     const [user, setUser] = useStorage<User | null>('user', null)
-
     // const host = 'http://localhost';
     // const port = '3000';
     // const [session, setSession] = useGuard('session')

@@ -59,15 +59,14 @@ const Users: NextPage = () => {
         console.log('user exist')
     }
 
-<<<<<<< HEAD
     const getUsers = async () => {
         const users : IUser[] = await axios.get('/api/users/get/users').then(response => response.data)
         setUsers(users)
     }
 
-    useEffect(() => {
-        getUsers()
-    }, [admin])
+    // useEffect(() => {
+    //     getUsers()
+    // }, [admin])
 
     useEffect(() => {
         if (user) {
@@ -78,7 +77,6 @@ const Users: NextPage = () => {
             }
         }
     }, [user])
-=======
     // const getUsers = async () => {
     //     const users : IUser[] = await axios.get('/api/users/get/users').then(response => response.data)
     //     setUsers(users)
@@ -98,7 +96,6 @@ const Users: NextPage = () => {
     //         }
     //     }
     // }, [user])
->>>>>>> e5b5a8d5625707153e6b2e5e6269f1e1f276034b
 
     const sign = async () => {
         const user = await axios.post('/api/user/sign', {

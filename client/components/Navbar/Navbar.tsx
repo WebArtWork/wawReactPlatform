@@ -6,6 +6,10 @@ import {useRouter} from "next/router";
 import {userRoutes, adminRoutes} from "../../app/routes";
 
 const Navbar = () => {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true)
+    }, [])
     const userGuard = useGuard()
     const router = useRouter();
     const [adminRoute, setAdminRoute] = useState([])
@@ -38,20 +42,19 @@ const Navbar = () => {
     // }
     // }, [])
     return (
+        mounted &&
         <nav className="nav">
             <Sidebar right/>
-            <ul className="navbar">
                 {userRoutes.map((route) => (
                     <Link key={route.link} className="navbar-link" href={route.link}>
-                        <span className="navbar-item">{route.name}</span>
+                        <a className="navbar-item">{route.name}</a>
                     </Link>
                 ))}
-                {typeof window !== 'undefined' && userGuard ? adminRoutes.map((route) => (
+                {userGuard ? adminRoutes.map((route) => (
                     <Link key={route.link} className="navbar-link" href={route.link}>
-                        <span className="navbar-item">{route.name}</span>
+                        <a className="navbar-item">{route.name}</a>
                     </Link>
                 )) : ''}
-            </ul>
         </nav>
     )
 }
