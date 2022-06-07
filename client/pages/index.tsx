@@ -21,6 +21,7 @@ interface User {
 }
 
 const Login: NextPage = () => {
+    const us = new UserService()
     const router = useRouter()
     const [user, setUser] = useStorage<User>('user', null)
     const [show, setShow] = useState(false)
@@ -59,6 +60,7 @@ const Login: NextPage = () => {
         const numberCheck = /[0-9]/.test(value);
         const pwdLengthCheck = value.length >= 8;
         const specialCharCheck = /[!@#$%^&*]/.test(value);
+        
         setChecks({
             capsLetterCheck,
             numberCheck,

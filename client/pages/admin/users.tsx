@@ -26,7 +26,7 @@ const Users: NextPage = () => {
     const [emailInput, setEmailInput] = useState('');
     const [user, setUser] = useStorage<IUser>('user', null);
     const [users, setUsers] = useState<any>([]);
-    const [admin, setAdmin] = useState<boolean>(false)
+    // const [admin, setAdmin] = useState<boolean>(false)
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'))
@@ -39,16 +39,27 @@ const Users: NextPage = () => {
         }
     }, [])
 
-    const handleChange = async (id: any) => {
-        const administrator: IUser = await axios.post('/api/users/set/admin/' + id).then(response => response.data )
-            const arr = users.filter((user: IUser) => id !== user._id)
-            setUsers([administrator, ...arr])
+    interface IUser {
+        _id: string,
+        thumb: string,
+        is: { admin: boolean },
+        email: string,
+        reg_email: string,
+        password: string,
+        data: object
     }
+
+    // const handleChange = async (id: any) => {
+    //     const administrator: IUser = await axios.post('/api/users/set/admin/' + id).then(response => response.data )
+    //         const arr = users.filter((user: IUser) => id !== user._id)
+    //         setUsers([administrator, ...arr])
+    // }
 
     const login = () => {
         console.log('user exist')
     }
 
+<<<<<<< HEAD
     const getUsers = async () => {
         const users : IUser[] = await axios.get('/api/users/get/users').then(response => response.data)
         setUsers(users)
@@ -67,6 +78,27 @@ const Users: NextPage = () => {
             }
         }
     }, [user])
+=======
+    // const getUsers = async () => {
+    //     const users : IUser[] = await axios.get('/api/users/get/users').then(response => response.data)
+    //     setUsers(users)
+    //     console.log(users)
+    // }
+
+    // useEffect(() => {
+    //     getUsers()
+    // }, [admin])
+
+    // useEffect(() => {
+    //     if (user) {
+    //         if (users.length) {
+    //             setUsers([...users, user])
+    //         } else {
+    //             setUsers([user])
+    //         }
+    //     }
+    // }, [user])
+>>>>>>> e5b5a8d5625707153e6b2e5e6269f1e1f276034b
 
     const sign = async () => {
         const user = await axios.post('/api/user/sign', {
@@ -105,13 +137,13 @@ const Users: NextPage = () => {
         }
     }
 
-    const deleteUser = async (id: string) => {
-        const getUserDelete = await axios.delete('/api/users/delete/' + id,
-        ).then(response => response.data)
-        if (getUserDelete.success) {
-            setUsers(users.filter((user: IUser) => id !== user._id))
-        }
-    }
+    // const deleteUser = async (id: string) => {
+    //     const getUserDelete = await axios.delete('/api/users/delete/' + id,
+    //     ).then(response => response.data)
+    //     if (getUserDelete.success) {
+    //         setUsers(users.filter((user: IUser) => id !== user._id))
+    //     }
+    // }
     
     return (
         <div>
@@ -135,7 +167,8 @@ const Users: NextPage = () => {
                             required>
                         </input>
 
-                        <button onClick={createUser}>Create</button>
+                        <button onClick={createUser}>
+                             Create</button>
                     </div>
 
                     <div className='table'>
@@ -157,7 +190,7 @@ const Users: NextPage = () => {
                                     <td>
                                         <button className='admin'>
                                             <input type='checkbox'
-                                                   onChange={() => handleChange(user._id)}
+                                                //    onChange={() => handleChange(user._id)}
                                                 //    {user.is.admin ? checked : ''}
                                                 // defaultChecked
                                                 checked={user.is.admin}
@@ -166,7 +199,8 @@ const Users: NextPage = () => {
                                         </button>
                                     </td>
                                     <td>
-                                        <button className='deleter' onClick={() => deleteUser(user._id)}>
+                                        <button className='deleter'>
+                                         {/* onClick={() => deleteUser(user._id)}> */}
                                             <img className='trash' src="https://img.icons8.com/ios/500/trash--v1.png" alt='delete'/>
                                         </button>
                                     </td>

@@ -5,43 +5,43 @@ const nJwt = require('njwt');
 const fs = require('fs');
 
 module.exports = async function(waw) {
-    if (!waw.config.signingKey) {
-        waw.config.signingKey = uuidv4();
-        let serverJson = waw.readJson(process.cwd() + '/server.json');
-        serverJson.signingKey = waw.config.signingKey;
-        waw.writeJson(process.cwd() + '/server.json', serverJson);
-    }
-    // initialize
-    if(waw.config.mail){
-        const nodemailer = require("nodemailer");
-        let transporter = nodemailer.createTransport({
-            host: waw.config.mail.host,
-            port: waw.config.mail.port,
-            secure: waw.config.mail.secure,
-            auth: waw.config.mail.auth
-        });
-        waw.send = (opts, cb=resp=>{})=>{
-            transporter.sendMail({
-                from: waw.config.mail.from,
-                subject: opts.subject || waw.config.mail.subject,
-                to: opts.to,
-                text: opts.text,
-                html: opts.html
-            }, cb);
-        }
-    }else{
-        waw.send = ()=>{}
-    }
-    if(mongoose.connection.readyState==0){
-        mongoose.connect(waw.mongoUrl, {
-            useUnifiedTopology: true,
-            useNewUrlParser: true
-        });
-        mongoose.Promise = global.Promise;
-    }
-    /*
-    *	Serve Client
-    */
+	if (!waw.config.signingKey) {
+		waw.config.signingKey = uuidv4();
+		let serverJson = waw.readJson(process.cwd() + '/server.json');
+		serverJson.signingKey = waw.config.signingKey;
+		waw.writeJson(process.cwd() + '/server.json', serverJson);
+	}
+	// initialize
+		if(waw.config.mail){
+			const nodemailer = require("nodemailer");
+			let transporter = nodemailer.createTransport({
+				host: waw.config.mail.host,
+				port: waw.config.mail.port,
+				secure: waw.config.mail.secure,
+				auth: waw.config.mail.auth
+			});
+			waw.send = (opts, cb=resp=>{})=>{
+				transporter.sendMail({
+					from: waw.config.mail.from,
+					subject: opts.subject || waw.config.mail.subject,
+					to: opts.to,
+					text: opts.text,
+					html: opts.html
+				}, cb);
+			}
+		}else{
+			waw.send = ()=>{}
+		}
+		if(mongoose.connection.readyState==0){
+			mongoose.connect(waw.mongoUrl, {
+				useUnifiedTopology: true,
+				useNewUrlParser: true
+			});
+			mongoose.Promise = global.Promise;
+		}
+	/*
+	*	Serve Client
+	*/
 
     waw.serve(process.cwd() + '/client/dist/app');
     const client = process.cwd() + '/client/dist/app/index.html';

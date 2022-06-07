@@ -7,11 +7,12 @@ class UserService extends Service {
 
     constructor() {
         super();
-        axios.get('/api/user/get')
-            .then((users)=>{
-                this.users = users;
-                // console.log(this.users)
+        axios.get('api/user/get')
+            .then((resp)=>{
+                this.users = resp.data;
+                console.log(this.users)
             })
+
     }
 }
 
