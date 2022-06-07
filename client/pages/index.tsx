@@ -8,6 +8,7 @@ import {useStorage} from "../hooks/useStorage";
 import {useGuard} from "../hooks/useGuard";
 import {Modal} from "../modal/Modal";
 import PWDRequire from "../components/PWDRequire/PWDRequire"
+import UserService from "../services/user.service";
 
 interface User {
     _id: string;
@@ -75,6 +76,7 @@ const Login: NextPage = () => {
             password: passInput
         }).then(response => response.data)
         setUser(user)
+
         setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
     }

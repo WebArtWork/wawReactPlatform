@@ -7,6 +7,7 @@ import {useCookies} from "react-cookie";
 import {useStorage} from "../hooks/useStorage";
 import {Modal} from "../modal/Modal";
 import {useGuard} from "../hooks/useGuard";
+import UserService from "../services/user.service";
 
 interface User {
     _id: string;
@@ -19,6 +20,8 @@ interface User {
 }
 
 const Profile: NextPage = () => {
+    const us = new UserService()
+    console.log(us.users)
     const [user, setUser] = useStorage<User | null>('user', null)
     const userGuard = useGuard()
     const [namer, setName] = useState('')

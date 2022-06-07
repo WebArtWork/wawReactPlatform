@@ -52,7 +52,6 @@ const Users: NextPage = () => {
     const getUsers = async () => {
         const users : IUser[] = await axios.get('/api/users/get/users').then(response => response.data)
         setUsers(users)
-        console.log(users)
     }
 
     useEffect(() => {

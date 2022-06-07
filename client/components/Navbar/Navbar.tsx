@@ -8,34 +8,34 @@ import {userRoutes, adminRoutes} from "../../app/routes";
 const Navbar = () => {
     const userGuard = useGuard()
     const router = useRouter();
-
     const [adminRoute, setAdminRoute] = useState([])
     useEffect(() => {
-        if(userGuard) {
+        if (userGuard) {
             setAdminRoute(...adminRoutes)
-        // const user = JSON.parse(localStorage.getItem('session'))
-        // // console.log(cookie.userToken)
-        // if(!cookie.userToken || !user) {
-        //     localStorage.removeItem('session')
-        //     router.push({pathname: '/'}, undefined, {shallow: true})
-        //
-        // }
-        // else if (!user.is.admin) {
-        //     document.querySelector('.admin').style.display = 'none';}
-    }},[])
+            // const user = JSON.parse(localStorage.getItem('session'))
+            // // console.log(cookie.userToken)
+            // if(!cookie.userToken || !user) {
+            //     localStorage.removeItem('session')
+            //     router.push({pathname: '/'}, undefined, {shallow: true})
+            //
+            // }
+            // else if (!user.is.admin) {
+            //     document.querySelector('.admin').style.display = 'none';}
+        }
+    }, [])
 
     // useEffect(() => {
 
-        // const user = JSON.parse(localStorage.getItem('session'))
-        // console.log(cookie.userToken)
-        // if(!cookie.userToken || !user) {
-        //     localStorage.removeItem('session')
-        //     router.push({pathname: '/'}, undefined, {shallow: true})
-        //
-        // }
-        // else if (!user.is.admin) {
-        //     document.querySelector('.admin').style.display = 'none';
-        // }
+    // const user = JSON.parse(localStorage.getItem('session'))
+    // console.log(cookie.userToken)
+    // if(!cookie.userToken || !user) {
+    //     localStorage.removeItem('session')
+    //     router.push({pathname: '/'}, undefined, {shallow: true})
+    //
+    // }
+    // else if (!user.is.admin) {
+    //     document.querySelector('.admin').style.display = 'none';
+    // }
     // }, [])
     return (
         <nav className="nav">
@@ -51,7 +51,6 @@ const Navbar = () => {
                         <span className="navbar-item">{route.name}</span>
                     </Link>
                 )) : ''}
-
             </ul>
         </nav>
     )

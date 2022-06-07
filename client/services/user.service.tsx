@@ -1,18 +1,18 @@
 import {Service} from 'wrcom'
+import axios from "axios";
 
 class UserService extends Service {
-
-    public rand = Math.floor(Math.random() * 5000);
-    public roles = ['admin']
-    public users: any = [];
-    public _users: any = {};
     public user: any = {data: {}, is: {}};
+    public users: any = [];
 
     constructor() {
         super();
+        axios.get('/api/user/get')
+            .then((users)=>{
+                this.users = users;
+                // console.log(this.users)
+            })
     }
-
-  
 }
 
 export default UserService
