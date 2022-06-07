@@ -11,7 +11,7 @@ const Profile: NextPage = () => {
 
     // const host = 'http://localhost';
     // const port = '3000';
-    const [session, setSession] = useGuard('session')
+    // const [session, setSession] = useGuard('session')
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
@@ -34,43 +34,45 @@ const Profile: NextPage = () => {
         router.push('/');
     }
 
-    const getUserName = async () => {
-        let locale: any = localStorage.getItem('session')
-        let store = JSON.parse(locale)
-        const user = await axios.get(`/api/users/get/users/` + store._id).then(response => response.data)
-        setName(user.name)
-        setPhone(user.phone)
-        setBio(user.bio)
-    }
-    async function uploadFile(event: any) {
-        let photos = event.currentTarget
-        let formData = new FormData();
+    // const getUserName = async () => {
+    //     let locale: any = localStorage.getItem('session')
+    //     let store = JSON.parse(locale)
+    //     const user = await axios.get(`/api/users/get/users/` + store._id).then(response => response.data)
+    //     setName(user.name)
+    //     setPhone(user.phone)
+    //     setBio(user.bio)
+    // }
+
+    // async function uploadFile(event: any) {
+    //     let photos = event.currentTarget
+    //     let formData = new FormData();
     
-        formData.append('photo', photos?.files[0]);
-        const result = await sendFile(formData);
-        console.log(photos.files[0])
-        event.preventDefault();
-    }
+    //     formData.append('photo', photos?.files[0]);
+    //     const result = await sendFile(formData);
+    //     // console.log(photos.files[0])
+    //     event.preventDefault();
+    // }
     
-    async function sendFile(data: any) {
-        let dt = data
-        let locale: any = localStorage.getItem('session')
-        let store = JSON.parse(locale)
-        const result = await axios.post(`api/users/uploads/` + store._id, dt);
-        console.log(result)
-    }
-    async function Get(){
-        let locale: any = localStorage.getItem('session')
-        let store = JSON.parse(locale)
-        let img = await axios.post('api/users/get/image/' + store._id).then(response => response)
-        let src = img.data.image
-        setImg(src)
-    }
+    // async function sendFile(data: any) {
+    //     let dt = data
+    //     let locale: any = localStorage.getItem('session')
+    //     let store = JSON.parse(locale)
+    //     const result = await axios.post(`api/users/uploads/` + store._id, dt);
+    //     // console.log(result)
+    // }
+
+    // async function Get(){
+    //     let locale: any = localStorage.getItem('session')
+    //     let store = JSON.parse(locale)
+    //     let img = await axios.post('api/users/get/image/' + store._id).then(response => response)
+    //     let src = img.data.image
+    //     setImg(src)
+    // }
     
-    useEffect(()=>{
-        getUserName()
-        Get()
-    }, [])
+    // useEffect(()=>{
+    //     getUserName()
+    //     Get()
+    // }, [])
 
     const userBio = async (e: any) => {
         const attr = e.currentTarget.getAttribute('name')
@@ -91,19 +93,21 @@ const Profile: NextPage = () => {
                 bio: e.target.value
             }
         } 
-        
-        let locale: any = localStorage.getItem('session')
-        let store = JSON.parse(locale)
-        console.log(store._id)
-        let id = store._id
-        const getUserStatus = await axios.post('/api/users/bio/' + id, data, {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                'Content-Type': 'application/json',
-            }
-        }).then(response => response.data)
-        console.log(getUserStatus.data.success)
     }
+        
+        // let locale: any = localStorage.getItem('session')
+        // let store = JSON.parse(locale)
+        // // console.log(store._id)
+        // let id = store._id
+        // const getUserStatus = await axios.post('/api/users/bio/' + id, data, {
+        //     headers: {
+        //         "Access-Control-Allow-Origin": "*",
+        //         'Content-Type': 'application/json',
+        //     }
+        // }).then(response => response.data)
+
+        // console.log(getUserStatus.data.success)
+    // }
     
     return (
         <div>
@@ -114,7 +118,9 @@ const Profile: NextPage = () => {
                     <div>
                         <form className="avatar _profile">
                         <img className="avatar__upload" id="blah" src={img} style={{width: '58px', height: '58px'}}/>
-                            <input type="file" accept="png" id="image" className="avatar__upload"  onChange={uploadFile} name="img"/>
+                            <input type="file" accept="png" id="image" className="avatar__upload" 
+                            //  onChange={uploadFile}
+                              name="img"/>
                                 <span className="material-symbols-outlined">edit</span>
                         </form>
                     </div>
@@ -139,7 +145,8 @@ const Profile: NextPage = () => {
                                 type="tel"
                                 name="number"
                                 placeholder="Phone number"
-                                onBlur={userBio}/>
+                                onBlur={userBio}
+                                />
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Bio</span>
@@ -149,7 +156,8 @@ const Profile: NextPage = () => {
                             name='bio'
                             defaultValue={bio}
                             maxLength={100}
-                            onBlur={userBio}>
+                            onBlur={userBio}
+                            >
                         </textarea>
                     </div>
                     <div className=">profile__logout">
@@ -163,6 +171,6 @@ const Profile: NextPage = () => {
             </div>
         </div>
     )
-}
+    }
 
 export default Profile;

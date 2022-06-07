@@ -58,6 +58,7 @@ const Login: NextPage = () => {
         const numberCheck = /[0-9]/.test(value);
         const pwdLengthCheck = value.length >= 8;
         const specialCharCheck = /[!@#$%^&*]/.test(value);
+        
         setChecks({
             capsLetterCheck,
             numberCheck,
@@ -77,7 +78,6 @@ const Login: NextPage = () => {
         setSession(user)
         setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
-
     }
 
     const sign = async () => {
