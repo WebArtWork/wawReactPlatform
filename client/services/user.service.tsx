@@ -10,9 +10,9 @@ class UserService extends Service {
         axios.get('api/user/get')
             .then((resp)=>{
                 this.users = resp.data;
-                console.log(this.users)
+                // console.log(this.users)
             })
-
+        // console.log(this)
     }
 }
 
