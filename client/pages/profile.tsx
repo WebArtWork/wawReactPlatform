@@ -23,7 +23,7 @@ const Profile: NextPage = () => {
     // const host = 'http://localhost';
     // const port = '3000';
     // const [session, setSession] = useGuard('session')
-    // const [user, setUser] = useStorage<User | null>('user', null)
+    const [user, setUser] = useStorage<User | null>('user', null)
     const userGuard = useGuard()
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
@@ -88,7 +88,7 @@ const Profile: NextPage = () => {
     //         bio: bio,
     //         number: phone
     //     }
-    
+
     //     const getUserStatus = axios.post('/api/user/bio', data, {
     //         headers: {
     //             "Access-Control-Allow-Origin": "*",
@@ -165,6 +165,13 @@ const Profile: NextPage = () => {
             }
         } 
     }
+
+    // update(){
+    //     this.us.user.name = input.name.value;
+    //     this.us.user.data.bio = input.bio.value;
+    //     this.us.user.data.phone = input.phone.value;
+    //     this.us.update();
+    //   }
         
         // let locale: any = localStorage.getItem('session')
         // let store = JSON.parse(locale)
