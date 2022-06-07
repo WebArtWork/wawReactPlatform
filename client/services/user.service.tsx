@@ -1,4 +1,4 @@
-import {Service} from 'wrcom'
+import {Service} from 'wrcom';
 import axios from "axios";
 
 class UserService extends Service {
