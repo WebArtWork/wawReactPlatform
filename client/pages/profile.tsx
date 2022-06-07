@@ -23,7 +23,7 @@ const Profile: NextPage = () => {
     // const host = 'http://localhost';
     // const port = '3000';
     // const [session, setSession] = useGuard('session')
-    const [user, setUser] = useStorage<User | null>('user', null)
+    // const [user, setUser] = useStorage<User | null>('user', null)
     const userGuard = useGuard()
     const [namer, setName] = useState('')
     const [phone, setPhone] = useState('')
@@ -88,6 +88,7 @@ const Profile: NextPage = () => {
     //         bio: bio,
     //         number: phone
     //     }
+    
     //     const getUserStatus = axios.post('/api/user/bio', data, {
     //         headers: {
     //             "Access-Control-Allow-Origin": "*",
@@ -97,6 +98,7 @@ const Profile: NextPage = () => {
     //     console.log(getUserStatus)
     //
     // }
+
     const logout = () => {
         removeCookie('userToken')
         localStorage.removeItem('user')
@@ -106,7 +108,7 @@ const Profile: NextPage = () => {
     // const getUserName = async () => {
     //     let locale: any = localStorage.getItem('session')
     //     let store = JSON.parse(locale)
-    //     const user = await axios.get(`/api/users/get/users/` + store._id).then(response => response.data)
+    //     const user = await axios.get(`/api/users/update/` + store._id).then(response => response.data)
     //     setName(user.name)
     //     setPhone(user.phone)
     //     setBio(user.bio)
@@ -178,23 +180,19 @@ const Profile: NextPage = () => {
         // console.log(getUserStatus.data.success)
     // }
     
-=======
-        }
+        // let locale: any = localStorage.getItem('user')
+        // let store = JSON.parse(locale)
+        // console.log(store._id)
+        // let id = store._id
+        // const getUserStatus = await axios.post('/api/users/bio/' + id, data, {
+        //     headers: {
+        //         "Access-Control-Allow-Origin": "*",
+        //         'Content-Type': 'application/json',
+        //     }
+        // }).then(response => response.data)
+        // console.log(getUserStatus.data.success)
+    
 
-        let locale: any = localStorage.getItem('user')
-        let store = JSON.parse(locale)
-        console.log(store._id)
-        let id = store._id
-        const getUserStatus = await axios.post('/api/users/bio/' + id, data, {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                'Content-Type': 'application/json',
-            }
-        }).then(response => response.data)
-        console.log(getUserStatus.data.success)
-    }
-
->>>>>>> 26b4a2d561fe535ed0ac7882ba3e6857a2935a2d
     return (
         <div>
             <Navbar/>

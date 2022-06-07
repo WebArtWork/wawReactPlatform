@@ -39,7 +39,6 @@ const Users: NextPage = () => {
         }
     }, [])
 
-<<<<<<< HEAD
     interface IUser {
         _id: string,
         thumb: string,
