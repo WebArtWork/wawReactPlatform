@@ -5,13 +5,16 @@ import axios from "axios";
 import {useStorage} from '../../hooks/useStorage';
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
-
+import UserService from "../../services/user.service";
 
 interface IUser {
     _id: string,
     thumb: string,
     is: { admin: boolean },
     email: string,
+    name: string,
+    phone: string;
+    bio: string;
     reg_email: string,
     password: string,
     data: object
@@ -21,6 +24,7 @@ const Users: NextPage = () => {
     // const [checked, setChecked]: any = useState(false);
     const [inputError, setInputError]: any = useState(false);
     // const [user, setUser] = useStorage<IUser>('user')
+    const us = new UserService()
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter()
     const [emailInput, setEmailInput] = useState('');
@@ -28,6 +32,7 @@ const Users: NextPage = () => {
     const [users, setUsers] = useState<any>([]);
     // const [admin, setAdmin] = useState<boolean>(false)
 
+    
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'))
         // console.log(cookie.userToken)
@@ -39,17 +44,8 @@ const Users: NextPage = () => {
         }
     }, [])
 
-    interface IUser {
-        _id: string,
-        thumb: string,
-        is: { admin: boolean },
-        email: string,
-        reg_email: string,
-        password: string,
-        data: object
-    }
-
     const handleChange = async (id: any) => {
+        // const admin = new UserService().user
         const administrator: IUser = await axios.post('/api/user/update/' + id).then(response => response.data )
             const arr = users.filter((user: IUser) => id !== user._id)
             setUsers([administrator, ...arr])
@@ -127,12 +123,8 @@ const Users: NextPage = () => {
         
     }
 
-    const deleteUser = async (id: string) => {
-        const getUserDelete = await axios.delete('/api/user/get/' + id,
-        ).then(response => response.data)
-        if (getUserDelete.success) {
-            setUsers(users.filter((user: IUser) => id !== user._id))
-        }
+    const deleteUser = (id: string) => {
+        us.delete(id);
     }
     
     return (
@@ -175,7 +167,10 @@ const Users: NextPage = () => {
                             {users.length ? users.map((user: IUser) => (
                                 
                                 <tr key={user._id}>
-                                    <td>{user.email}</td>
+                                    <td>
+                                        {/* {user.img} */}
+                                        {user.name}
+                                        </td>
                                     <td>{user.email}</td>
                                     <td>
                                         <button className='admin'>

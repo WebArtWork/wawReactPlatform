@@ -10,14 +10,9 @@ import {useGuard} from "../hooks/useGuard";
 import UserService from "../services/user.service";
 
 const Profile: NextPage = () => {
-
-    // const host = 'http://localhost';
-    // const port = '3000';
-    // const [session, setSession] = useGuard('session')
-    const us = new UserService()
-    const [user, setUser] = useStorage<User | null>('user', null)
+    const [user, setUser] = useStorage<User>('user', null)
     const userGuard = useGuard()
-    const [namer, setName] = useState('')
+    const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
     const [show, setShow] = useState(false)
@@ -25,19 +20,7 @@ const Profile: NextPage = () => {
     const [img, setImg] = useState('');
     const router = useRouter();
 
-    interface User {
-        _id: string;
-        email: string;
-        thumb: string;
-        name: string;
-        phone: string;
-        bio: string;
-        is: {
-            admin: boolean;
-        };
-        token: string;
-    }    
-
+    const US = new UserService();
 
     useEffect(() => {
         if(userGuard == null) {
@@ -47,41 +30,24 @@ const Profile: NextPage = () => {
             localStorage.removeItem('user')
             router.push('/')
         }
-        // const user = JSON.parse(localStorage.getItem('session'))
-        // if (!cookie.userToken) {
-        //     localStorage.removeItem('session')
-        //     router.push({pathname: '/'}, undefined, {shallow: true})
-        // }
-    }}, [])
-    
-    // const userChange = (e: any) => {
-    //     let data_id = e.target.name
-    //     if(data_id == "name"){
-    //         setName(e.target.value)
-    //     }
-    //     else if(data_id == "bio"){
-    //         setBio(e.target.value)
-    //     }
-    //     else if(data_id == 'number'){
-    //         setPhone(e.target.value)
-    //     }
-    // }
+    }},
+     [])
 
-        const getUserStatus = async () =>{
-            let user_status = await axios.get('/api/user/get').then(response => response.data)
-            let locale: string | any = localStorage.getItem('session')
-            let store = JSON.parse(locale)
-            let i;
-            for(i = 0; i <= user_status.length; i++){
-                if(store._id == user_status[i]._id){
-                    let user_info = user_status[i]
-                    setName(user_info.name)
-                    setPhone(user_info.phone)
-                    setBio(user_info.bio)
-                    return
-                }
+    const getUserStatus = async () =>{
+        let user_status = await axios.get('/api/user/get').then(response => response.data)
+        let locale: string | any = localStorage.getItem('session')
+        let store = JSON.parse(locale)
+        let i;
+        for(i = 0; i <= user_status.length; i++){
+            if(store._id == user_status[i]._id){
+                let user_info = user_status[i]
+                setName(user_info.name)
+                setPhone(user_info.phone)
+                setBio(user_info.bio)
+                return
             }
         }
+    }
 
     const logout = () => {
         removeCookie('userToken')
@@ -90,68 +56,41 @@ const Profile: NextPage = () => {
     }
 
     const setUserData = async () => {
-        let locale: any = localStorage.getItem('session')
-        let store = JSON.parse(locale)
-        // const user: User = await axios.post('/api/user/update/' + store._id).then(response => response.data)
-        const user: any = new UserService()
-        
+        const userData = {
+            _id: user._id,
+            name: name,
+            data: {
+                bio: bio,
+                phone: phone
+            }
+        }
 
-        console.log(user)
-        // setName(user.name)
-        // setPhone(user.phone)
-        // setBio(user.bio)
+        US.update(userData);
+        setName(US.user.name)
+        setPhone(US.user.phone)
+        setBio(US.user.bio)
     }
-
-    // async function uploadFile(event: any) {
-    //     let photos = event.currentTarget
-    //     let formData = new FormData();
-    
-    //     formData.append('photo', photos?.files[0]);
-    //     const result = await sendFile(formData);
-    //     // console.log(photos.files[0])
-    //     event.preventDefault();
-    // }
-    
-    // async function sendFile(data: any) {
-    //     let dt = data
-    //     let locale: any = localStorage.getItem('session')
-    //     let store = JSON.parse(locale)
-    //     const result = await axios.post(`api/users/uploads/` + store._id, dt);
-    //     // console.log(result)
-    // }
-
-    // async function Get(){
-    //     let locale: any = localStorage.getItem('session')
-    //     let store = JSON.parse(locale)
-    //     let img = await axios.post('api/users/get/image/' + store._id).then(response => response)
-    //     let src = img.data.image
-    //     setImg(src)
-    // }
-    
     useEffect(()=>{
         getUserStatus()
-        setUserData()
-    }, [])
+    }, 
+    [])
 
     const userBio = async (e: any) => {
-        const attr = e.currentTarget.getAttribute('name')
-        let data
+        const attr = e.target.getAttribute('name')
+        
+        switch(attr){
+            case 'name':
+                setName(e.target.value)
+                break;
+            case 'phone':
+                setPhone(e.target.value);
+                break;
+            case 'bio':
+                setBio(e.target.value);
+                break;
+        }
 
-        if(attr == 'name'){
-            data = {
-                name: e.target.value
-            }
-        }
-        else if(attr == 'number'){
-            data = {
-                phone: e.target.value
-            }
-        }
-        else if (attr == 'bio'){
-            data = {
-                bio: e.target.value
-            }
-        } 
+        setUserData();
     }
     
     return (
@@ -177,17 +116,18 @@ const Profile: NextPage = () => {
                             className="w-forms__input"
                             type="text"
                             name="name"
-                            defaultValue={namer}
+                            defaultValue={name}
                             placeholder="Your name"
-                            onBlur={userBio}
+                            onChange={userBio}
                          />
+
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Phone number</span>
                         <input className="w-forms__input"
                                maxLength={10}
                                type="tel"
-                               name="number"
+                               name="phone"
                                 defaultValue={phone}
                                 placeholder="Phone number"
                                 onBlur={userBio}
