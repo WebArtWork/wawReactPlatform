@@ -12,7 +12,11 @@ interface IUser {
         admin: boolean;
     };
     token: string;
-    data:object;
+    data:{
+        name:string,
+        bio: string,
+        phone: number
+    };
 }
 
 class UserService extends Service {
@@ -33,7 +37,7 @@ class UserService extends Service {
         this._timeout = setTimeout(()=>{
             axios.post(
                 'api/user/update', 
-                    {_id: user._id, name: user.name, data: user.data}
+                    {_id: user._id, data: user.data}
                 );
         })
     }

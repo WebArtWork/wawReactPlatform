@@ -20,7 +20,7 @@ const Profile: NextPage = () => {
     const [img, setImg] = useState('');
     const router = useRouter();
 
-    const US = new UserService();
+    const us = new UserService();
 
     useEffect(() => {
         if(userGuard == null) {
@@ -58,18 +58,19 @@ const Profile: NextPage = () => {
     const setUserData = async () => {
         const userData = {
             _id: user._id,
-            name: name,
             data: {
+                name: name,
                 bio: bio,
                 phone: phone
             }
         }
 
-        US.update(userData);
-        setName(US.user.name)
-        setPhone(US.user.phone)
-        setBio(US.user.bio)
+        us.update(userData);
+        setName(us.user.name)
+        setPhone(us.user.phone)
+        setBio(us.user.bio)
     }
+
     useEffect(()=>{
         getUserStatus()
     }, 
