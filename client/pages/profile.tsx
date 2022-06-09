@@ -23,7 +23,6 @@ interface User {
 const Profile: NextPage = () => {
     const [user, setUser] = useStorage<User>('user', null)
     const userGuard = useGuard()
-    const [state, setState] = useState('')
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
@@ -34,14 +33,6 @@ const Profile: NextPage = () => {
 
     const US = new UserService();
     const rs = new RenderService()
-
-    useEffect(() => {
-        rs.on('users' , () => {
-            setState(state)
-            console.log(state)
-        })
-    },[state])
-
 
     useEffect(() => {
         if(userGuard == null) {

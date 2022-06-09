@@ -29,7 +29,6 @@ const Users: NextPage = () => {
 
     // const [checked, setChecked]: any = useState(false);
     const [inputError, setInputError]: any = useState(false);
-    const [state, setState] = useState('')
     // const [user, setUser] = useStorage<IUser>('user')
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter()
@@ -37,25 +36,6 @@ const Users: NextPage = () => {
     const [user, setUser] = useStorage<IUser>('user', null);
     const [users, setUsers] = useState<any>([]);
     // const [admin, setAdmin] = useState<boolean>(false)
-
-    useEffect(() => {
-        rs.on('users', () => {
-            setState(state)
-            console.log(state)
-        })
-    }, [state])
-
-
-    // useEffect(() => {
-    //     const user = JSON.parse(localStorage.getItem('user'))
-    //     // console.log(cookie.userToken)
-    //     if (!cookie.userToken) {
-    //         localStorage.removeItem('user')
-    //         router.push({pathname: '/'}, undefined, {shallow: true})
-    //     } else if (!user.is.admin) {
-    //         router.push({pathname: '/'}, undefined, {shallow: true})
-    //     }
-    // }, [])
 
     useEffect(() => {
         if (userGuard === null) {
