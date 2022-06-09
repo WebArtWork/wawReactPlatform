@@ -63,6 +63,8 @@ Note: Beware of modifying this element as it can break the animations - you shou
 
 /* Styling of overlay */
 .bm-overlay {
+  position: absolute;
+  left: 0;
   margin-top: 25px;
   background: #000000;
 }

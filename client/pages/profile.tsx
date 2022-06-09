@@ -8,6 +8,17 @@ import {useStorage} from "../hooks/useStorage";
 import {Modal} from "../modal/Modal";
 import {useGuard} from "../hooks/useGuard";
 import UserService from "../services/user.service";
+import RenderService from "../services/render.service";
+
+interface User {
+    _id: string;
+    email: string;
+    thumb: string;
+    is: {
+        admin: boolean;
+    };
+    token: string;
+}
 
 const Profile: NextPage = () => {
     const [user, setUser] = useStorage<User>('user', null)
@@ -21,20 +32,21 @@ const Profile: NextPage = () => {
     const router = useRouter();
 
     const us = new UserService();
+    const rs = new RenderService()
 
     useEffect(() => {
         if(userGuard == null) {
             router.push({pathname: '/'})
-        const user = JSON.parse(localStorage.getItem('user'))
-        if(!cookie.userToken) {
-            localStorage.removeItem('user')
+        }
+        else if(!cookie.userToken) {
+            setUser({})
             router.push('/')
         }
-    }},
-     [])
+    }, [])
 
     const getUserStatus = async () =>{
         let user_status = await axios.get('/api/user/get').then(response => response.data)
+        // console.log(user_status)
         let locale: string | any = localStorage.getItem('session')
         let store = JSON.parse(locale)
         let i;
@@ -44,6 +56,7 @@ const Profile: NextPage = () => {
                 setName(user_info.name)
                 setPhone(user_info.phone)
                 setBio(user_info.bio)
+                // console.log(name)
                 return
             }
         }
@@ -51,21 +64,26 @@ const Profile: NextPage = () => {
 
     const logout = () => {
         removeCookie('userToken')
-        localStorage.removeItem('user')
+       setUser({})
         router.push('/');
     }
 
     const setUserData = async () => {
+
         const userData = {
             _id: user._id,
             data: {
                 name: name,
                 bio: bio,
                 phone: phone
-            }
+            },
+            token: user.token
         }
 
-        us.update(userData);
+        console.log(user)
+        console.log(user.token)
+
+        us.update(userData)
         setName(us.user.name)
         setPhone(us.user.phone)
         setBio(us.user.bio)
@@ -73,30 +91,54 @@ const Profile: NextPage = () => {
 
     useEffect(()=>{
         getUserStatus()
-    }, 
-    [])
+    }, [])
 
     const userBio = async (e: any) => {
         const attr = e.target.getAttribute('name')
-        
-        switch(attr){
-            case 'name':
-                setName(e.target.value)
-                break;
-            case 'phone':
-                setPhone(e.target.value);
-                break;
-            case 'bio':
-                setBio(e.target.value);
-                break;
-        }
+        let $name: HTMLElement | any= document.getElementById('name')
+        let $phone: HTMLElement | any = document.getElementById('phone')
+        let $bio: HTMLElement | any = document.getElementById('bio')
 
+        if(attr == 'name'){
+            const userData = {
+                _id: user._id,
+                data: {
+                    name: e.currentTarget.value,
+                    bio: $bio.value,
+                    phone: $phone.value
+                }
+            }
+            us.update(userData);
+        }else if (attr == 'phone'){
+            console.log($name)
+            const userData = {
+                _id: user._id,
+                data: {
+                    name: $name.value,
+                    bio: $bio.value,
+                    phone: e.currentTarget.value
+                }
+            }
+            us.update(userData);
+        }else{
+            const userData = {
+                _id: user._id,
+                data: {
+                    name: $name.value,
+                    bio: e.currentTarget.value,
+                    phone: $phone.value
+                }
+            }
+            us.update(userData);
+            // console.log(userData)
+        }
+        
         setUserData();
     }
     
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             <div className="profile container w-card _pd">
                 <div className="profile__header w-card__header">
                     <div>Profile Settings</div>
@@ -112,10 +154,11 @@ const Profile: NextPage = () => {
                 </div>
                 <div className="profile__body">
                     <div className="w-forms">
-                        <span className="w-forms__title" >Name</span>
+                        <span  className="w-forms__title" >Name</span>
                         <input
                             className="w-forms__input"
                             type="text"
+                            id="name"
                             name="name"
                             defaultValue={name}
                             placeholder="Your name"
@@ -125,7 +168,9 @@ const Profile: NextPage = () => {
                     </div>
                     <div className="w-forms">
                         <span className="w-forms__title">Phone number</span>
-                        <input className="w-forms__input"
+                        <input 
+                                id="phone"
+                                className="w-forms__input"
                                maxLength={10}
                                type="tel"
                                name="phone"
@@ -137,6 +182,7 @@ const Profile: NextPage = () => {
                     <div className="w-forms">
                         <span className="w-forms__title">Bio</span>
                         <textarea
+                            id="bio"
                             className="w-forms__textarea"
                             placeholder="Bio"
                             name='bio'

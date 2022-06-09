@@ -6,6 +6,8 @@ import {useStorage} from '../../hooks/useStorage';
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
 import UserService from "../../services/user.service";
+import {useGuard} from "../../hooks/useGuard";
+import RenderService from "../../services/render.service";
 
 interface IUser {
     _id: string,
@@ -21,10 +23,13 @@ interface IUser {
 }
 
 const Users: NextPage = () => {
+    const us = new UserService()
+    const rs = new RenderService()
+    const userGuard = useGuard()
+
     // const [checked, setChecked]: any = useState(false);
     const [inputError, setInputError]: any = useState(false);
     // const [user, setUser] = useStorage<IUser>('user')
-    const us = new UserService()
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter()
     const [emailInput, setEmailInput] = useState('');
@@ -32,27 +37,28 @@ const Users: NextPage = () => {
     const [users, setUsers] = useState<any>([]);
     // const [admin, setAdmin] = useState<boolean>(false)
 
-    
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'))
-        // console.log(cookie.userToken)
-        if (!cookie.userToken) {
-            localStorage.removeItem('user')
-            router.push({pathname: '/'}, undefined, {shallow: true})
-        } else if (!user.is.admin) {
-            router.push({pathname: '/'}, undefined, {shallow: true})
+        if (userGuard === null) {
+            router.push({pathname: '/'})
+        } else if (!cookie.userToken) {
+            setUser({})
+            router.push({pathname: '/'})
+        }
+        else if (!user.is.admin) {
+            router.push({pathname: '/profile'})
         }
     }, [])
 
     const handleChange = async (id: any) => {
         // const admin = new UserService().user
-        const administrator: IUser = await axios.post('/api/user/update/' + id).then(response => response.data )
-            const arr = users.filter((user: IUser) => id !== user._id)
-            setUsers([administrator, ...arr])
+        const administrator: IUser = await axios.post('/api/user/update/' + id).then(response => response.data)
+        const arr = users.filter((user: IUser) => id !== user._id)
+        setUsers([administrator, ...arr])
     }
 
     const login = () => {
         console.log('user exist')
+        us.user = user
     }
     useEffect(() => {
         if (user) {
@@ -65,9 +71,8 @@ const Users: NextPage = () => {
     }, [user])
 
     const getUsers = async () => {
-        const users : IUser[] = await axios.get('/api/user/get').then(response => response.data)
+        const users: IUser[] = await axios.get('/api/user/get').then(response => response.data)
         setUsers(users)
-        console.log(users)
     }
 
     useEffect(() => {
@@ -89,6 +94,7 @@ const Users: NextPage = () => {
             email: emailInput,
         }).then(response => response.data)
         setUsers(user)
+        us.user = user
     }
 
     const createUser = async (e: any) => {
@@ -117,16 +123,16 @@ const Users: NextPage = () => {
                 sign()
             }
         }
-        setTimeout(function(){
+        setTimeout(function () {
             getUsers()
         }, 100)
-        
+
     }
 
     const deleteUser = (id: string) => {
         us.delete(id);
     }
-    
+
     return (
         <div>
             <Navbar/>
@@ -150,7 +156,8 @@ const Users: NextPage = () => {
                         </input>
 
                         <button onClick={createUser}>
-                             Create</button>
+                            Create
+                        </button>
                     </div>
 
                     <div className='table'>
@@ -165,12 +172,12 @@ const Users: NextPage = () => {
                             </thead>
                             <tbody>
                             {users.length ? users.map((user: IUser) => (
-                                
+
                                 <tr key={user._id}>
                                     <td>
                                         {/* {user.img} */}
                                         {user.name}
-                                        </td>
+                                    </td>
                                     <td>{user.email}</td>
                                     <td>
                                         <button className='admin'>
@@ -178,14 +185,15 @@ const Users: NextPage = () => {
                                                    onChange={() => handleChange(user._id)}
                                                 //    {user.is.admin ? checked : ''}
                                                 // defaultChecked
-                                                checked={user.is.admin}
-                                                   
+                                                   checked={user.is.admin}
+
                                             />
                                         </button>
                                     </td>
                                     <td>
                                         <button className='deleter' onClick={() => deleteUser(user._id)}>
-                                            <img className='trash' src="https://img.icons8.com/ios/500/trash--v1.png" alt='delete'/>
+                                            <img className='trash' src="https://img.icons8.com/ios/500/trash--v1.png"
+                                                 alt='delete'/>
                                         </button>
                                     </td>
                                 </tr>)) : <tr>

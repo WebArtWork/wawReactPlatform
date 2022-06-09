@@ -15,35 +15,12 @@ const Navbar = () => {
     const [adminRoute, setAdminRoute] = useState([])
     useEffect(() => {
         if (userGuard) {
-            setAdminRoute(...adminRoute)
-            // const user = JSON.parse(localStorage.getItem('session'))
-            // // console.log(cookie.userToken)
-            // if(!cookie.userToken || !user) {
-            //     localStorage.removeItem('session')
-            //     router.push({pathname: '/'}, undefined, {shallow: true})
-            //
-            // }
-            // else if (!user.is.admin) {
-            //     document.querySelector('.admin').style.display = 'none';}
-        }
-    }, [])
-
+            setAdminRoute(...adminRoutes)
+    }}, [])
     // useEffect(() => {
-
-    // const user = JSON.parse(localStorage.getItem('session'))
-    // console.log(cookie.userToken)
-    // if(!cookie.userToken || !user) {
-    //     localStorage.removeItem('session')
-    //     router.push({pathname: '/'}, undefined, {shallow: true})
-    //
-    // }
-    // else if (!user.is.admin) {
-    //     document.querySelector('.admin').style.display = 'none';
-    // }
-    // }, [])
     return (
         mounted &&
-        <nav className="nav">
+        <nav className="navbar">
             <Sidebar right/>
                 {userRoutes.map((route) => (
                     <Link key={route.link} className="navbar-link" href={route.link}>

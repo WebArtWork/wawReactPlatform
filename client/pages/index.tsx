@@ -78,9 +78,7 @@ const Login: NextPage = () => {
             password: passInput
         }).then(response => response.data)
         us.user = user
-        console.log(us.user)
         setUser(user)
-
         setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
     }
@@ -90,9 +88,8 @@ const Login: NextPage = () => {
             email: emailInput,
             password: passInput
         }).then(response => response.data)
-        setUser(user)
         us.user = user
-        console.log(us.user)
+        setUser(user)
         setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
     }
