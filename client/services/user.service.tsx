@@ -24,10 +24,11 @@ class UserService extends Service {
     constructor() {
         const rs = new RenderService()
         super();
-        axios.get('api/user/get')
+        axios.get('http://localhost:3000/api/user/get')
             .then((resp)=>{
                 this.users = resp.data;
                 rs.render('users')
+                console.log(this.users)
             })
     }
 
