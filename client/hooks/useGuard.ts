@@ -12,9 +12,13 @@ interface IUser {
 
 export const useGuard = () => {
     const [user, setUser] = useStorage<IUser | null>('user', null)
-    // console.log(user)
     if (user == null) {
         return null
     }
+
+    if(!user) {
+        return null
+    }
+
     return user.is.admin;
 }

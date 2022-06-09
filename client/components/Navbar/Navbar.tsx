@@ -17,7 +17,7 @@ const Navbar = () => {
         if (userGuard) {
             setAdminRoute(...adminRoutes)
     }}, [])
-
+    // useEffect(() => {
     return (
         mounted &&
         <nav className="navbar">
