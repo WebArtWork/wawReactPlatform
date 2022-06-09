@@ -46,7 +46,6 @@ const Profile: NextPage = () => {
 
     const getUserStatus = async () =>{
         let user_status = await axios.get('/api/user/get').then(response => response.data)
-        // console.log(user_status)
         let locale: string | any = localStorage.getItem('session')
         let store = JSON.parse(locale)
         let i;
@@ -95,6 +94,7 @@ const Profile: NextPage = () => {
 
     const userBio = async (e: any) => {
         const attr = e.target.getAttribute('name')
+
         let $name: HTMLElement | any= document.getElementById('name')
         let $phone: HTMLElement | any = document.getElementById('phone')
         let $bio: HTMLElement | any = document.getElementById('bio')
@@ -133,6 +133,20 @@ const Profile: NextPage = () => {
             // console.log(userData)
         }
         
+// =======
+        
+//         switch(attr){
+//             case 'name':
+//                 setName(e.target.value)
+//                 break;
+//             case 'phone':
+//                 setPhone(e.target.value);
+//                 break;
+//             case 'bio':
+//                 setBio(e.target.value);
+//                 break;
+//         }
+// >>>>>>> 53839d4a6496ab10a2abb224bbd73afe76232f89
         setUserData();
     }
     
