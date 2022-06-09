@@ -8,6 +8,7 @@ import {useStorage} from "../hooks/useStorage";
 import {Modal} from "../modal/Modal";
 import {useGuard} from "../hooks/useGuard";
 import UserService from "../services/user.service";
+import RenderService from "../services/render.service";
 
 interface User {
     _id: string;

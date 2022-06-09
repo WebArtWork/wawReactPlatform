@@ -1,16 +1,19 @@
 import {Service} from 'wrcom';
 import axios from "axios";
+import RenderService from "./render.service";
 
 class UserService extends Service {
     public user: any = {data: {}, is: {}};
     public users: any = [];
-    private _timeout;
+    private _timeout: any;
 
     constructor() {
         super();
+        const rs = new RenderService()
         axios.get('api/user/get')
             .then((resp)=>{
                 this.users = resp.data;
+                rs.render('users');
                 // console.log(this.users)
             })
         // console.log(this)
