@@ -30,10 +30,7 @@ const Profile: NextPage = () => {
     const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const [img, setImg] = useState('');
     const router = useRouter();
-
-    const US = new UserService();
-    const rs = new RenderService()
-
+    const us = new UserService();
     useEffect(() => {
         if(userGuard == null) {
             router.push({pathname: '/'})
@@ -48,8 +45,7 @@ const Profile: NextPage = () => {
         let user_status = await axios.get('/api/user/get').then(response => response.data)
         let locale: string | any = localStorage.getItem('user')
         let store = JSON.parse(locale)
-        let i;
-        for(i = 0; i <= user_status.length; i++){
+        for(let i = 0; i <= user_status.length; i++){
             if(store._id == user_status[i]._id){
                 let user_info = user_status[i]
                 setName(user_info.name)
@@ -69,17 +65,16 @@ const Profile: NextPage = () => {
     const setUserData = async () => {
         const userData = {
             _id: user._id,
-            name: name,
             data: {
+                name: name,
                 bio: bio,
                 phone: phone
             }
         }
-
-        US.update(userData);
-        setName(US.user.name)
-        setPhone(US.user.phone)
-        setBio(US.user.bio)
+        us.update(userData);
+        setName(us.user.name)
+        setPhone(us.user.phone)
+        setBio(us.user.bio)
     }
     useEffect(()=>{
         getUserStatus()
@@ -87,7 +82,7 @@ const Profile: NextPage = () => {
 
     const userBio = async (e: any) => {
         const attr = e.target.getAttribute('name')
-        
+
         switch(attr){
             case 'name':
                 setName(e.target.value)
@@ -139,7 +134,7 @@ const Profile: NextPage = () => {
                                name="phone"
                                 defaultValue={phone}
                                 placeholder="Phone number"
-                                onBlur={userBio}
+                                onChange={userBio}
                                 />
                     </div>
                     <div className="w-forms">
@@ -150,7 +145,7 @@ const Profile: NextPage = () => {
                             name='bio'
                             maxLength={100}
                             defaultValue={bio}
-                            onBlur={userBio}
+                            onChange={userBio}
                             >
                         </textarea>
                     </div>

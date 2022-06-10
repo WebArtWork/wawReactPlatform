@@ -22,13 +22,12 @@ class UserService extends Service {
     private _timeout : any;
 
     constructor() {
-        const rs = new RenderService()
+        // const rs = new RenderService()
         super();
         axios.get('http://localhost:3000/api/user/get')
             .then((resp)=>{
                 this.users = resp.data;
-                rs.render('users')
-                console.log(this.users)
+                // rs.render('users')
             })
     }
 
@@ -38,8 +37,9 @@ class UserService extends Service {
         this._timeout = setTimeout(()=>{
             axios.post(
                 'api/user/update',
-                {_id: user._id, name: user.name, data: user.data}
+                {_id: user._id, data: user.data}
             );
+            console.log(user.data)
         })
     }
 
