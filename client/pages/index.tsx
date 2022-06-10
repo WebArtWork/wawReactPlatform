@@ -26,7 +26,6 @@ const Login: NextPage = () => {
     const [user, setUser] = useStorage<User>('user', null)
     const [show, setShow] = useState(false)
     // const [session, setSession] = useGuard('session')
-    const [cookie, setCookie] = useCookies(['userToken'])
     const [emailInput, setEmailInput] = useState('ceo@webart.work');
     const [passInput, setPassInput] = useState('asdasdasdasd');
     const [passwordShown, setPasswordShown] = useState(false);
@@ -69,9 +68,6 @@ const Login: NextPage = () => {
         });
     }
 
-    // if (cookie.userToken)
-    //     router.push({pathname: '/profile'}, undefined, {shallow: true})
-
     const login = async () => {
         const user: User = await axios.post('/api/user/login', {
             email: emailInput,
@@ -79,7 +75,6 @@ const Login: NextPage = () => {
         }).then(response => response.data)
         us.user = user
         setUser(user)
-        setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
     }
 
@@ -90,7 +85,6 @@ const Login: NextPage = () => {
         }).then(response => response.data)
         us.user = user
         setUser(user)
-        setCookie('userToken', user.token, {path: '/'})
         router.push({pathname: '/profile'}, undefined, {shallow: true})
     }
 

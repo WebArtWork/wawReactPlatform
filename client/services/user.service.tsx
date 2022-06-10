@@ -2,20 +2,6 @@ import axios from 'axios';
 import {Service} from 'wrcom'
 import RenderService from "./render.service";
 
-interface IUser {
-    _id: string;
-    email: string;
-    thumb: string;
-    name: string;
-    phone: string;
-    bio: string;
-    is: {
-        admin: boolean;
-    };
-    token: string;
-    data:object;
-}
-
 class UserService extends Service {
     public user: any = {data: {}, is: {}};
     public users: any = [];

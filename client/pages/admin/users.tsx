@@ -26,11 +26,9 @@ const Users: NextPage = () => {
     const us = new UserService()
     const rs = new RenderService()
     const userGuard = useGuard()
-
     // const [checked, setChecked]: any = useState(false);
     const [inputError, setInputError]: any = useState(false);
     // const [user, setUser] = useStorage<IUser>('user')
-    const [cookie, setCookie, removeCookie] = useCookies(['userToken'])
     const router = useRouter()
     const [emailInput, setEmailInput] = useState('');
     const [user, setUser] = useStorage<IUser>('user', null);
@@ -39,9 +37,6 @@ const Users: NextPage = () => {
 
     useEffect(() => {
         if (userGuard === null) {
-            router.push({pathname: '/'})
-        } else if (!cookie.userToken) {
-            setUser({})
             router.push({pathname: '/'})
         }
         else if (!user.is.admin) {
