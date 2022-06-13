@@ -3,7 +3,6 @@ import type {NextPage} from 'next'
 import React, { useEffect, useState} from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import {useRouter} from "next/router";
-import {useCookies} from "react-cookie";
 import {useStorage} from "../hooks/useStorage";
 import {Modal} from "../modal/Modal";
 import {useGuard} from "../hooks/useGuard";
@@ -21,9 +20,11 @@ interface User {
 }
 
 const Profile: NextPage = () => {
+    const rs = new RenderService()
     const [user, setUser] = useStorage<User>('user', null)
     const userGuard = useGuard()
     const [name, setName] = useState('')
+    const [state, setState] = useState('')
     const [phone, setPhone] = useState('')
     const [bio, setBio] = useState('')
     const [show, setShow] = useState(false)
@@ -31,7 +32,12 @@ const Profile: NextPage = () => {
     const router = useRouter();
 
     const us = new UserService();
-    const rs = new RenderService()
+
+    useEffect(() => {
+        rs.on('users', () => {
+            setState(state)
+        })
+    },[])
 
     useEffect(() => {
         if(userGuard == null) {
@@ -127,8 +133,6 @@ const Profile: NextPage = () => {
             // console.log(userData)
         }
 
-// =======
-
 //         switch(attr){
 //             case 'name':
 //                 setName(e.target.value)
@@ -140,7 +144,6 @@ const Profile: NextPage = () => {
 //                 setBio(e.target.value);
 //                 break;
 //         }
-// >>>>>>> 53839d4a6496ab10a2abb224bbd73afe76232f89
         setUserData();
     }
 

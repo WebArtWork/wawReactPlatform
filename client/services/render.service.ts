@@ -1,6 +1,6 @@
 import {Service} from 'wrcom';
 
-class RenderService extends Service{
+class RenderService extends Service {
     private pipes: any = {}
     constructor() {
         super();

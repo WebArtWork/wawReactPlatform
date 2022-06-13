@@ -8,12 +8,12 @@ class UserService extends Service {
     private _timeout : any;
 
     constructor() {
-        // const rs = new RenderService()
         super();
+        const rs = new RenderService()
         axios.get('http://localhost:3000/api/user/get')
             .then((resp)=>{
                 this.users = resp.data;
-                // rs.render('users')
+                rs.render('users')
             })
     }
 

@@ -28,12 +28,19 @@ const Users: NextPage = () => {
     const userGuard = useGuard()
     // const [checked, setChecked]: any = useState(false);
     const [inputError, setInputError]: any = useState(false);
+    const [state, setState] = useState('')
     // const [user, setUser] = useStorage<IUser>('user')
     const router = useRouter()
     const [emailInput, setEmailInput] = useState('');
     const [user, setUser] = useStorage<IUser>('user', null);
     const [users, setUsers] = useState<any>([]);
     // const [admin, setAdmin] = useState<boolean>(false)
+
+    useEffect(() => {
+        rs.on('users', () => {
+            setState(state)
+        })
+    },[])
 
     useEffect(() => {
         if (userGuard === null) {
