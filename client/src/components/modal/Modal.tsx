@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useGuard} from "../hooks/useGuard";
+import {useGuard} from "../../hooks/useGuard";
 import axios from "axios";
 
 export const Modal = (props: any) => {

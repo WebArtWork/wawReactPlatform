@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {Service} from 'wrcom'
-import RenderService from "./render.service";
 
 class UserService extends Service {
     public user: any = {data: {}, is: {}};
@@ -9,11 +8,9 @@ class UserService extends Service {
 
     constructor() {
         super();
-        const rs = new RenderService()
         axios.get('http://localhost:3000/api/user/get')
             .then((resp)=>{
                 this.users = resp.data;
-                rs.render('users')
             })
     }
 

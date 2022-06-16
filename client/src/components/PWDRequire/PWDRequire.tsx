@@ -3,7 +3,7 @@ const PWDRequire = ({
                         numberFlag,
                         pwdLengthFlag,
                         specialCharFlag
-                    }) => {
+                    }: any) => {
     return (
         <div className="message">
             <p className={capsLetterFlag}>Capital letter</p>
