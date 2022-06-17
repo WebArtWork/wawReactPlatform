@@ -46,6 +46,8 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const user = await getMe(authToken);
     await store.dispatch(setUser(user));
 
+    console.log(user)
+
     if(!user.is.admin){
         return {
             redirect: {

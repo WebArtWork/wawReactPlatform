@@ -11,8 +11,8 @@ import {wrapper} from "Redux/store";
 import {parseCookies, setCookie} from "nookies";
 
 const Login: NextPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('ceo@webart.work');
+    const [password, setPassword] = useState('asdasdasdasd');
     const [passwordToggle, setPasswordToggle] = useState(false);
     const [modalToggle, setModalToggle] = useState(false);
 
