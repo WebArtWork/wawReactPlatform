@@ -5,32 +5,31 @@ import {wrapper} from "Redux/store";
 import {parseCookies} from "nookies";
 import {getMe} from "@Api/auth";
 import {setUser} from "Redux/userSlice";
-import {fetchUsers, setIs} from "@Api/user";
+import {fetchUsers, setIs, deleteUser, createUser} from "@Api/user";
 
 interface UsersProps {
     userList: IUser[]
 }
 
 function Index({userList}:UsersProps) {
+    const [email, setEmail] = useState('');
     const [users, setUsers] = useState<IUser[]>(userList);
     const {authToken} = parseCookies(null);
-
+    const valid =
+        RegExp('^[a-z0-9][\-_\.\+\!\#\$\%\&\'\*\/\=\?\^\`\{\|]{0,1}([a-z0-9][\-_\.\+\!\#\$\%\&\'\*\/\=\?\^\`\{\|]{0,1})*[a-z0-9]@[a-z0-9][-\.]{0,1}([a-z][-\.]{0,1})*[a-z0-9]\.[a-z0-9]{1,}([\.\-]{0,1}[a-z]){0,}[a-z0-9]{0,}$')
+        .test(email);
 
     const handleChange = async (user: IUser) => {
         user.is.admin = !user.is.admin;
-        await setIs(user, authToken)
+        await setIs(user, authToken);
 
         // const updatedList = await fetchUsers(authToken);
         // setUsers(updatedList)
 
-    }
+    }    
 
-    const createUser = () => {
-
-    }
-
-    const deleteUser = (user: IUser) => {
-
+    const handleDeleteUser = async (user: IUser) => {   
+        const data = await deleteUser(user, authToken);
     }
 
     return (
@@ -45,16 +44,17 @@ function Index({userList}:UsersProps) {
 
                 <div className='new_user'>
                     <input
-                        // type='text'
-                        // className={inputError ? "non_valid_input user_email" : "user_email"}
-                        // placeholder='Email'
-                        // value={emailInput}
-                        // onChange={(e) => setEmailInput(e.target.value)}
-                        // required
-                    >
-                    </input>
+                        className='user_email'
+                        type='text'
+                        placeholder='Email'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
 
-                    <button onClick={createUser}>
+                    <button className={valid ? 'button' : 'button _disabled'}
+                    disabled={!valid}
+                    onClick={() => createUser(email, authToken)}>
                         Create
                     </button>
                 </div>
@@ -81,17 +81,17 @@ function Index({userList}:UsersProps) {
                                 <td>
                                     <button className='admin'>
                                         <input type='checkbox'
-                                               onChange={() => handleChange(user)}
-                                            //    {user.is.admin ? checked : ''}
+                                            onChange={() => handleChange(user)}
+                                               onClick={() => user.is.admin ? true : false}
                                             // defaultChecked
-                                               checked={user.is.admin}
+                                            checked={user.is.admin}
                                         />
                                     </button>
                                 </td>
                                 <td>
-                                    <button className='deleter' onClick={() => deleteUser(user)}>
+                                    <button className='deleter' onClick={() => handleDeleteUser(user)}>
                                         <img className='trash' src="https://img.icons8.com/ios/500/trash--v1.png"
-                                             alt='delete'/>
+                                            alt='delete'/>
                                     </button>
                                 </td>
                             </tr>)) : <tr>

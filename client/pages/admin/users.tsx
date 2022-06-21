@@ -22,9 +22,7 @@ const Users = ({userList}: UsersPageProps) => {
     const router = useRouter()
     const [emailInput, setEmailInput] = useState('');
     const [users, setUsers] = useState<any>([]);
-
-    console.log(userList)
-
+    
     return (
         <Layout>
             <UsersPage userList={userList}/>
@@ -45,8 +43,6 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
 
     const user = await getMe(authToken);
     await store.dispatch(setUser(user));
-
-    console.log(user)
 
     if(!user.is.admin){
         return {

@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import {useRouter} from "next/router";
 
 import {IUser} from "Types/IUser";
-import {Modal} from "Components/modal/Modal";
+import {Modal} from "Components/Modal/Modal";
 import {useAppDispatch} from "Hooks/useRedux";
 import {setUser} from "Redux/userSlice";
 import {authLogin, authSign, authStatus, getMe} from '@Api/auth';

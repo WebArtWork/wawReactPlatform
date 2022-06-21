@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {IUser} from "Types/IUser";
 import {useRouter} from "next/router";
-import {Modal} from "Components/modal/Modal";
+import {Modal} from "Components/Modal/Modal";
 import {useAppDispatch, useAppSelector} from "Hooks/useRedux";
 import {destroyCookie, parseCookies} from "nookies";
 import useDebounce from "Hooks/useDebounce";

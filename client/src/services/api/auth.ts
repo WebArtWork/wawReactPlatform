@@ -18,10 +18,12 @@ export const authSign = async (email: string, password: string) => {
         .then(response => response.data);
 }
 
+
 export const authStatus = async (email: string) => {
     return await instance.post('status', {email})
         .then(response => response.data)
 }
+
 
 export const getMe = async (token: string) => {
     return axios.post('http://localhost:8080/api/user/fetchme', {},

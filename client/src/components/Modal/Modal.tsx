@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {useGuard} from "../../hooks/useGuard";
 import axios from "axios";
 
 export const Modal = (props: any) => {
     const [passInput, setPassInput] = useState('')
-    // const [session, setSession] = useGuard('session')
     if (!props.show) {
         return null
     }
