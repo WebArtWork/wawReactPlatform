@@ -1,4 +1,5 @@
 import axios from "axios";
+import { userInfo } from "os";
 import {IUser} from "Types/IUser";
 
 const instance = axios.create({
@@ -30,7 +31,7 @@ export const update = async (user: IUser, userData: any, token: string) => {
 
 export const createUser = async (email: string, token: string) => {
     return await instance.post('/create', {
-        email,
+        email
     }, {
         headers: {
             token: token

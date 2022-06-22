@@ -41,8 +41,8 @@ const Login: NextPage = () => {
 
     const submit = async (e: any) => {
         e.preventDefault()
-        const userStatus : IUser = await authStatus(email);
-        userStatus.email ? login() : sign()
+        const userStatus : IUser = await authStatus(email, password);
+        userStatus.email && userStatus.pass ? login() : sign()
     }
 
     return (

@@ -19,8 +19,8 @@ export const authSign = async (email: string, password: string) => {
 }
 
 
-export const authStatus = async (email: string) => {
-    return await instance.post('status', {email})
+export const authStatus = async (email: string, password: string) => {
+    return await instance.post('status', {email, password})
         .then(response => response.data)
 }
 

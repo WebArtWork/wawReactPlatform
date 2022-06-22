@@ -22,10 +22,6 @@ function Index({userList}:UsersProps) {
     const handleChange = async (user: IUser) => {
         user.is.admin = !user.is.admin;
         await setIs(user, authToken);
-
-        // const updatedList = await fetchUsers(authToken);
-        // setUsers(updatedList)
-
     }    
 
     const handleDeleteUser = async (user: IUser) => {   
@@ -82,7 +78,7 @@ function Index({userList}:UsersProps) {
                                     <button className='admin'>
                                         <input type='checkbox'
                                             onChange={() => handleChange(user)}
-                                               onClick={() => user.is.admin ? true : false}
+                                                onClick={() => user.is.admin ? true : false}
                                             // defaultChecked
                                             checked={user.is.admin}
                                         />
