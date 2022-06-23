@@ -99,3 +99,24 @@
         transform: rotate(45deg);
     }
 }
+
+@media screen and (max-width: 768px) {
+    .header {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .hamburger__list {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 60px;
+        z-index: 999;
+        flex-direction: row;
+    }
+
+    .hamburger__icon-item {
+        background-color: #ffffff;
+    }
+}
