@@ -2,9 +2,19 @@
     box-sizing: border-box;
 }
 
-.navbar {
+.header { 
     display: flex;
     align-items: center;
+    text-align: center;
+    max-width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 60px;
+    background-color: #1c1c1c;
+}
+
+.navbar {
+    display: flex;
     padding: 0 15px;
     &-link {
         display: flex;
@@ -23,18 +33,7 @@
     }
 }
 
-.navbar {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    max-width: 100%;
-    height: 60px;
-    background-color: #1c1c1c;
-}
-
 .hamburger {
-    margin-left: 87%;
-
     &-item {
         color: #1c1c1c;
     }
@@ -52,6 +51,9 @@
     }
 
     &__icon {
+        position: absolute;
+        right: 40px;
+        top: 20px;
         &-item{
             width: 20px;
             height: 2px;
@@ -83,7 +85,8 @@
 
 .unactive {
     position: absolute;
-    top: 25px;
+    right: 0px;
+    top: 5px;
     &:nth-child(2) {
         display: none;
     }
@@ -94,5 +97,13 @@
     
     &:nth-child(3) {
         transform: rotate(45deg);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        position: fixed;
+        bottom: 0;
+        width: 100vw;
     }
 }

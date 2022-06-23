@@ -16,17 +16,20 @@ const Navbar = () => {
     }
     return (
         mounted &&
-        <nav className="navbar">
-            {userRoutes.map((route) => (
-                <Link key={route.link} className="navbar-link" href={route.link}>
-                    <a className="navbar-item">{route.name}</a>
-                </Link>
-            ))}
-            {user.is.admin ? adminRoutes.map((route) => (
-                <Link key={route.link} className="navbar-link" href={route.link}>
-                    <a className="navbar-item">{route.name}</a>
-                </Link>
-            )) : ''}
+        <header className="header">
+            <nav className="navbar">
+                {userRoutes.map((route) => (
+                    <Link key={route.link} className="navbar-link" href={route.link}>
+                        <a className="navbar-item">{route.name}</a>
+                    </Link>
+                ))}
+                {user.is.admin ? adminRoutes.map((route) => (
+                    <Link key={route.link} className="navbar-link" href={route.link}>
+                        <a className="navbar-item">{route.name}</a>
+                    </Link>
+                )) : ''}
+            </nav>
+
 
             <div className="hamburger">
                 <div className="hamburger__icon" onClick={handleClick}>
@@ -50,7 +53,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
-        </nav>
+        </header>
     )
 }
 
