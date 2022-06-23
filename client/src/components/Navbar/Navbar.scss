@@ -99,11 +99,3 @@
         transform: rotate(45deg);
     }
 }
-
-@media screen and (max-width: 768px) {
-    .navbar {
-        position: fixed;
-        bottom: 0;
-        width: 100vw;
-    }
-}
