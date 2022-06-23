@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react"
 import Link from 'next/link'
 import {userRoutes, adminRoutes} from "../../app/routes";
-import Sidebar from "Components/Sidebar/Sidebar";
 import {useAppSelector} from "Hooks/useRedux";
 import {IUser} from "Types/IUser";
 
@@ -15,7 +14,6 @@ const Navbar = () => {
     return (
         mounted &&
         <nav className="navbar">
-            <Sidebar/>
             {userRoutes.map((route) => (
                 <Link key={route.link} className="navbar-link" href={route.link}>
                     <a className="navbar-item">{route.name}</a>

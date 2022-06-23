@@ -1,5 +1,4 @@
 import axios from "axios";
-import { userInfo } from "os";
 import {IUser} from "Types/IUser";
 
 const instance = axios.create({

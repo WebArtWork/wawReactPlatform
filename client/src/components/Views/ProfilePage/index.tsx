@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "Hooks/useRedux";
 import {destroyCookie, parseCookies} from "nookies";
 import useDebounce from "Hooks/useDebounce";
 import {update} from "@Api/user";
-import {setUser, setUserData} from "Redux/userSlice";
+import {setUser} from "Redux/userSlice";
 
 function Index(props: any) {
     const user = useAppSelector<IUser>((state) => state.user.user);
@@ -54,7 +54,7 @@ function Index(props: any) {
                     <div>
                         <form className="avatar _profile">
                             <img alt="profileImage" className="avatar__upload" id="blah" src={user.thumb}
-                                 style={{width: '58px', height: '58px'}}/>
+                                    style={{width: '58px', height: '58px'}}/>
                             {/*<input type="file" accept="png" id="image" className="avatar__upload"*/}
                             {/*    //  onChange={uploadFile}*/}
                             {/*       name="img"/>*/}

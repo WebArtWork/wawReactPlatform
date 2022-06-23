@@ -11,4 +11,5 @@ export interface IUser {
         phone: string,
         bio: string,
     };
+    pass: any;
 }

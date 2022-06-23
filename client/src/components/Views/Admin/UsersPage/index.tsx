@@ -1,11 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {IUser} from "Types/IUser";
-import {GetServerSideProps} from "next";
-import {wrapper} from "Redux/store";
 import {parseCookies} from "nookies";
-import {getMe} from "@Api/auth";
-import {setUser} from "Redux/userSlice";
-import {fetchUsers, setIs, deleteUser, createUser} from "@Api/user";
+import {setIs, deleteUser, createUser} from "@Api/user";
 
 interface UsersProps {
     userList: IUser[]

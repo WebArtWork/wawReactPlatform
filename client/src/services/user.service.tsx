@@ -1,5 +1,5 @@
-import axios from 'axios';
-import {Service} from 'wrcom'
+import axios from "axios";
+import {Service} from "wrcom";
 
 class UserService extends Service {
     public user: any = {data: {}, is: {}};
