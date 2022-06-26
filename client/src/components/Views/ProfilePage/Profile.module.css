@@ -58,8 +58,9 @@
     width: 60px;
     height: 60px;
     border-radius: 30px;
+    border: 1px solid #666666;
     position: relative;
-    background-color: #256eff;
+    background-color: #ffffff;
 }
 
 .avatarUpload {
@@ -70,7 +71,8 @@
     bottom: 0px;
     width: 24px;
     height: 24px;
-    background-color: #ffffff;
+    background-color: #256eff;
+    color: #ffffff;
     border-radius: 50px;
     display: flex;
     justify-content: center;
@@ -89,7 +91,7 @@
 
 .formTitle {
     display: inline-block;
-    color: var(--c-text-primary);
+    color: #ffffff;
     font-size: 12px;
     line-height: 10px;
     letter-spacing: .3px;

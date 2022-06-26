@@ -68,7 +68,6 @@ function Index({ userList }: UsersProps) {
 
                                     <tr key={user._id}>
                                         <td className={s.td}>
-                                            {/* {user.img} */}
                                             {user.data?.name}
                                         </td>
                                         <td className={s.td}>{user.email}</td>
@@ -77,7 +76,6 @@ function Index({ userList }: UsersProps) {
                                                 <input type='checkbox'
                                                     onChange={() => handleChange(user)}
                                                     onClick={() => user.is.admin ? true : false}
-                                                    // defaultChecked
                                                     checked={user.is.admin}
                                                 />
                                             </button>

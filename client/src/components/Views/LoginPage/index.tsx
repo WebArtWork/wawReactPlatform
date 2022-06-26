@@ -70,9 +70,6 @@ const LoginPage: NextPage = () => {
                             className={s.input}
                             id="password"
                             value={password}
-                            // onFocus={handleOnFocus}
-                            // onBlur={handleOnBlur}
-                            // onKeyUp={handleOnKeyUp}
                             onChange={e => setPassword(e.target.value)}
                             placeholder="Password" name="password"
                         />

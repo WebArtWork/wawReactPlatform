@@ -31,7 +31,7 @@
 
 .formTitle {
     display: inline-block;
-    color: var(--c-text-primary);
+    color: #ffffff;
     font-size: 12px;
     line-height: 10px;
     letter-spacing: .3px;

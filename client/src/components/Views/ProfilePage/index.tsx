@@ -100,9 +100,6 @@ function Index(props: any) {
                         </textarea>
                     </div>
                     <div className={s.profileLogout}>
-                        <button type="button" className={`${s.button} ${s.primary}`}
-                                onClick={() => setModalToggle(!modalToggle)}>Change password
-                        </button>
                         <Modal onClose={() => setModalToggle(!modalToggle)} show={modalToggle}/>
                         <button className={`${s.button} ${s.error}`} onClick={logout}>
                             <span className={`material-symbols-outlined`}>logout</span>Logout
