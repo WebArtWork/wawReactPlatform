@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { userRoutes, adminRoutes } from "../../app/routes";
 import { useAppSelector } from "Hooks/useRedux";
 import { IUser } from "Types/IUser";
-
+import s from './Navbar.module.css'
 const Navbar = () => {
     const [mounted, setMounted] = useState(false);
     const [show, setShow] = useState(false)
@@ -16,38 +16,37 @@ const Navbar = () => {
     }
     return (
         mounted &&
-        <header className="header">
-            <nav className="navbar">
+        <header className={s.header}>
+            <nav className={s.navbar}>
                 {userRoutes.map((route) => (
-                    <Link key={route.link} className="navbar-link" href={route.link}>
-                        <a className="navbar-item">{route.name}</a>
+                    <Link key={route.link} className={s.navbarLlink} href={route.link}>
+                        <a className={s.navbarItem}>{route.name}</a>
                     </Link>
                 ))}
                 {user.is.admin ? adminRoutes.map((route) => (
-                    <Link key={route.link} className="navbar-link" href={route.link}>
-                        <a className="navbar-item">{route.name}</a>
+                    <Link key={route.link} className={s.navbarLink} href={route.link}>
+                        <a className={s.navbarItem}>{route.name}</a>
                     </Link>
                 )) : ''}
             </nav>
 
 
-            <div className="hamburger">
-                <div className="hamburger__icon" onClick={handleClick}>
-                    <div className={!show ? 'hamburger__icon-item' : 'hamburger__icon-item unactive'}></div>
-                    <div className={!show ? 'hamburger__icon-item' : 'hamburger__icon-item unactive'}></div>
-                    <div className={!show ? 'hamburger__icon-item' : 'hamburger__icon-item unactive'}></div>
+            <div className={s.hamburger}>
+                <div className={s.hamburgerIcon} onClick={handleClick}>
+                    <div className={!show ? s.hamburgerIconItem : `${s.hamburgerIconItem} ${s.unactive}`}></div>
+                    <div className={!show ? s.hamburgerIconItem : `${s.hamburgerIconItem} ${s.unactive}`}></div>
+                    <div className={!show ? s.hamburgerIconItem : `${s.hamburgerIconItem} ${s.unactive}`}></div>
                 </div>
-
-                <div className={show ? 'hamburger__list' : 'hamburger__hide'} onClick={() => setShow(false)}>
-                    <div className="hamburger__wrapper">
+                <div className={show ? s.hamburgerList : s.hamburgerHide} onClick={() => setShow(false)}>
+                    <div className={s.hamburgerWrapper}>
                         {userRoutes.map(route => (
-                            <Link key={route.link} className="navbar-link" href={route.link}>
-                                <a className="hamburger-item">{route.name}</a>
+                            <Link key={route.link} className={s.navbarLlink} href={route.link}>
+                                <a className={s.hamburgerItem}>{route.name}</a>
                             </Link>
                         ))}
                         {user.is.admin ? adminRoutes.map((route) => (
-                            <Link key={route.link} className="navbar-link" href={route.link}>
-                                <a className="hamburger-item">{route.name}</a>
+                            <Link key={route.link} className={s.navbarLlink} href={route.link}>
+                                <a className={s.hamburgerItem}>{route.name}</a>
                             </Link>
                         )) : ''}
                     </div>

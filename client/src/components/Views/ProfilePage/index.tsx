@@ -7,6 +7,7 @@ import {destroyCookie, parseCookies} from "nookies";
 import useDebounce from "Hooks/useDebounce";
 import {update} from "@Api/user";
 import {setUser} from "Redux/userSlice";
+import s from './Profile.module.css'
 
 function Index(props: any) {
     const user = useAppSelector<IUser>((state) => state.user.user);
@@ -47,26 +48,23 @@ function Index(props: any) {
     }
 
     return (
-        <div>
-            <div className="profile container w-card _pd">
-                <div className="profile__header w-card__header">
-                    <div>Profile Settings</div>
+        <div className={s.container}>
+            <div className={s.card}>
+                <div className={s.cardHeader}>
+                    <p className={s.title}>Profile Settings</p>
                     <div>
-                        <form className="avatar _profile">
-                            <img alt="profileImage" className="avatar__upload" id="blah" src={user.thumb}
+                        <form className={s.avatar}>
+                            <img alt="profileImage"id="blah" src={user.thumb}
                                     style={{width: '58px', height: '58px'}}/>
-                            {/*<input type="file" accept="png" id="image" className="avatar__upload"*/}
-                            {/*    //  onChange={uploadFile}*/}
-                            {/*       name="img"/>*/}
-                            <span className="material-symbols-outlined">edit</span>
+                            <span className={`material-symbols-outlined ${s.avatarUpload}` }>edit</span>
                         </form>
                     </div>
                 </div>
-                <div className="profile__body">
-                    <div className="w-forms">
-                        <span className="w-forms__title">Name</span>
+                <div className={s.profileBody}>
+                    <div className={s.form}>
+                        <span className={s.formTitle}>Name</span>
                         <input
-                            className="w-forms__input"
+                            className={s.input}
                             type="text"
                             name="name"
                             value={data.name}
@@ -75,11 +73,11 @@ function Index(props: any) {
                         />
 
                     </div>
-                    <div className="w-forms">
-                        <span className="w-forms__title">Phone number</span>
+                    <div className={s.form}>
+                        <span className={s.formTitle}>Phone number</span>
                         <input
                             id="phone"
-                            className="w-forms__input"
+                            className={s.input}
                             maxLength={10}
                             type="tel"
                             name="phone"
@@ -88,11 +86,11 @@ function Index(props: any) {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="w-forms">
-                        <span className="w-forms__title">Bio</span>
+                    <div className={s.form}>
+                        <span className={s.formTitle}>Bio</span>
                         <textarea
                             id="bio"
-                            className="w-forms__textarea"
+                            className={s.textarea}
                             placeholder="Bio"
                             name="bio"
                             maxLength={100}
@@ -101,13 +99,13 @@ function Index(props: any) {
                         >
                         </textarea>
                     </div>
-                    <div className=">profile__logout">
-                        <button type="button" className="w-btn _primary"
+                    <div className={s.profileLogout}>
+                        <button type="button" className={`${s.button} ${s.primary}`}
                                 onClick={() => setModalToggle(!modalToggle)}>Change password
                         </button>
                         <Modal onClose={() => setModalToggle(!modalToggle)} show={modalToggle}/>
-                        <button className="logout-button _danger" onClick={logout}>
-                            <span className="material-symbols-outlined">logout</span>Logout
+                        <button className={`${s.button} ${s.error}`} onClick={logout}>
+                            <span className={`material-symbols-outlined`}>logout</span>Logout
                         </button>
                     </div>
                 </div>

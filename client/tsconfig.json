@@ -21,7 +21,7 @@
       "Types/*": ["./types/*"],
       "Redux/*": ["./redux/*"],
       "Hooks/*": ["./hooks/*"],
-      "@Api/*": ["./services/api/*"]
+      "@Api/*": ["./services/api/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
