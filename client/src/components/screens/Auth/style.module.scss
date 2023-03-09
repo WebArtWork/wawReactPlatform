@@ -1,0 +1,123 @@
+@use "assets/styles/utils/_media.scss" as media;
+@use "assets/styles/utils/_mixins.scss" as mixins;
+
+
+.authWrapper {
+  @include mixins.flexBox(flex, null, center, center, null);
+  background: var(--c-bg-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: all .3s;
+
+  .authWrap {
+    display: flex;
+    flex-flow: row wrap;
+    max-width: 880px;
+    width: 100%;
+    position: relative;
+    justify-content: space-between;
+    @include media.bp-max(sm) {
+      padding: 25px;
+      flex-flow: column wrap;
+    }
+
+    .authImage {
+      flex: 0 0 50%;
+      max-width: 50%;
+      width: 100%;
+      display: flex;
+      position: relative;
+      padding-right: 40px;
+
+      span {
+        position: relative !important;
+        height: 100% !important;
+        max-width: 260px !important;
+        width: 100% !important;
+
+        img {
+          position: relative;
+          width: 100% !important;
+          object-fit: contain !important;
+        }
+      }
+
+
+      @include media.bp-max(sm) {
+        max-width: 60px;
+        margin: 0 auto;
+        flex: 0 0 100%;
+        padding: 0 0 30px 0;
+        svg {
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+
+    .authForm {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding-left: 40px;
+      display: flex;
+      justify-content: flex-end;
+      @include media.bp-max(sm) {
+        flex: 0 0 100%;
+        max-width: 100%;
+        justify-content: center;
+        padding: 0;
+      }
+
+      .auth {
+        max-width: 340px;
+        width: 100%;
+        padding: 30px;
+        border-radius: var(--b-radius-card);
+        box-shadow: 0px 0px 6px var(--c-shadow);
+        background: var(--c-bg-secondary);
+        display: flex;
+        flex-flow: row wrap;
+        position: relative;
+
+        .changeThemeButton {
+          position: absolute;
+          right: 15px;
+          top: 15px;
+          cursor: pointer;
+        }
+
+        @include media.bp-max(sm) {
+          padding: 25px;
+          flex-flow: column wrap;
+        }
+
+        .form {
+          width: 100%;
+          margin: 0;
+
+          h1 {
+            width: 100%;
+            font-size: var(--fs) + 8px;
+            font-weight: var(--ff-bold);
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--c-text-primary);
+            @include media.bp-max(sm) {
+              font-size: var(--fs) + 2px;
+            }
+          }
+
+          &Button {
+            width: 100%;
+            margin: 0;
+            padding: 8px 15px;
+          }
+        }
+      }
+    }
+
+  }
+
+}

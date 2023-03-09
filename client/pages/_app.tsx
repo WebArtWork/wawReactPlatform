@@ -1,5 +1,5 @@
-import "../styles/globals.scss";
-import {wrapper} from "Redux/store";
+import "../assets/styles/globals.scss";
+import {wrapper} from "@Redux/store";
 
 function MyApp({Component, pageProps}: any) {
     return (

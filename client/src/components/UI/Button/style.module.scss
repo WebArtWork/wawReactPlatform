@@ -1,0 +1,21 @@
+@import "assets/styles/components/w-btn.scss";
+
+.btn {
+  @extend .w-btn;
+
+  &.primary {
+    @extend ._primary !optional;
+  }
+
+  &.secondary {
+    @extend ._second !optional;
+  }
+
+  &.danger {
+    @extend ._danger !optional;
+  }
+
+  &.link {
+    @extend ._link !optional;
+  }
+}

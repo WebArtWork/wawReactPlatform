@@ -1,65 +1,15 @@
-import {GetServerSideProps} from "next";
-import React, {useState} from 'react'
-import {useRouter} from "next/router";
-import {parseCookies} from "nookies";
-
-import {wrapper} from "Redux/store";
-import {getMe} from "@Api/auth";
-import {setUser} from "Redux/userSlice";
-import {fetchUsers} from "@Api/user";
-
-import {IUser} from "Types/IUser";
-import Layout from "Components/Layout";
-import UsersPage from "Components/Views/Admin/UsersPage";
+import React from 'react'
+import {NextPageWithAuth} from "@Interfaces/app/NextPageWithProps";
+import {NextPage} from "next";
+import {WithAuth} from "@Hocs/withAuth";
 
 
-interface UsersPageProps {
-    userList: IUser[]
-}
-
-const Users = ({userList}: UsersPageProps) => {
-    const [inputError, setInputError]: any = useState(false);
-    const router = useRouter()
-    const [emailInput, setEmailInput] = useState('');
-    const [users, setUsers] = useState<any>([]);
-    
+const Users: NextPage & NextPageWithAuth = () => {
     return (
-        <Layout>
-            <UsersPage userList={userList}/>
-        </Layout>
-    )
+        <></>
+    );
 }
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(store =>  async (ctx) => {
-    const {authToken} = parseCookies(ctx);
-    if(!authToken) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: `/`
-            }
-        }
-    }
+Users.auth = true;
 
-    const user = await getMe(authToken);
-    await store.dispatch(setUser(user));
-
-    if(!user.is.admin){
-        return {
-            redirect: {
-                permanent: false,
-                destination: `/profile`
-            }
-        }
-    }
-
-    const userList = await fetchUsers(authToken);
-
-    return {
-        props: {
-            userList
-        }
-    }
-})
-
-export default Users;
+export default WithAuth(Users)

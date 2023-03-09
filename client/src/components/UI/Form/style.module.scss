@@ -1,0 +1,9 @@
+@import "assets/styles/components/w-forms.scss";
+
+.wForm{
+  @extend .w-forms;
+
+    &Title{
+        @extend .w-forms__title;
+    }
+}

@@ -1,21 +1,19 @@
-import {IUser} from "Types/IUser";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
+import {UserInterface} from "@Interfaces/User.interface";
 
-const initialState = {
-    user: {
-        _id: '',
-        email: '',
-        thumb: '',
-        is: {
-            admin: false
-        },
-        token: '',
-        data: {
-            name: '',
-            phone: '',
-            bio: ''
-        }
+const initialState: UserInterface = {
+    _id: '',
+    email: '',
+    reg_email:'',
+    thumb: '',
+    is: {
+        admin: false
+    },
+    data: {
+        name: '',
+        phone: '',
+        bio: ''
     }
 }
 
@@ -23,16 +21,16 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setUser: (state , action: PayloadAction<IUser>) => {
-            state.user = action.payload
+        setUser: (user, action: PayloadAction<UserInterface>) => {
+            user = action.payload
         },
-        setUserData: (state, action) => {
-            state.user.data = action.payload
+        setUserData: (user, action) => {
+            user.data = action.payload
         }
     },
     extraReducers: {
-        [HYDRATE]: (state, action) => {
-            state.user = action.payload.user.user
+        [HYDRATE]: (user, action) => {
+            user = action.payload.user.user
         }
     }
 })
