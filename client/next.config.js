@@ -3,11 +3,19 @@ const path = require('path');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  serverRuntimeConfig: {
+    apiURL: process.env.NEXT_SERVER_API_URL,
+  },
+  publicRuntimeConfig: {
+    apiURL: process.env.NEXT_PUBLIC_API_URL,
+  },
   rewrites: () => {
+
+    console.log()
     return [
       {
         source: '/api/:path*',
-        destination: `http://localhost:8080/api/:path*`
+        destination: `${process.env.NEXT_SERVER_API_URL}:path*`
       }
     ];
   },

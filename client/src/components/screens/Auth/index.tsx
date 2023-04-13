@@ -12,17 +12,18 @@ import {setUser} from "@Redux/userSlice";
 import {useRouter} from "next/router";
 import {setCookie} from "nookies";
 
-const Index: FC = () => {
+const Auth: FC = () => {
     const router = useRouter();
 
     const dispatch = useAppDispatch();
-    const {theme, toggleTheme} = useTheme();
+    const {theme, toggleTheme, ThemeType} = useTheme();
 
     const [email, setEmail] = React.useState('ceo@webart.work');
     const [password, setPassword] = React.useState('asdasdasdasd');
 
     const authHandler =  async () => {
         const status = await AuthService.status(email, password)
+
         let user = null;
         if (status.email && status.pass) {
             user = await AuthService.login(email, password);
@@ -32,7 +33,7 @@ const Index: FC = () => {
 
         const token = user.token;
         setCookie(null, 'token', token,
-            { path: '/', secure: true}
+            { path: '/'}
         );
 
         dispatch(setUser(user))
@@ -49,7 +50,8 @@ const Index: FC = () => {
                 </div>
                 <div className={styles.authForm}>
                     <div className={styles.auth}>
-                        <Icon className={styles.changeThemeButton} name={`${theme}_mode`}
+                        <Icon className={styles.changeThemeButton}
+                              name={`${theme === ThemeType.LIGHT ? ThemeType.DARK : ThemeType.LIGHT}_mode`}
                               onClick={toggleTheme}/>
                         <Form className={styles.form} title="Sign In / Sign Up">
                             <Input value={email}
@@ -71,4 +73,4 @@ const Index: FC = () => {
     );
 };
 
-export default Index;
+export default Auth;

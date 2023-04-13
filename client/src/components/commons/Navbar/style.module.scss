@@ -1,0 +1,248 @@
+@use "assets/styles/utils/_mixins.scss" as mixins;
+@use "assets/styles/utils/_media.scss" as media;
+
+
+.nav {
+  transition: var(--transition);
+  background: var(--c-basic);
+  width: 100%;
+  @include mixins.flexBox(flex, null, space-between, center, null);
+  min-height: 50px;
+  z-index: 10;
+  overflow: hidden;
+  box-shadow: 0 3px 5px -1px #0003, 0 6px 10px #00000024, 0 1px 18px #0000001f;
+  &Ul {
+    z-index: 1;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0 20px;
+    transition: var(--transition);
+    @include mixins.flexBox(flex, null, null, center, null);
+    width: 100%;
+    @media screen and (max-width: 767px) {
+      justify-content: end !important;
+    }
+  }
+  &Li {
+    display: inline-block;
+    &._burger {
+      width: 44px;
+      height: 34px;
+    }
+    &:last-child {
+      margin-left: auto;
+    }
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+  &A {
+    cursor: pointer;
+    color: var(--c-white);
+    font-size: var(--fs) - 2px;
+    padding: 5px 10px;
+    border-radius: var(--b-radius);
+    transition: var(--transition);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background-color: var(--c-white);
+      bottom: -1px;
+      border-radius: var(--b-radius-img);
+      transform: translateY(15px);
+      opacity: 0;
+      @include media.bp-max(md) {
+        top: -3px;
+      }
+    }
+    &._activeLink {
+      &::before {
+        animation: navLinkAnimation 0.75s forwards;
+      }
+      @keyframes navLinkAnimation {
+        0% {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+    .material-icons {
+      color: var(--c-white);
+      width: 24px;
+    }
+  }
+  &Toggle {
+    width: 100%;
+    height: 100%;
+    @include mixins.flexBox(flex, null, null, center, null);
+    position: relative;
+    order: 3;
+    cursor: pointer;
+    justify-content: center;
+    &Line,
+    &Line:before,
+    &Line:after {
+      cursor: pointer;
+      border-radius: 1px;
+      height: 2px;
+      width: 24px;
+      position: absolute;
+      display: block;
+      content: '';
+      transition: var(--transition);
+      background-color: transparent;
+    }
+    &Line:before {
+      top: -7px;
+      top: 0;
+      transform: rotate(45deg);
+      background: var(--c-white);
+    }
+    &Line:after {
+      bottom: -7px;
+      top: 0;
+      transform: rotate(-45deg);
+      background: var(--c-white);
+    }
+    @media screen and (max-width: 767px) {
+      .navToggleLine, .navToggleLine:before, .navToggleLine:after{
+        background: #fff;
+      }
+      &Line:before {
+        top: -7px;
+        transform: unset;
+        background: var(--c-white);
+      }
+      &Line:after {
+        top: 7px;
+        transform: unset;
+        background: var(--c-white);
+      }
+    }
+    &._active &Line {
+      background: var(--c-white);
+
+      &:before,
+      &:after {
+        top: 0;
+      }
+      &:before {
+        transform: unset;
+        top: -7px;
+      }
+      &:after {
+        transform: unset;
+        top:7px
+      }
+      @media screen and (max-width: 767px) {
+        background: transparent;
+
+        &:before {
+          transform: rotate(45deg);
+          top: -7px;
+          top: 0;
+        }
+        &:after {
+          transform: rotate(-45deg);
+          bottom: -7px;
+          top: 0;
+        }
+      }
+    }
+  }
+  &Burger {
+    margin: 0;
+    max-width: 250px;
+    width: 100%;
+    height: calc(100% - 50px);
+    transform: translateX(0) !important;
+    top: 50px;
+    position: fixed;
+    background-color: var(--c-bg-secondary);
+    right: 0;
+    transform: translateX(120%);
+    z-index: 10;
+    @media screen and (max-width: 767px) {
+      transform: translateX(120%) !important;
+    }
+    @include mixins.flexBox(flex, column, null, null, null);
+    transition: var(--transition);
+    box-shadow: 0 3px 5px -1px #0003, 0 6px 10px #00000024,
+    0 1px 18px #0000001f;
+    &._active {
+      transform: translateX(120%) !important;
+      z-index: 0;
+      @media screen and (max-width: 767px) {
+        transform: translateX(0) !important;
+        z-index: 10;
+      }
+    }
+    &List {
+      flex-grow: 1;
+      height: 100%;
+      @include mixins.flexBox(flex, column, null, null, null);
+      overflow-y: auto;
+      padding: 20px;
+      .navBurgerLink {
+        color: var(--c-text-primary);
+        padding: 10px;
+        .avatarImg {
+          border-radius: 50%;
+        }
+      }
+    }
+    &Link {
+      @include mixins.flexBox(flex, null, null, center, null);
+      gap: 10px;
+      .material-icons {
+        color: var(--c-text-primary);
+        font-size: 30px;
+      }
+    }
+    &User {
+      @include mixins.flexBox(flex, column, center, center, null);
+      color: var(--c-text-primary);
+      padding: 5px;
+      border-bottom: 1px solid var(--c-border);
+      margin-bottom: 10px;
+      .name {
+        word-break: break-word;
+      }
+      .material-icons {
+        color: var(--c-text-primary);
+        font-size: calc(var(--fs) + 32px);
+      }
+    }
+  }
+  @include media.bp-max(md) {
+    order: 2;
+    &Ul {
+      justify-content: space-between;
+    }
+    &Li:last-child {
+      margin-left: 0;
+    }
+    &Burger {
+      top: 0;
+    }
+  }
+}
+
+.themeSwitch{
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 10px;
+  .material-icons {
+    cursor: pointer;
+  }
+}

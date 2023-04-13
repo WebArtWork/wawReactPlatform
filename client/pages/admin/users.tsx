@@ -1,15 +1,20 @@
 import React from 'react'
-import {NextPageWithAuth} from "@Interfaces/app/NextPageWithProps";
-import {NextPage} from "next";
-import {WithAuth} from "@Hocs/withAuth";
+import {GetServerSidePropsContext, NextPage} from "next";
+import {withAuth} from "@Hocs/withAuth";
 
 
-const Users: NextPage & NextPageWithAuth = () => {
+const Users: NextPage & {role: string} = () => {
     return (
         <></>
     );
 }
 
-Users.auth = true;
+Users.role = 'admin';
 
-export default WithAuth(Users)
+export const getServerSideProps = withAuth(async (ctx: GetServerSidePropsContext) => {
+    return {
+        props: {}
+    }
+})
+
+export default Users

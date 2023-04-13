@@ -1,0 +1,16 @@
+{
+  "admin": [
+    {
+      "href": "/admin/users",
+      "icon": "people",
+      "title": "Users"
+    }
+  ],
+  "public": [
+    {
+      "href": "/profile",
+      "icon": "home",
+      "title": "Home"
+    }
+  ]
+}

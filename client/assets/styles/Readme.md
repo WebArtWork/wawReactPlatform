@@ -19,7 +19,7 @@
 	5. w-radio
 	6. w-switch
 	7. w-table
-### Layout
+### Index
 	1. base
 	2. grid
 	3. scroll

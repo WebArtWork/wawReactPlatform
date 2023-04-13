@@ -1,45 +1,44 @@
-import {axiosApiGet, axiosApiPost, axiosInstance} from "../config/axiosIstance";
+import {axiosPost,} from "../config/axiosIstance";
+import {UserInterface} from "@Interfaces/User.interface";
+import {string} from "prop-types";
+
+type UserStatus = {
+    email: boolean,
+    pass: boolean,
+}
 
 class AuthService {
     async login(email: string, password: string) {
-        return await axiosApiPost(
+        return await axiosPost<UserInterface & { token: string }>(
+            "/user/login",
             {
-                url: "/user/login",
                 data: {email, password},
             }
         ).then((response) => response.data);
     }
 
     async register(email: string, password: string) {
-        return await axiosApiPost(
+        return await axiosPost<UserInterface & { token: string }>(
+            "/user/sign",
             {
-                url: "/user/sign",
                 data: {email, password},
             }
         ).then((response) => response.data);
     }
 
     async status(email: string, password: string) {
-        return await axiosApiPost(
+        return await axiosPost<UserStatus>(
+            "/user/status",
             {
-                url: "/user/status",
                 data: {email, password},
             }
         ).then((response) => response.data);
     }
 
-    async fetchMe() {
-        return await axiosApiGet(
-            {
-                url: "/user/fetchme"
-            }
-        ).then((response) => response.data);
-    }
-
     async changePassword(oldPass: string, newPass: string) {
-        return await axiosApiPost(
+        return await axiosPost(
+            "/user/changePassword",
             {
-                url: "/user/changePassword",
                 data: {oldPass, newPass},
             }
         ).then((response) => response.data);

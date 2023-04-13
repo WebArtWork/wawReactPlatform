@@ -1,17 +1,43 @@
-import React from 'react';
-import {NextPage} from "next";
-import {NextPageWithAuth} from "@Interfaces/app/NextPageWithProps";
-import {useTypedSelector} from "@Hooks/useTypedSelector";
+import React from "react";
+import {GetServerSideProps, GetServerSidePropsContext} from "next";
+import {wrapper} from "@Redux/store";
+import {parseCookies} from "nookies";
+import {fetchUser} from "@Redux/userSlice";
 
-export const WithAuth = (Page: NextPage & NextPageWithAuth) => {
-    const user = useTypedSelector(state => state.user);
-    console.log(user)
+// export const withAuth = (
+//     getServerSidePropsFn: (
+//         context: GetServerSidePropsContext,
+//     ) => Promise<{ props: any }>
+// ): GetServerSideProps => {
+//     return wrapper.getServerSideProps((store) => async (ctx) => {
+//         const {token} = parseCookies(ctx);
+//         if (!token) {
+//             return {
+//                 redirect: {
+//                     destination: '/',
+//                     permanent: false,
+//                 },
+//             };
+//         }
+//
+//         store.dispatch(fetchUser());
+//
+//
+//         const {props} = await getServerSidePropsFn(ctx);
+//         return {
+//             props: {
+//                 ...props
+//             }
+//         };
+//     });
+// };
 
-    const withAuth: (props: any) => JSX.Element = (props) => {
-        return (
-            <Page {...props} />
-        );
-    };
 
-    return withAuth;
-};
+const withUser = (C: React.FC) => {
+    console.log('withUser', C)
+
+
+    return () => {
+        return <C />
+    }
+}

@@ -1,14 +1,13 @@
 import React from 'react'
-import {NextPage} from "next";
+import Profile from "@Components/screens/Profile";
+import {NextPageAuth} from "@Interfaces/app/NextPageWithProps";
 
-import Layout from "@Components/Layout";
-
-export const Profile: NextPage = () => {
+const ProfilePage: NextPageAuth = (props) => {
     return (
-        <Layout>
-        </Layout>
+        <Profile/>
     );
 }
 
+ProfilePage.withAuth = true;
 
-export default Profile;
+export default ProfilePage;

@@ -16,6 +16,7 @@
     "incremental": true,
     "baseUrl": "./src",
     "paths": {
+      "@Config/*": ["./app/*"],
       "@Components/*": ["./components/*"],
       "@Assets/*": ["./assets/*"],
       "@Redux/*": ["./redux/*"],
